@@ -22,7 +22,7 @@ namespace GitUI.UserControls.RevisionGrid
 
         private GitUICommands UICommands => _uICommandsSource.UICommands;
 
-        private GitModule Module => UICommands.Module;
+        private VsrModule Module => UICommands.Module;
 
         public IndexWatcher(IGitUICommandsSource uiCommandsSource)
         {

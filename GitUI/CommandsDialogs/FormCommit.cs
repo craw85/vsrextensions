@@ -2454,7 +2454,7 @@ namespace GitUI.CommandsDialogs
                 if (!string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to))
                 {
                     sb.AppendLine("Submodule " + path + ":");
-                    var module = new GitModule(_fullPathResolver.Resolve(name.EnsureTrailingPathSeparator()));
+                    var module = new VsrModule(_fullPathResolver.Resolve(name.EnsureTrailingPathSeparator()));
                     args = new GitArgumentBuilder("log")
                     {
                         "--pretty=format:\"    %m %h - %s\"",
@@ -3059,7 +3059,7 @@ namespace GitUI.CommandsDialogs
 
             foreach (var item in unstagedFiles.Where(it => it.IsSubmodule))
             {
-                GitModule module = Module.GetSubmodule(item.Name);
+                VsrModule module = Module.GetSubmodule(item.Name);
 
                 // Reset all changes.
                 module.Reset(ResetMode.Hard);

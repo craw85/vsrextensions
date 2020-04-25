@@ -40,17 +40,17 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
 
         public string GetCurrentBranchName(string path)
         {
-            if (!AppSettings.ShowRepoCurrentBranch || GitModule.IsBareRepository(path))
+            if (!AppSettings.ShowRepoCurrentBranch || VsrModule.IsBareRepository(path))
             {
                 return string.Empty;
             }
 
-            return GitModule.GetSelectedBranchFast(path);
+            return VsrModule.GetSelectedBranchFast(path);
         }
 
         public bool IsValidGitWorkingDir(string path)
         {
-            return GitModule.IsValidGitWorkingDir(path);
+            return VsrModule.IsValidGitWorkingDir(path);
         }
 
         public (IReadOnlyList<RecentRepoInfo> recentRepositories, IReadOnlyList<RecentRepoInfo> favouriteRepositories) PreRenderRepositories(Graphics g)

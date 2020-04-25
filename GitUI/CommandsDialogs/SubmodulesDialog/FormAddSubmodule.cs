@@ -90,7 +90,7 @@ namespace GitUI.CommandsDialogs.SubmodulesDialog
         /// Returns the branches of a remote repository as strings; ignores git errors and warnings.
         /// </summary>
         /// 'git ls-remotes --heads "URL"' is completely independent from a local repo clone.
-        /// Hence there is no need for a GitModule.
+        /// Hence there is no need for a VsrModule.
         /// <param name="gitExecutable">the git executable</param>
         /// <param name="url">the repo URL; can also be a local path</param>
         private static IEnumerable<string> LoadRemoteRepoBranches(IExecutable gitExecutable, string url)

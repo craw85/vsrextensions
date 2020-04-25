@@ -15,7 +15,7 @@ namespace Bitbucket
             @"ssh:\/\/([\w\.]+\@)(?<url>([a-zA-Z0-9\.\-]+)):?(\d+)?\/(?<project>~?([\w\-]+))\/(?<repo>([\w\-]+)).git";
 
         [CanBeNull]
-        public static Settings Parse(IGitModule gitModule, ISettingsSource settings, BitbucketPlugin plugin)
+        public static Settings Parse(IVsrModule gitModule, ISettingsSource settings, BitbucketPlugin plugin)
         {
             var result = new Settings
             {
@@ -25,7 +25,7 @@ namespace Bitbucket
                 DisableSSL = plugin.BitbucketDisableSsl.ValueOrDefault(settings)
             };
 
-            var module = (GitModule)gitModule;
+            var module = (VsrModule)gitModule;
 
             var remotes = module.GetRemoteNames()
                 .Where(s => !string.IsNullOrWhiteSpace(s))

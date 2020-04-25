@@ -101,7 +101,7 @@ namespace GitUI.Editor.Diff
                     ret.Add(meta);
                     rightLineNum++;
                 }
-                else if (line.StartsWith(GitModule.NoNewLineAtTheEnd))
+                else if (line.StartsWith(VsrModule.NoNewLineAtTheEnd))
                 {
                     var meta = new DiffLineInfo
                     {

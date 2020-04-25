@@ -59,14 +59,14 @@ namespace AutoCompileSubmodules
         public override bool Execute(GitUIEventArgs args)
         {
             // Only build when plugin is enabled
-            if (string.IsNullOrEmpty(args.GitModule.WorkingDir))
+            if (string.IsNullOrEmpty(args.VsrModule.WorkingDir))
             {
                 return false;
             }
 
             var msbuildPath = _msBuildPath.ValueOrDefault(Settings);
 
-            var workingDir = new DirectoryInfo(args.GitModule.WorkingDir);
+            var workingDir = new DirectoryInfo(args.VsrModule.WorkingDir);
             var solutionFiles = workingDir.GetFiles("*.sln", SearchOption.AllDirectories);
 
             for (var n = solutionFiles.Length - 1; n > 0; n--)

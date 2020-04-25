@@ -84,7 +84,7 @@ namespace GitCommands.Submodules
                 await TaskScheduler.Default;
 
                 // Start gathering new submodule structure asynchronously.
-                var currentModule = new GitModule(workingDirectory);
+                var currentModule = new VsrModule(workingDirectory);
                 var result = new SubmoduleInfoResult
                 {
                     Module = currentModule
@@ -158,7 +158,7 @@ namespace GitCommands.Submodules
             {
                 await TaskScheduler.Default;
 
-                var currentModule = new GitModule(workingDirectory);
+                var currentModule = new VsrModule(workingDirectory);
                 await UpdateSubmodulesStatusAsync(currentModule, gitStatus, cancelToken);
 
                 OnStatusUpdated(_submoduleInfoResult, cancelToken);
@@ -182,7 +182,7 @@ namespace GitCommands.Submodules
             {
                 var name = submodule;
                 string path = result.Module.GetSubmoduleFullPath(submodule);
-                if (AppSettings.ShowRepoCurrentBranch && !GitModule.IsBareRepository(path))
+                if (AppSettings.ShowRepoCurrentBranch && !VsrModule.IsBareRepository(path))
                 {
                     name = name + " " + GetModuleBranch(path, noBranchText);
                 }
@@ -197,7 +197,7 @@ namespace GitCommands.Submodules
         /// </summary>
         /// <param name="result">submodule info</param>
         /// <param name="noBranchText">text with no branches</param>
-        private void GetSuperProjectRepositorySubmodulesStructure(GitModule currentModule, SubmoduleInfoResult result, string noBranchText)
+        private void GetSuperProjectRepositorySubmodulesStructure(VsrModule currentModule, SubmoduleInfoResult result, string noBranchText)
         {
             bool isCurrentTopProject = currentModule.SuperprojectModule == null;
             if (isCurrentTopProject)
@@ -207,7 +207,7 @@ namespace GitCommands.Submodules
                 return;
             }
 
-            IGitModule topProject = currentModule.SuperprojectModule.GetTopModule();
+            IVsrModule topProject = currentModule.SuperprojectModule.GetTopModule();
 
             bool isParentTopProject = currentModule.SuperprojectModule.WorkingDir == topProject.WorkingDir;
 
@@ -221,7 +221,7 @@ namespace GitCommands.Submodules
             SetSubmoduleData(currentModule, result, noBranchText, topProject);
         }
 
-        private void SetSuperProjectSubmoduleInfo(GitModule superprojectModule, SubmoduleInfoResult result, string noBranchText, IGitModule topProject, bool isParentTopProject)
+        private void SetSuperProjectSubmoduleInfo(VsrModule superprojectModule, SubmoduleInfoResult result, string noBranchText, IVsrModule topProject, bool isParentTopProject)
         {
             string name;
             if (isParentTopProject)
@@ -244,7 +244,7 @@ namespace GitCommands.Submodules
 
         private void SetTopProjectSubmoduleInfo(SubmoduleInfoResult result,
             string noBranchText,
-            IGitModule topProject,
+            IVsrModule topProject,
             bool isParentTopProject,
             bool isCurrentTopProject)
         {
@@ -262,7 +262,7 @@ namespace GitCommands.Submodules
             }
         }
 
-        private void SetSubmoduleData(GitModule currentModule, SubmoduleInfoResult result, string noBranchText, IGitModule topProject)
+        private void SetSubmoduleData(VsrModule currentModule, SubmoduleInfoResult result, string noBranchText, IVsrModule topProject)
         {
             var submodules = topProject.GetSubmodulesLocalPaths().OrderBy(submoduleName => submoduleName).ToArray();
             if (submodules.Any())
@@ -290,7 +290,7 @@ namespace GitCommands.Submodules
 
         private string GetBranchNameSuffix(string repositoryPath, string noBranchText)
         {
-            if (AppSettings.ShowRepoCurrentBranch && !GitModule.IsBareRepository(repositoryPath))
+            if (AppSettings.ShowRepoCurrentBranch && !VsrModule.IsBareRepository(repositoryPath))
             {
                 return " " + GetModuleBranch(repositoryPath, noBranchText);
             }
@@ -300,7 +300,7 @@ namespace GitCommands.Submodules
 
         private static string GetModuleBranch(string path, string noBranchText)
         {
-            var branch = GitModule.GetSelectedBranchFast(path);
+            var branch = VsrModule.GetSelectedBranchFast(path);
             var text = DetachedHeadParser.IsDetachedHead(branch) ? noBranchText : branch;
             return $"({text})";
         }
@@ -312,7 +312,7 @@ namespace GitCommands.Submodules
         /// <param name="gitStatus">git status</param>
         /// <param name="cancelToken">Cancellation token</param>
         /// <returns>The task</returns>
-        private async Task UpdateSubmodulesStatusAsync(GitModule module, [CanBeNull] IReadOnlyList<GitItemStatus> gitStatus, CancellationToken cancelToken)
+        private async Task UpdateSubmodulesStatusAsync(VsrModule module, [CanBeNull] IReadOnlyList<GitItemStatus> gitStatus, CancellationToken cancelToken)
         {
             _previousSubmoduleUpdateTime = DateTime.Now;
             await TaskScheduler.Default;
@@ -368,7 +368,7 @@ namespace GitCommands.Submodules
         /// <param name="module">Module to compare to</param>
         /// <param name="cancelToken">Cancelation token</param>
         /// <returns>The task</returns>
-        private async Task GetSubmoduleDetailedStatusAsync(GitModule module, CancellationToken cancelToken)
+        private async Task GetSubmoduleDetailedStatusAsync(VsrModule module, CancellationToken cancelToken)
         {
             foreach (var name in module.GetSubmodulesLocalPaths(false))
             {
@@ -385,7 +385,7 @@ namespace GitCommands.Submodules
         /// <param name="submoduleName">Name of the submodule</param>
         /// <param name="cancelToken">Cancelation token</param>
         /// <returns>the task</returns>
-        private async Task GetSubmoduleDetailedStatusAsync(GitModule superModule, string submoduleName, CancellationToken cancelToken)
+        private async Task GetSubmoduleDetailedStatusAsync(VsrModule superModule, string submoduleName, CancellationToken cancelToken)
         {
             if (superModule == null || string.IsNullOrWhiteSpace(submoduleName))
             {
@@ -423,7 +423,7 @@ namespace GitCommands.Submodules
             }
 
             // Recursively update submodules
-            var module = new GitModule(path);
+            var module = new VsrModule(path);
             await GetSubmoduleDetailedStatusAsync(module, cancelToken);
         }
 
@@ -432,7 +432,7 @@ namespace GitCommands.Submodules
         /// </summary>
         /// <param name="superModule">The module to compare to</param>
         /// <param name="submoduleName">Name of the submodule</param>
-        private void SetSubmoduleEmptyDetailedStatus(GitModule superModule, string submoduleName)
+        private void SetSubmoduleEmptyDetailedStatus(VsrModule superModule, string submoduleName)
         {
             if (superModule == null || string.IsNullOrEmpty(submoduleName))
             {
@@ -449,7 +449,7 @@ namespace GitCommands.Submodules
             var info = _submoduleInfos[path];
             info.Detailed = null;
 
-            var module = new GitModule(path);
+            var module = new VsrModule(path);
             foreach (var name in module.GetSubmodulesLocalPaths(false))
             {
                 SetSubmoduleEmptyDetailedStatus(module, name);

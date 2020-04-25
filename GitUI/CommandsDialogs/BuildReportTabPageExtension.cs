@@ -19,7 +19,7 @@ namespace GitUI.CommandsDialogs
     {
         private readonly TabControl _tabControl;
         private readonly string _caption;
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
         private TabPage _buildReportTabPage;
         private WebBrowserControl _buildReportWebBrowser;
@@ -29,7 +29,7 @@ namespace GitUI.CommandsDialogs
 
         public Control Control { get; private set; } // for focusing
 
-        public BuildReportTabPageExtension(Func<IGitModule> getModule, TabControl tabControl, string caption)
+        public BuildReportTabPageExtension(Func<IVsrModule> getModule, TabControl tabControl, string caption)
         {
             _getModule = getModule;
             _tabControl = tabControl;
@@ -218,13 +218,13 @@ namespace GitUI.CommandsDialogs
             return settings?.BuildServer.ShowBuildResultPage.ValueOrDefault ?? false;
         }
 
-        private IGitModule GetModule()
+        private IVsrModule GetModule()
         {
             var module = _getModule();
 
             if (module == null)
             {
-                throw new ArgumentException($"Require a valid instance of {nameof(IGitModule)}");
+                throw new ArgumentException($"Require a valid instance of {nameof(IVsrModule)}");
             }
 
             return module;

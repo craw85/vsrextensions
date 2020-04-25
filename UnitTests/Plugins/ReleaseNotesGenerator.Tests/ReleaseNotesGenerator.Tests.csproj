@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Plugins\ReleaseNotesGenerator\ReleaseNotesGenerator.csproj" />
     <ProjectReference Include="..\..\CommonTestUtils\CommonTestUtils.csproj" />

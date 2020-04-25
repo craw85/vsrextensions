@@ -19,7 +19,7 @@ namespace CommonTestUtils
             CreateCommit("A commit message", "A");
         }
 
-        public GitModule Module => _moduleTestHelper.Module;
+        public VsrModule Module => _moduleTestHelper.Module;
 
         public string CommitHash => _commitHash;
 

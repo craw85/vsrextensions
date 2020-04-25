@@ -77,17 +77,17 @@ namespace GitUI.UserControls.RevisionGrid
         {
             var filter = new ArgumentBuilder();
 
-            if (AuthorCheck.Checked && GitVersion.Current.IsRegExStringCmdPassable(Author.Text))
+            if (AuthorCheck.Checked && VsrVersion.Current.IsRegExStringCmdPassable(Author.Text))
             {
                 filter.Add($"--author=\"{Author.Text}\"");
             }
 
-            if (CommitterCheck.Checked && GitVersion.Current.IsRegExStringCmdPassable(Committer.Text))
+            if (CommitterCheck.Checked && VsrVersion.Current.IsRegExStringCmdPassable(Committer.Text))
             {
                 filter.Add($"--committer=\"{Committer.Text}\"");
             }
 
-            if (MessageCheck.Checked && GitVersion.Current.IsRegExStringCmdPassable(Message.Text))
+            if (MessageCheck.Checked && VsrVersion.Current.IsRegExStringCmdPassable(Message.Text))
             {
                 filter.Add($"--grep=\"{Message.Text}\"");
             }
@@ -133,7 +133,7 @@ namespace GitUI.UserControls.RevisionGrid
 
         public string GetInMemAuthorFilter()
         {
-            if (AuthorCheck.Checked && !GitVersion.Current.IsRegExStringCmdPassable(Author.Text))
+            if (AuthorCheck.Checked && !VsrVersion.Current.IsRegExStringCmdPassable(Author.Text))
             {
                 return Author.Text;
             }
@@ -143,7 +143,7 @@ namespace GitUI.UserControls.RevisionGrid
 
         public string GetInMemCommitterFilter()
         {
-            if (CommitterCheck.Checked && !GitVersion.Current.IsRegExStringCmdPassable(Committer.Text))
+            if (CommitterCheck.Checked && !VsrVersion.Current.IsRegExStringCmdPassable(Committer.Text))
             {
                 return Committer.Text;
             }
@@ -153,7 +153,7 @@ namespace GitUI.UserControls.RevisionGrid
 
         public string GetInMemMessageFilter()
         {
-            if (MessageCheck.Checked && !GitVersion.Current.IsRegExStringCmdPassable(Message.Text))
+            if (MessageCheck.Checked && !VsrVersion.Current.IsRegExStringCmdPassable(Message.Text))
             {
                 return Message.Text;
             }

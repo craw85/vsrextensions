@@ -29,12 +29,12 @@ namespace GitCommands
             RemovedCommits = removedCommits;
         }
 
-        public GitModule GetSubmodule(GitModule module)
+        public VsrModule GetSubmodule(VsrModule module)
         {
             return module.GetSubmodule(Name);
         }
 
-        public void CheckSubmoduleStatus(GitModule submodule)
+        public void CheckSubmoduleStatus(VsrModule submodule)
         {
             if (submodule == null)
             {

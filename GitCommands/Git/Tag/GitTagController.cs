@@ -69,7 +69,7 @@ namespace GitCommands.Git.Tag
 
         private string GetWorkingDirPath()
         {
-            return _uiCommands.GitModule.WorkingDir;
+            return _uiCommands.VsrModule.WorkingDir;
         }
     }
 }

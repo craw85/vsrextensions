@@ -28,20 +28,20 @@ Do you want to register the host's fingerprint and restart the process?");
 
         public bool Plink { get; set; }
         private bool _restart;
-        protected readonly GitModule Module;
+        protected readonly VsrModule Module;
 
         // only for translation
         protected FormRemoteProcess()
         {
         }
 
-        public FormRemoteProcess(GitModule module, string process, ArgumentString arguments)
+        public FormRemoteProcess(VsrModule module, string process, ArgumentString arguments)
             : base(process, arguments, module.WorkingDir, null, true)
         {
             Module = module;
         }
 
-        public FormRemoteProcess(GitModule module, ArgumentString arguments)
+        public FormRemoteProcess(VsrModule module, ArgumentString arguments)
             : base(null, arguments, module.WorkingDir, null, true)
         {
             Module = module;
@@ -52,7 +52,7 @@ Do you want to register the host's fingerprint and restart the process?");
             return ShowDialog(owner, owner.Module, arguments);
         }
 
-        public static new bool ShowDialog(IWin32Window owner, GitModule module, ArgumentString arguments)
+        public static new bool ShowDialog(IWin32Window owner, VsrModule module, ArgumentString arguments)
         {
             using (var formRemoteProcess = new FormRemoteProcess(module, arguments))
             {
@@ -148,7 +148,7 @@ Do you want to register the host's fingerprint and restart the process?");
             return base.HandleOnExit(ref isError);
         }
 
-        public static bool AskForCacheHostkey(IWin32Window owner, GitModule module, string remoteUrl)
+        public static bool AskForCacheHostkey(IWin32Window owner, VsrModule module, string remoteUrl)
         {
             if (!string.IsNullOrEmpty(remoteUrl) && MessageBoxes.CacheHostkey(owner))
             {

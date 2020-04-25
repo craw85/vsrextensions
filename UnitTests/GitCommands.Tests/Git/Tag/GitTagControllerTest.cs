@@ -27,7 +27,7 @@ namespace GitCommandsTests.Git.Tag
             _fileSystem.File.Returns(Substitute.For<FileBase>());
 
             _uiCommands = Substitute.For<IGitUICommands>();
-            _uiCommands.GitModule.WorkingDir.Returns(_workingDir);
+            _uiCommands.VsrModule.WorkingDir.Returns(_workingDir);
 
             _controller = new GitTagController(_uiCommands, _fileSystem);
         }

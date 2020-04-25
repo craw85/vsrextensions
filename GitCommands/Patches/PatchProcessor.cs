@@ -24,12 +24,12 @@ namespace GitCommands.Patches
         /// <remarks>
         /// The diff part of a patch is printed verbatim.
         /// <para />
-        /// Everything else (header, warnings, ...) is printed in git encoding (<see cref="GitModule.SystemEncoding"/>).
+        /// Everything else (header, warnings, ...) is printed in git encoding (<see cref="VsrModule.SystemEncoding"/>).
         /// <para />
         /// Since a patch may contain the diff of more than one file, it would be nice to obtain the encoding for each file
         /// from <c>.gitattributes</c>. For now, one encoding is used for every file in the repo (<see cref="ConfigFileSettings.FilesEncoding"/>).
         /// <para />
-        /// File paths can be quoted (see <c>core.quotepath</c>). They are unquoted by <see cref="GitModule.ReEncodeFileNameFromLossless"/>.
+        /// File paths can be quoted (see <c>core.quotepath</c>). They are unquoted by <see cref="VsrModule.ReEncodeFileNameFromLossless"/>.
         /// </remarks>
         [NotNull, ItemNotNull, Pure]
         public static IEnumerable<Patch> CreatePatchesFromString([NotNull] string patchText, [NotNull] Lazy<Encoding> filesContentEncoding)
@@ -75,7 +75,7 @@ namespace GitCommands.Patches
                 return null;
             }
 
-            header = GitModule.ReEncodeFileNameFromLossless(header);
+            header = VsrModule.ReEncodeFileNameFromLossless(header);
 
             var state = PatchProcessorState.InHeader;
 
@@ -142,8 +142,8 @@ namespace GitCommands.Patches
                     break;
                 }
 
-                // header lines are encoded in GitModule.SystemEncoding
-                line = GitModule.ReEncodeStringFromLossless(line, GitModule.SystemEncoding);
+                // header lines are encoded in VsrModule.SystemEncoding
+                line = VsrModule.ReEncodeStringFromLossless(line, VsrModule.SystemEncoding);
 
                 if (line.StartsWith("index "))
                 {
@@ -212,7 +212,7 @@ namespace GitCommands.Patches
                 else if (line.StartsWith("--- "))
                 {
                     // old file name
-                    line = GitModule.UnescapeOctalCodePoints(line);
+                    line = VsrModule.UnescapeOctalCodePoints(line);
                     Match regexMatch = Regex.Match(line, "[-]{3} [\\\"]?[abiwco12]/(.*)[\\\"]?");
 
                     if (regexMatch.Success)
@@ -235,7 +235,7 @@ namespace GitCommands.Patches
                 else if (line.StartsWith("+++ "))
                 {
                     // new file name
-                    line = GitModule.UnescapeOctalCodePoints(line);
+                    line = VsrModule.UnescapeOctalCodePoints(line);
                     Match regexMatch = Regex.Match(line, "[+]{3} [\\\"]?[abiwco12]/(.*)[\\\"]?");
 
                     if (regexMatch.Success)
@@ -270,12 +270,12 @@ namespace GitCommands.Patches
                 if (state == PatchProcessorState.InBody && line.StartsWithAny(new[] { " ", "-", "+", "@" }))
                 {
                     // diff content
-                    line = GitModule.ReEncodeStringFromLossless(line, filesContentEncoding.Value);
+                    line = VsrModule.ReEncodeStringFromLossless(line, filesContentEncoding.Value);
                 }
                 else
                 {
                     // warnings, messages ...
-                    line = GitModule.ReEncodeStringFromLossless(line, GitModule.SystemEncoding);
+                    line = VsrModule.ReEncodeStringFromLossless(line, VsrModule.SystemEncoding);
                 }
 
                 if (i < lines.Length - 1)

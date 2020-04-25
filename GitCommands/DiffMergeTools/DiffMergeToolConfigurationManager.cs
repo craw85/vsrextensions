@@ -37,7 +37,7 @@ namespace GitCommands.DiffMergeTools
             get
             {
                 string mergetool = "";
-                if (GitVersion.Current.SupportGuiMergeTool)
+                if (VsrVersion.Current.SupportGuiMergeTool)
                 {
                     mergetool = _getFileSettings()?.GetValue(SettingKeyString.MergeToolKey);
                 }

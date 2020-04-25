@@ -40,7 +40,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             Load += delegate
             {
                 CommandLog.CommandsChanged += OnGitCommandLogChanged;
-                GitModule.GitCommandCache.Changed += OnCachedCommandsLogChanged;
+                VsrModule.GitCommandCache.Changed += OnCachedCommandsLogChanged;
 
                 RefreshLogItems();
                 RefreshCommandCacheItems();
@@ -49,7 +49,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             FormClosed += delegate
             {
                 CommandLog.CommandsChanged -= OnGitCommandLogChanged;
-                GitModule.GitCommandCache.Changed -= OnCachedCommandsLogChanged;
+                VsrModule.GitCommandCache.Changed -= OnCachedCommandsLogChanged;
                 instance = null;
             };
 
@@ -86,7 +86,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
         {
             if (TabControl.SelectedTab == tabPageCommandCache)
             {
-                RefreshListBox(CommandCacheItems, GitModule.GitCommandCache.GetCachedCommands());
+                RefreshListBox(CommandCacheItems, VsrModule.GitCommandCache.GetCachedCommands());
             }
         }
 
@@ -130,9 +130,9 @@ namespace GitUI.CommandsDialogs.BrowseDialog
         {
             var command = (string)CommandCacheItems.SelectedItem;
 
-            if (GitModule.GitCommandCache.TryGet(command, out var cmdOut, out var cmdErr))
+            if (VsrModule.GitCommandCache.TryGet(command, out var cmdOut, out var cmdErr))
             {
-                Encoding encoding = GitModule.SystemEncoding;
+                Encoding encoding = VsrModule.SystemEncoding;
                 commandCacheOutput.Text =
                     command +
                     "\n-------------------------------------\n\n" +

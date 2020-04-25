@@ -18,7 +18,7 @@ namespace GitCommands
     public static class ExecutableExtensions
     {
         private static readonly Regex _ansiCodePattern = new Regex(@"\u001B[\u0040-\u005F].*?[\u0040-\u007E]", RegexOptions.Compiled);
-        private static readonly Lazy<Encoding> _defaultOutputEncoding = new Lazy<Encoding>(() => GitModule.SystemEncoding, false);
+        private static readonly Lazy<Encoding> _defaultOutputEncoding = new Lazy<Encoding>(() => VsrModule.SystemEncoding, false);
 
         /// <summary>
         /// Launches a process for the executable and returns its output.

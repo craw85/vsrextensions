@@ -181,7 +181,7 @@ namespace GitUI.CommandsDialogs
 
             _filterRevisionsHelper = new FilterRevisionsHelper(toolStripRevisionFilterTextBox, toolStripRevisionFilterDropDownButton, RevisionGrid, toolStripRevisionFilterLabel, ShowFirstParent, form: this);
             _filterBranchHelper = new FilterBranchHelper(toolStripBranchFilterComboBox, toolStripBranchFilterDropDownButton, RevisionGrid);
-            _aheadBehindDataProvider = GitVersion.Current.SupportAheadBehindData ? new AheadBehindDataProvider(() => Module.GitExecutable) : null;
+            _aheadBehindDataProvider = VsrVersion.Current.SupportAheadBehindData ? new AheadBehindDataProvider(() => Module.GitExecutable) : null;
 
             repoObjectsTree.Initialize(_aheadBehindDataProvider, _filterBranchHelper);
             toolStripBranchFilterComboBox.DropDown += toolStripBranches_DropDown_ResizeDropDownWidth;
@@ -313,12 +313,12 @@ namespace GitUI.CommandsDialogs
 
             void ManageWorktreeSupport()
             {
-                if (!GitVersion.Current.SupportWorktree)
+                if (!VsrVersion.Current.SupportWorktree)
                 {
                     createWorktreeToolStripMenuItem.Enabled = false;
                 }
 
-                if (!GitVersion.Current.SupportWorktreeList)
+                if (!VsrVersion.Current.SupportWorktreeList)
                 {
                     manageWorktreeToolStripMenuItem.Enabled = false;
                 }
@@ -1237,10 +1237,10 @@ namespace GitUI.CommandsDialogs
 
         private void OpenToolStripMenuItemClick(object sender, EventArgs e)
         {
-            GitModule module = FormOpenDirectory.OpenModule(this, Module);
+            VsrModule module = FormOpenDirectory.OpenModule(this, Module);
             if (module != null)
             {
-                SetGitModule(this, new GitModuleEventArgs(module));
+                SetGitModule(this, new VsrModuleEventArgs(module));
             }
         }
 
@@ -1773,12 +1773,12 @@ namespace GitUI.CommandsDialogs
 
         public void SetWorkingDir(string path)
         {
-            SetGitModule(this, new GitModuleEventArgs(new GitModule(path)));
+            SetGitModule(this, new VsrModuleEventArgs(new VsrModule(path)));
         }
 
-        private void SetGitModule(object sender, GitModuleEventArgs e)
+        private void SetGitModule(object sender, VsrModuleEventArgs e)
         {
-            var module = e.GitModule;
+            var module = e.VsrModule;
             HideVariableMainMenuItems();
             PluginRegistry.Unregister(UICommands);
             RevisionGrid.InvalidateCount();
@@ -1852,7 +1852,7 @@ namespace GitUI.CommandsDialogs
             UICommands.StartEditGitAttributesDialog(this);
         }
 
-        public static void CopyFullPathToClipboard(FileStatusList diffFiles, GitModule module)
+        public static void CopyFullPathToClipboard(FileStatusList diffFiles, VsrModule module)
         {
             if (!diffFiles.SelectedItems.Any())
             {
@@ -2245,7 +2245,7 @@ namespace GitUI.CommandsDialogs
 
         #endregion
 
-        public static void OpenContainingFolder(FileStatusList diffFiles, GitModule module)
+        public static void OpenContainingFolder(FileStatusList diffFiles, VsrModule module)
         {
             if (!diffFiles.SelectedItems.Any())
             {
@@ -2677,7 +2677,7 @@ namespace GitUI.CommandsDialogs
         {
             if (Module.SuperprojectModule != null)
             {
-                SetGitModule(this, new GitModuleEventArgs(Module.SuperprojectModule));
+                SetGitModule(this, new VsrModuleEventArgs(Module.SuperprojectModule));
             }
             else
             {
@@ -2977,8 +2977,8 @@ namespace GitUI.CommandsDialogs
             var dialogResult = formCreateWorktree.ShowDialog(this);
             if (dialogResult == DialogResult.OK && formCreateWorktree.OpenWorktree)
             {
-                var newModule = new GitModule(formCreateWorktree.WorktreeDirectory);
-                SetGitModule(this, new GitModuleEventArgs(newModule));
+                var newModule = new VsrModule(formCreateWorktree.WorktreeDirectory);
+                SetGitModule(this, new VsrModuleEventArgs(newModule));
             }
         }
 

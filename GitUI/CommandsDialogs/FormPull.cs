@@ -842,7 +842,7 @@ namespace GitUI.CommandsDialogs
                 {
                     if (File.Exists(sshKeyFile))
                     {
-                        GitModule.StartPageantWithKey(sshKeyFile);
+                        VsrModule.StartPageantWithKey(sshKeyFile);
                     }
                 }
             }

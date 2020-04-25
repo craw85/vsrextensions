@@ -60,17 +60,17 @@ namespace GitCommands
 
         private static readonly List<RegisteredCommitTemplateItem> RegisteredTemplatesStorage = new List<RegisteredCommitTemplateItem>();
         private readonly IFileSystem _fileSystem;
-        private readonly IGitModule _module;
+        private readonly IVsrModule _module;
         private readonly IFullPathResolver _fullPathResolver;
 
-        public CommitTemplateManager(IGitModule module, IFullPathResolver fullPathResolver, IFileSystem fileSystem)
+        public CommitTemplateManager(IVsrModule module, IFullPathResolver fullPathResolver, IFileSystem fileSystem)
         {
             _module = module;
             _fullPathResolver = fullPathResolver;
             _fileSystem = fileSystem;
         }
 
-        public CommitTemplateManager(IGitModule module)
+        public CommitTemplateManager(IVsrModule module)
             : this(module, new FullPathResolver(() => module.WorkingDir), new FileSystem())
         {
         }

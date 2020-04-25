@@ -26,7 +26,7 @@ namespace GitExtensions.UITests.Script
 
         // Created once for each test
         private GitUICommands _uiCommands;
-        private IGitModule _module;
+        private IVsrModule _module;
         private ScriptInfo _exampleScript;
 
         [SetUp]
@@ -43,7 +43,7 @@ namespace GitExtensions.UITests.Script
 
             _uiCommands = new GitUICommands(_referenceRepository.Module);
 
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _module.GetCurrentRemote().ReturnsForAnyArgs("origin");
             _module.GetCurrentCheckout().ReturnsForAnyArgs(ObjectId.WorkTreeId);
             _exampleScript = ScriptManager.GetScript(_keyOfExampleScript);

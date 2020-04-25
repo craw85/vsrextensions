@@ -21,7 +21,7 @@ namespace GitUI
     }
 
     /// <summary>
-    /// Base class for a <see cref="UserControl"/> requiring <see cref="GitModule"/> and <see cref="GitUICommands"/>.
+    /// Base class for a <see cref="UserControl"/> requiring <see cref="VsrModule"/> and <see cref="GitUICommands"/>.
     /// </summary>
     public class GitModuleControl : GitExtensionsControl
     {
@@ -105,11 +105,11 @@ namespace GitUI
             return commands != null;
         }
 
-        /// <summary>Gets the <see cref="UICommands"/>' <see cref="GitModule"/> reference.</summary>
+        /// <summary>Gets the <see cref="UICommands"/>' <see cref="VsrModule"/> reference.</summary>
         [NotNull]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
-        public GitModule Module => UICommands.Module;
+        public VsrModule Module => UICommands.Module;
 
         protected GitModuleControl()
         {

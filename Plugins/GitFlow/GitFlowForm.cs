@@ -52,7 +52,7 @@ namespace GitFlow
                     "--get",
                     "gitflow.branch.master"
                 };
-                return !string.IsNullOrWhiteSpace(_gitUiCommands.GitModule.GitExecutable.GetOutput(args));
+                return !string.IsNullOrWhiteSpace(_gitUiCommands.VsrModule.GitExecutable.GetOutput(args));
             }
         }
 
@@ -84,7 +84,7 @@ namespace GitFlow
 
             if (isInitialised)
             {
-                var remotes = _gitUiCommands.GitModule.GetRemoteNames();
+                var remotes = _gitUiCommands.VsrModule.GetRemoteNames();
                 cbRemote.DataSource = remotes;
                 btnPull.Enabled = btnPublish.Enabled = remotes.Any();
 
@@ -145,7 +145,7 @@ namespace GitFlow
         private IReadOnlyList<string> GetBranches(string typeBranch)
         {
             var args = new GitArgumentBuilder("flow") { typeBranch };
-            var result = _gitUiCommands.GitModule.GitExecutable.Execute(args);
+            var result = _gitUiCommands.VsrModule.GitExecutable.Execute(args);
 
             if (result.ExitCode != 0 || result.StandardOutput == null)
             {
@@ -195,7 +195,7 @@ namespace GitFlow
             List<string> GetLocalBranches()
             {
                 var args = new GitArgumentBuilder("branch");
-                return _gitUiCommands.GitModule
+                return _gitUiCommands.VsrModule
                     .GitExecutable.GetOutput(args)
                     .Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(e => e.Trim('*', ' ', '\n', '\r'))
                     .ToList();
@@ -310,7 +310,7 @@ namespace GitFlow
             txtResult.Text = "running...";
             ForceRefresh(txtResult);
 
-            var result = _gitUiCommands.GitModule.GitExecutable.Execute(commandText);
+            var result = _gitUiCommands.VsrModule.GitExecutable.Execute(commandText);
 
             IsRefreshNeeded = true;
 
@@ -393,7 +393,7 @@ namespace GitFlow
         private void DisplayHead()
         {
             var args = new GitArgumentBuilder("symbolic-ref") { "HEAD" };
-            var head = _gitUiCommands.GitModule.GitExecutable.GetOutput(args).Trim('*', ' ', '\n', '\r');
+            var head = _gitUiCommands.VsrModule.GitExecutable.GetOutput(args).Trim('*', ' ', '\n', '\r');
             lblHead.Text = head;
 
             var currentRef = head.RemovePrefix(GitRefName.RefsHeadsPrefix);

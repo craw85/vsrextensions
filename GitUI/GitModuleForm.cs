@@ -10,7 +10,7 @@ namespace GitUI
 {
     // NOTE do not make this class abstract as it breaks the WinForms designer in VS
 
-    /// <summary>Base <see cref="Form"/> that provides access to <see cref="GitModule"/> and <see cref="GitUICommands"/>.</summary>
+    /// <summary>Base <see cref="Form"/> that provides access to <see cref="VsrModule"/> and <see cref="GitUICommands"/>.</summary>
     public class GitModuleForm : GitExtensionsForm, IGitUICommandsSource
     {
         /// <inheritdoc />
@@ -46,10 +46,10 @@ namespace GitUI
             }
         }
 
-        /// <summary>Gets a <see cref="GitModule"/> reference.</summary>
+        /// <summary>Gets a <see cref="VsrModule"/> reference.</summary>
         [NotNull]
         [Browsable(false)]
-        public GitModule Module => UICommands.Module;
+        public VsrModule Module => UICommands.Module;
 
         [Obsolete("For VS designer and translation test only. Do not remove.")]
         protected GitModuleForm()

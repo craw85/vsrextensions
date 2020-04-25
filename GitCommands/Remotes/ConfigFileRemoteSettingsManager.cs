@@ -92,9 +92,9 @@ namespace GitCommands.Remotes
     {
         internal static readonly string DisabledSectionPrefix = "-";
         internal static readonly string SectionRemote = "remote";
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
-        public ConfigFileRemoteSettingsManager(Func<IGitModule> getModule)
+        public ConfigFileRemoteSettingsManager(Func<IVsrModule> getModule)
         {
             _getModule = getModule;
         }
@@ -234,7 +234,7 @@ namespace GitCommands.Remotes
         /// Removes the specified remote from .git/config file.
         /// </summary>
         /// <param name="remote">Remote to remove.</param>
-        /// <returns>Output of <see cref="IGitModule.RemoveRemote"/> operation, if the remote is active; otherwise <see cref="string.Empty"/>.</returns>
+        /// <returns>Output of <see cref="IVsrModule.RemoveRemote"/> operation, if the remote is active; otherwise <see cref="string.Empty"/>.</returns>
         public string RemoveRemote(ConfigFileRemote remote)
         {
             if (remote == null)
@@ -435,12 +435,12 @@ namespace GitCommands.Remotes
             }
         }
 
-        private IGitModule GetModule()
+        private IVsrModule GetModule()
         {
             var module = _getModule();
             if (module == null)
             {
-                throw new ArgumentException($"Require a valid instance of {nameof(IGitModule)}");
+                throw new ArgumentException($"Require a valid instance of {nameof(IVsrModule)}");
             }
 
             return module;
@@ -452,7 +452,7 @@ namespace GitCommands.Remotes
             return remoteEnabled ? key : DisabledSectionPrefix + key;
         }
 
-        private static void UpdateSettings(IGitModule module, string remoteName, bool remoteDisabled, string settingName, string value)
+        private static void UpdateSettings(IVsrModule module, string remoteName, bool remoteDisabled, string settingName, string value)
         {
             var prefix = remoteDisabled ? DisabledSectionPrefix : string.Empty;
             var fullSettingName = prefix + string.Format(settingName, remoteName);

@@ -10,13 +10,13 @@ namespace GitCommandsTests.Git
     [TestFixture]
     public class GitDescribeProviderTests
     {
-        private IGitModule _module;
+        private IVsrModule _module;
         private GitDescribeProvider _provider;
 
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _provider = new GitDescribeProvider(() => _module);
         }
 

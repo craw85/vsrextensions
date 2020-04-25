@@ -11,7 +11,7 @@ namespace GitCommands.Config
 {
     public class ConfigFile
     {
-        private static Encoding GetEncoding() => GitModule.SystemEncoding;
+        private static Encoding GetEncoding() => VsrModule.SystemEncoding;
         public static readonly char[] CommentChars = { ';', '#' };
 
         private readonly List<IConfigSection> _configSections = new List<IConfigSection>();

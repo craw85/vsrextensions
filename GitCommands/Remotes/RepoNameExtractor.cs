@@ -11,16 +11,16 @@ namespace GitCommands.Remotes
         /// Get a "repo shortname" from the current repo URL
         /// There is no official Git repo shortname, this is one possible definition:
         ///  The filename without extension for the remote URL
-        /// This function could have been included in GitModule
+        /// This function could have been included in VsrModule
         /// </summary>
         (string repoProject, string repoName) Get();
     }
 
     public sealed class RepoNameExtractor : IRepoNameExtractor
     {
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
-        public RepoNameExtractor(Func<IGitModule> getModule)
+        public RepoNameExtractor(Func<IVsrModule> getModule)
         {
             _getModule = getModule;
         }
@@ -29,7 +29,7 @@ namespace GitCommands.Remotes
         /// Get a "repo shortname" from the current repo URL
         /// There is no official Git repo shortname, this is one possible definition:
         ///  The filename without extension for the remote URL
-        /// This function could have been included in GitModule
+        /// This function could have been included in VsrModule
         /// </summary>
         public (string repoProject, string repoName) Get()
         {

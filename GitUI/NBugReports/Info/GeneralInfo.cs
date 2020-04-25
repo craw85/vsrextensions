@@ -32,7 +32,7 @@ namespace GitUI.NBugReports.Info
 
             try
             {
-                GitVersion = GitCommands.GitVersion.Current?.Full;
+                GitVersion = GitCommands.VsrVersion.Current?.Full;
             }
             catch (Exception)
             {

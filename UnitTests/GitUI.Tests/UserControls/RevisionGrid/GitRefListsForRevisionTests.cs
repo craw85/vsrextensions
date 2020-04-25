@@ -12,13 +12,13 @@ namespace GitUITests.UserControls.RevisionGrid
     public class GitRefListsForRevisionTests
     {
         private GitRevision _revision;
-        private IGitModule _module;
+        private IVsrModule _module;
         private IGitRef[] _refs;
 
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _module.LocalConfigFile.Returns(Substitute.For<IConfigFileSettings>());
 
             _refs = new IGitRef[]

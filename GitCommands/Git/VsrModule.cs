@@ -24,8 +24,8 @@ namespace GitCommands
 {
     /// <summary>Provides manipulation with git module.
     /// <remarks>Several instances may be created for submodules.</remarks></summary>
-    [DebuggerDisplay("GitModule ( {" + nameof(WorkingDir) + "} )")]
-    public sealed class GitModule : IGitModule
+    [DebuggerDisplay("VsrModule ( {" + nameof(WorkingDir) + "} )")]
+    public sealed class VsrModule : IVsrModule
     {
         private const string GitError = "Git Error";
         private static readonly Regex CpEncodingPattern = new Regex("cp\\d+", RegexOptions.Compiled);
@@ -42,13 +42,13 @@ namespace GitCommands
         private readonly IGitCommandRunner _gitCommandRunner;
         private readonly IExecutable _gitExecutable;
 
-        public GitModule([CanBeNull] string workingDir)
+        public VsrModule([CanBeNull] string workingDir)
         {
             WorkingDir = (workingDir ?? "").NormalizePath().EnsureTrailingPathSeparator();
             WorkingDirGitDir = GitDirectoryResolverInstance.Resolve(WorkingDir);
             _indexLockManager = new IndexLockManager(this);
             _commitDataManager = new CommitDataManager(() => this);
-            _gitExecutable = new Executable(() => AppSettings.GitCommand, WorkingDir);
+            _gitExecutable = new Executable(() => AppSettings.VsrCommand, WorkingDir);
             _gitCommandRunner = new GitCommandRunner(_gitExecutable, () => SystemEncoding);
 
             // If this is a submodule, populate relevant properties.
@@ -57,7 +57,7 @@ namespace GitCommands
 
             return;
 
-            (GitModule superprojectModule, string submodulePath, string submoduleName) InitialiseSubmoduleProperties()
+            (VsrModule superprojectModule, string submodulePath, string submoduleName) InitialiseSubmoduleProperties()
             {
                 if (!IsValidGitWorkingDir())
                 {
@@ -105,7 +105,7 @@ namespace GitCommands
                         if (configSection.GetValue("path") == submodulePath.ToPosixPath())
                         {
                             var submoduleName = configSection.SubSection;
-                            var superprojectModule = new GitModule(superprojectPath);
+                            var superprojectModule = new VsrModule(superprojectPath);
 
                             return (superprojectModule, submodulePath, submoduleName);
                         }
@@ -158,20 +158,20 @@ namespace GitCommands
         public string SubmodulePath { get; }
 
         /// <summary>
-        /// If this module is a submodule, returns its superproject <see cref="GitModule"/>, otherwise <c>null</c>.
+        /// If this module is a submodule, returns its superproject <see cref="VsrModule"/>, otherwise <c>null</c>.
         /// </summary>
         /// TODO: Add to IGitModule and return IGitModule
         [CanBeNull]
-        public GitModule SuperprojectModule { get; }
+        public VsrModule SuperprojectModule { get; }
 
         /// <summary>
         /// If this module is a submodule, returns the top-most parent module, otherwise it returns itself.
         /// </summary>
         /// TODO: Add to IGitModule and return IGitModule
         [NotNull]
-        public GitModule GetTopModule()
+        public VsrModule GetTopModule()
         {
-            GitModule topModule = this;
+            VsrModule topModule = this;
             while (topModule.SuperprojectModule != null)
             {
                 topModule = topModule.SuperprojectModule;
@@ -253,7 +253,7 @@ namespace GitCommands
 
         public ConfigFileSettings LocalConfigFile => new ConfigFileSettings(null, EffectiveConfigFile.SettingsCache, SettingLevel.Local);
 
-        IConfigFileSettings IGitModule.LocalConfigFile => LocalConfigFile;
+        IConfigFileSettings IVsrModule.LocalConfigFile => LocalConfigFile;
 
         // encoding for files paths
         private static Encoding _systemEncoding;
@@ -301,7 +301,7 @@ namespace GitCommands
             return IsValidGitWorkingDir(WorkingDir);
         }
 
-        /// <summary>Indicates whether the specified directory contains a git repository.</summary>
+        /// <summary>Indicates whether the specified directory contains a versionr repository.</summary>
         public static bool IsValidGitWorkingDir([CanBeNull] string dir)
         {
             if (string.IsNullOrEmpty(dir))
@@ -310,16 +310,15 @@ namespace GitCommands
             }
 
             string dirPath = dir.EnsureTrailingPathSeparator();
-            string path = dirPath + ".git";
+            string path = dirPath + ".versionr";
 
             if (Directory.Exists(path) || File.Exists(path))
             {
                 return true;
             }
 
-            return Directory.Exists(dirPath + "info") &&
-                   Directory.Exists(dirPath + "objects") &&
-                   Directory.Exists(dirPath + "refs");
+            return Directory.Exists(dirPath + "objects") &&
+                   File.Exists(dirPath + "metadata.db");
         }
 
         /// <summary>
@@ -435,7 +434,7 @@ namespace GitCommands
             DoGetSubmodulesLocalPaths(this, "", localPaths, recursive);
             return localPaths;
 
-            void DoGetSubmodulesLocalPaths(GitModule module, string parentPath, List<string> paths, bool recurse)
+            void DoGetSubmodulesLocalPaths(VsrModule module, string parentPath, List<string> paths, bool recurse)
             {
                 var submodulePaths = GetSubmodulePaths(module)
                     .Select(p => Path.Combine(parentPath, p).ToPosixPath())
@@ -452,7 +451,7 @@ namespace GitCommands
                 }
             }
 
-            List<string> GetSubmodulePaths(GitModule module)
+            List<string> GetSubmodulePaths(VsrModule module)
             {
                 var configFile = module.GetSubmoduleConfigFile();
 
@@ -780,7 +779,7 @@ namespace GitCommands
             if (AppSettings.ShowSuperprojectRemoteBranches)
             {
                 return new GitArgumentBuilder("for-each-ref", gitOptions:
-                    noLocks && GitVersion.Current.SupportNoOptionalLocks
+                    noLocks && VsrVersion.Current.SupportNoOptionalLocks
                         ? (ArgumentString)"--no-optional-locks"
                         : default)
                 {
@@ -793,7 +792,7 @@ namespace GitCommands
             if (AppSettings.ShowSuperprojectBranches || AppSettings.ShowSuperprojectTags)
             {
                 return new GitArgumentBuilder("for-each-ref", gitOptions:
-                    noLocks && GitVersion.Current.SupportNoOptionalLocks
+                    noLocks && VsrVersion.Current.SupportNoOptionalLocks
                         ? (ArgumentString)"--no-optional-locks"
                         : default)
                 {
@@ -868,7 +867,7 @@ namespace GitCommands
             else
             {
                 // locate gitk based on location of git executable
-                var cmd = AppSettings.GitCommand
+                var cmd = AppSettings.VsrCommand
                     .Replace("bin\\git.exe", "cmd\\gitk")
                     .Replace("bin/git.exe", "cmd/gitk")
                     .Replace("git.exe", "gitk")
@@ -891,7 +890,7 @@ namespace GitCommands
                 args = new ArgumentBuilder()
                 {
                     "/c",
-                    $"\"{AppSettings.GitCommand.QuoteNE()}",
+                    $"\"{AppSettings.VsrCommand.QuoteNE()}",
                     "gui\""
                 };
                 new Executable("cmd.exe", WorkingDir).Start(args);
@@ -902,7 +901,7 @@ namespace GitCommands
         {
             var args = new GitArgumentBuilder("mergetool")
             {
-                { GitVersion.Current.SupportGuiMergeTool, "--gui" },
+                { VsrVersion.Current.SupportGuiMergeTool, "--gui" },
                 { !string.IsNullOrWhiteSpace(fileName), "--" },
                 fileName.ToPosixPath().QuoteNE()
             };
@@ -1255,12 +1254,12 @@ namespace GitCommands
             return Path.GetFullPath(dir); // fix slashes
         }
 
-        public GitModule GetSubmodule(string localPath)
+        public VsrModule GetSubmodule(string localPath)
         {
-            return new GitModule(GetSubmoduleFullPath(localPath));
+            return new VsrModule(GetSubmoduleFullPath(localPath));
         }
 
-        IGitModule IGitModule.GetSubmodule(string submoduleName)
+        IVsrModule IVsrModule.GetSubmodule(string submoduleName)
         {
             return GetSubmodule(submoduleName);
         }
@@ -1507,7 +1506,7 @@ namespace GitCommands
         {
             return new GitArgumentBuilder("fetch")
             {
-                { GitVersion.Current.FetchCanAskForProgress, "--progress" },
+                { VsrVersion.Current.FetchCanAskForProgress, "--progress" },
                 {
                     !string.IsNullOrEmpty(remote) || !string.IsNullOrEmpty(remoteBranch) || !string.IsNullOrEmpty(localBranch),
                     GetFetchArgs(remote, remoteBranch, localBranch, fetchTags, isUnshallow, prune)
@@ -1520,7 +1519,7 @@ namespace GitCommands
             return new GitArgumentBuilder("pull")
             {
                 { rebase, "--rebase" },
-                { GitVersion.Current.FetchCanAskForProgress, "--progress" },
+                { VsrVersion.Current.FetchCanAskForProgress, "--progress" },
                 GetFetchArgs(remote, remoteBranch, null, fetchTags, isUnshallow, prune && !rebase)
             };
         }
@@ -1601,7 +1600,7 @@ namespace GitCommands
                 { track, "-u" },
                 { recursiveSubmodules == 1, "--recurse-submodules=check" },
                 { recursiveSubmodules == 2, "--recurse-submodules=on-demand" },
-                { GitVersion.Current.PushCanAskForProgress, "--progress" },
+                { VsrVersion.Current.PushCanAskForProgress, "--progress" },
                 "--all",
                 remote.ToPosixPath().Trim().Quote()
             };
@@ -1635,7 +1634,7 @@ namespace GitCommands
                 { track, "-u" },
                 { recursiveSubmodules == 1, "--recurse-submodules=check" },
                 { recursiveSubmodules == 2, "--recurse-submodules=on-demand" },
-                { GitVersion.Current.PushCanAskForProgress, "--progress" },
+                { VsrVersion.Current.PushCanAskForProgress, "--progress" },
                 remote.ToPosixPath().Trim().Quote(),
                 { string.IsNullOrEmpty(toBranch), fromBranch },
                 { !string.IsNullOrEmpty(toBranch), $"{fromBranch}:{toBranch}" }
@@ -2318,7 +2317,7 @@ namespace GitCommands
         internal GitArgumentBuilder GetStashesCmd(bool noLocks)
         {
             return new GitArgumentBuilder("stash", gitOptions:
-                    noLocks && GitVersion.Current.SupportNoOptionalLocks
+                    noLocks && VsrVersion.Current.SupportNoOptionalLocks
                         ? (ArgumentString)"--no-optional-locks"
                         : default)
                 { "list" };
@@ -2695,7 +2694,7 @@ namespace GitCommands
             string extraDiffArguments, bool noLocks)
         {
             return new GitArgumentBuilder("diff", gitOptions:
-                    noLocks && GitVersion.Current.SupportNoOptionalLocks
+                    noLocks && VsrVersion.Current.SupportNoOptionalLocks
                         ? (ArgumentString)"--no-optional-locks"
                         : default)
                 {
@@ -2919,7 +2918,7 @@ namespace GitCommands
             if (tags)
             {
                 cmd = new GitArgumentBuilder("show-ref", gitOptions:
-                    noLocks && GitVersion.Current.SupportNoOptionalLocks
+                    noLocks && VsrVersion.Current.SupportNoOptionalLocks
                         ? (ArgumentString)"--no-optional-locks"
                         : default)
                 {
@@ -2930,7 +2929,7 @@ namespace GitCommands
             {
                 // branches only
                 cmd = new GitArgumentBuilder("for-each-ref", gitOptions:
-                    noLocks && GitVersion.Current.SupportNoOptionalLocks
+                    noLocks && VsrVersion.Current.SupportNoOptionalLocks
                         ? (ArgumentString)"--no-optional-locks"
                         : default)
                 {
@@ -3967,7 +3966,7 @@ namespace GitCommands
 
         public Encoding GetEncodingByGitName(string encodingName)
         {
-            bool isABug = !GitVersion.Current.LogFormatRecodesCommitMessage;
+            bool isABug = !VsrVersion.Current.LogFormatRecodesCommitMessage;
 
             if (isABug)
             {
@@ -4234,9 +4233,9 @@ namespace GitCommands
 
         internal readonly struct TestAccessor
         {
-            private readonly GitModule _gitModule;
+            private readonly VsrModule _gitModule;
 
-            public TestAccessor(GitModule gitModule)
+            public TestAccessor(VsrModule gitModule)
             {
                 _gitModule = gitModule;
             }

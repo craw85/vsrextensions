@@ -15,7 +15,7 @@ namespace GitUI.UserControls
 
         /// <returns><c>true</c> if the UI should be refreshed in response to this change.</returns>
         [MustUseReturnValue]
-        public bool ProcessRevisionSelectionChange(IGitModule currentModule, IReadOnlyCollection<GitRevision> selectedRevisions)
+        public bool ProcessRevisionSelectionChange(IVsrModule currentModule, IReadOnlyCollection<GitRevision> selectedRevisions)
         {
             if (selectedRevisions.Count > 1)
             {

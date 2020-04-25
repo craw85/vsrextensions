@@ -33,7 +33,7 @@ namespace GitUI
         {
             ProcessCallback = ProcessStart;
             AbortCallback = ProcessAbort;
-            ProcessString = process ?? AppSettings.GitCommand;
+            ProcessString = process ?? AppSettings.VsrCommand;
             ProcessArguments = arguments;
             Remote = "";
             ProcessInput = input;
@@ -54,12 +54,12 @@ namespace GitUI
         {
         }
 
-        public static bool ShowDialog([CanBeNull] IWin32Window owner, GitModule module, ArgumentString arguments)
+        public static bool ShowDialog([CanBeNull] IWin32Window owner, VsrModule module, ArgumentString arguments)
         {
             return ShowDialog(owner, null, arguments, module.WorkingDir, null, true);
         }
 
-        public static bool ShowDialog([CanBeNull] IWin32Window owner, GitModule module, string process, ArgumentString arguments)
+        public static bool ShowDialog([CanBeNull] IWin32Window owner, VsrModule module, string process, ArgumentString arguments)
         {
             return ShowDialog(owner, process, arguments, module.WorkingDir, null, true);
         }
@@ -79,7 +79,7 @@ namespace GitUI
             return ShowDialog(owner, owner.Module, arguments, useDialogSettings);
         }
 
-        public static bool ShowDialog([CanBeNull] IWin32Window owner, GitModule module, ArgumentString arguments, bool useDialogSettings)
+        public static bool ShowDialog([CanBeNull] IWin32Window owner, VsrModule module, ArgumentString arguments, bool useDialogSettings)
         {
             return ShowDialog(owner, null, arguments, module.WorkingDir, null, useDialogSettings);
         }
@@ -125,7 +125,7 @@ namespace GitUI
             return ReadDialog(owner, null, arguments, owner.Module, null, true);
         }
 
-        public static string ReadDialog([CanBeNull] IWin32Window owner, string process, ArgumentString arguments, GitModule module, string input, bool useDialogSettings)
+        public static string ReadDialog([CanBeNull] IWin32Window owner, string process, ArgumentString arguments, VsrModule module, string input, bool useDialogSettings)
         {
             using (var formProcess = new FormProcess(process, arguments, module.WorkingDir, input, useDialogSettings))
             {
@@ -198,7 +198,7 @@ namespace GitUI
             {
                 ConsoleOutput.KillProcess();
 
-                var module = new GitModule(WorkingDirectory);
+                var module = new VsrModule(WorkingDirectory);
                 module.UnlockIndex(includeSubmodules: true);
             }
             catch

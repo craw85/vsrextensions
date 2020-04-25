@@ -16,9 +16,9 @@ namespace GitUI.CommandsDialogs.BrowseDialog
     {
         private readonly TranslationString _warningOpenFailed = new TranslationString("The selected directory is not a valid git repository.");
 
-        [CanBeNull] private GitModule _chosenModule;
+        [CanBeNull] private VsrModule _chosenModule;
 
-        public FormOpenDirectory([CanBeNull] GitModule currentModule)
+        public FormOpenDirectory([CanBeNull] VsrModule currentModule)
         {
             InitializeComponent();
             InitializeComplete();
@@ -44,7 +44,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             MinimumSize = DpiUtil.Scale(new Size(450, 116));
         }
 
-        private static IReadOnlyList<string> GetDirectories([CanBeNull] GitModule currentModule, IEnumerable<Repository> repositoryHistory)
+        private static IReadOnlyList<string> GetDirectories([CanBeNull] VsrModule currentModule, IEnumerable<Repository> repositoryHistory)
         {
             var directories = new List<string>();
 
@@ -82,7 +82,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
         }
 
         [CanBeNull]
-        public static GitModule OpenModule(IWin32Window owner, [CanBeNull] GitModule currentModule)
+        public static VsrModule OpenModule(IWin32Window owner, [CanBeNull] VsrModule currentModule)
         {
             using (var open = new FormOpenDirectory(currentModule))
             {
@@ -158,14 +158,14 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             }
         }
 
-        private static GitModule OpenGitRepository([NotNull] string path, ILocalRepositoryManager localRepositoryManager)
+        private static VsrModule OpenGitRepository([NotNull] string path, ILocalRepositoryManager localRepositoryManager)
         {
             if (!Directory.Exists(path))
             {
                 return null;
             }
 
-            var chosenModule = new GitModule(path.EnsureTrailingPathSeparator());
+            var chosenModule = new VsrModule(path.EnsureTrailingPathSeparator());
             if (!chosenModule.IsValidGitWorkingDir())
             {
                 return null;
@@ -187,7 +187,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
                 _form = form;
             }
 
-            public static GitModule OpenGitRepository([NotNull] string path, ILocalRepositoryManager localRepositoryManager)
+            public static VsrModule OpenGitRepository([NotNull] string path, ILocalRepositoryManager localRepositoryManager)
                 => FormOpenDirectory.OpenGitRepository(path, localRepositoryManager);
         }
     }

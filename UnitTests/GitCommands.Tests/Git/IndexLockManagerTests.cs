@@ -23,7 +23,7 @@ namespace GitCommandsTests.Git
         private DirectoryBase _directory;
         private IFileSystem _fileSystem;
         private IGitDirectoryResolver _gitDirectoryResolver;
-        private IGitModule _module;
+        private IVsrModule _module;
         private IIndexLockManager _manager;
 
         [SetUp]
@@ -39,7 +39,7 @@ namespace GitCommandsTests.Git
             _fileSystem.Directory.Returns(_directory);
             _fileSystem.File.Returns(_file);
 
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _module.WorkingDir.Returns(_workingDir);
 
             _gitDirectoryResolver = Substitute.For<IGitDirectoryResolver>();

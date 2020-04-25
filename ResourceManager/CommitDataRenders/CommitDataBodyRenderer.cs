@@ -21,10 +21,10 @@ namespace ResourceManager.CommitDataRenders
     /// </summary>
     public sealed class CommitDataBodyRenderer : ICommitDataBodyRenderer
     {
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
         private readonly ILinkFactory _linkFactory;
 
-        public CommitDataBodyRenderer(Func<IGitModule> getModule, ILinkFactory linkFactory)
+        public CommitDataBodyRenderer(Func<IVsrModule> getModule, ILinkFactory linkFactory)
         {
             _getModule = getModule;
             _linkFactory = linkFactory;

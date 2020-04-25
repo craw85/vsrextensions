@@ -40,9 +40,9 @@ namespace GitUI.CommandsDialogs.RepoHosting
 
         private const string UpstreamRemoteName = "upstream";
         private readonly IRepositoryHostPlugin _gitHoster;
-        private readonly EventHandler<GitModuleEventArgs> _gitModuleChanged;
+        private readonly EventHandler<VsrModuleEventArgs> _gitModuleChanged;
 
-        public ForkAndCloneForm(IRepositoryHostPlugin gitHoster, EventHandler<GitModuleEventArgs> gitModuleChanged)
+        public ForkAndCloneForm(IRepositoryHostPlugin gitHoster, EventHandler<VsrModuleEventArgs> gitModuleChanged)
         {
             _gitModuleChanged = gitModuleChanged;
             _gitHoster = gitHoster;
@@ -390,7 +390,7 @@ namespace GitUI.CommandsDialogs.RepoHosting
 
             var cmd = GitCommandHelpers.CloneCmd(repoSrc, targetDir, depth: GetDepth());
 
-            var formRemoteProcess = new FormRemoteProcess(new GitModule(null), AppSettings.GitCommand, cmd)
+            var formRemoteProcess = new FormRemoteProcess(new VsrModule(null), AppSettings.VsrCommand, cmd)
             {
                 Remote = repoSrc
             };
@@ -402,7 +402,7 @@ namespace GitUI.CommandsDialogs.RepoHosting
                 return;
             }
 
-            var module = new GitModule(targetDir);
+            var module = new VsrModule(targetDir);
 
             if (addUpstreamRemoteAsCB.Text.Trim().Length > 0 && !string.IsNullOrEmpty(repo.ParentReadOnlyUrl))
             {
@@ -413,7 +413,7 @@ namespace GitUI.CommandsDialogs.RepoHosting
                 }
             }
 
-            _gitModuleChanged?.Invoke(this, new GitModuleEventArgs(module));
+            _gitModuleChanged?.Invoke(this, new VsrModuleEventArgs(module));
 
             Close();
         }

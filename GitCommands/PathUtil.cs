@@ -98,7 +98,7 @@ namespace GitCommands
 
             return IsUrl(url)
                    || url.EndsWith(".git", StringComparison.CurrentCultureIgnoreCase)
-                   || GitModule.IsValidGitWorkingDir(url);
+                   || VsrModule.IsValidGitWorkingDir(url);
         }
 
         [NotNull]

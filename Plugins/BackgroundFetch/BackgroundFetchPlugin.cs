@@ -60,7 +60,7 @@ namespace BackgroundFetch
 
             int fetchInterval = _fetchInterval.ValueOrDefault(Settings);
 
-            var gitModule = _currentGitUiCommands.GitModule;
+            var gitModule = _currentGitUiCommands.VsrModule;
             if (fetchInterval > 0 && gitModule.IsValidGitWorkingDir())
             {
                 _cancellationToken =
@@ -96,12 +96,12 @@ namespace BackgroundFetch
                                             "--all"
                                         };
 
-                                        _currentGitUiCommands.GitModule.GitExecutable.GetOutput(args);
+                                        _currentGitUiCommands.VsrModule.GitExecutable.GetOutput(args);
                                       }
 
                                       var gitCmd = _gitCommand.ValueOrDefault(Settings).Trim().SplitBySpace();
                                       args = new GitArgumentBuilder(gitCmd[0]) { gitCmd.Skip(1) };
-                                      var msg = _currentGitUiCommands.GitModule.GitExecutable.GetOutput(args);
+                                      var msg = _currentGitUiCommands.VsrModule.GitExecutable.GetOutput(args);
                                       if (_autoRefresh.ValueOrDefault(Settings))
                                       {
                                           if (gitCmd[0].Equals("fetch", StringComparison.InvariantCultureIgnoreCase))

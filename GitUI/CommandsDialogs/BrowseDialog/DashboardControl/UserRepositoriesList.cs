@@ -58,7 +58,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
         private bool _hasInvalidRepos;
         private ListViewItem _rightClickedItem;
 
-        public event EventHandler<GitModuleEventArgs> GitModuleChanged;
+        public event EventHandler<VsrModuleEventArgs> GitModuleChanged;
 
         public UserRepositoriesList()
         {
@@ -324,7 +324,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
             }
         }
 
-        protected virtual void OnModuleChanged(GitModuleEventArgs args)
+        protected virtual void OnModuleChanged(VsrModuleEventArgs args)
         {
             var handler = GitModuleChanged;
             handler?.Invoke(this, args);
@@ -595,7 +595,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
 
                 if (_controller.IsValidGitWorkingDir(selected.Path))
                 {
-                    OnModuleChanged(new GitModuleEventArgs(new GitModule(selected.Path)));
+                    OnModuleChanged(new VsrModuleEventArgs(new VsrModule(selected.Path)));
                     return;
                 }
 
@@ -834,7 +834,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
                 string dir = fileNameArray[0];
                 if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
                 {
-                    GitModule module = new GitModule(dir);
+                    VsrModule module = new VsrModule(dir);
 
                     if (!module.IsValidGitWorkingDir())
                     {
@@ -844,7 +844,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
                         return;
                     }
 
-                    OnModuleChanged(new GitModuleEventArgs(module));
+                    OnModuleChanged(new VsrModuleEventArgs(module));
                 }
             }
         }

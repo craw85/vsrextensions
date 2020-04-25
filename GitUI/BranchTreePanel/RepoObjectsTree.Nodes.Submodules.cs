@@ -258,7 +258,7 @@ namespace GitUI.BranchTreePanel
 
             private Nodes FillSubmoduleTree(SubmoduleInfoResult result)
             {
-                var threadModule = (GitModule)result.Module;
+                var threadModule = (VsrModule)result.Module;
 
                 var submoduleNodes = new List<SubmoduleNode>();
 
@@ -279,7 +279,7 @@ namespace GitUI.BranchTreePanel
                 return nodes;
             }
 
-            private void CreateSubmoduleNodes(IEnumerable<SubmoduleInfo> submodules, GitModule threadModule, ref List<SubmoduleNode> nodes)
+            private void CreateSubmoduleNodes(IEnumerable<SubmoduleInfo> submodules, VsrModule threadModule, ref List<SubmoduleNode> nodes)
             {
                 // result.OurSubmodules/SuperSubmodules contain a recursive list of submodules, but don't provide info about the super
                 // project path. So we deduce these by substring matching paths against an ordered list of all paths.
@@ -315,7 +315,7 @@ namespace GitUI.BranchTreePanel
                 }
             }
 
-            private string GetNodeRelativePath(GitModule topModule, SubmoduleNode node)
+            private string GetNodeRelativePath(VsrModule topModule, SubmoduleNode node)
             {
                 return node.SuperPath.SubstringAfter(topModule.WorkingDir).ToPosixPath() + node.LocalPath;
             }
@@ -323,7 +323,7 @@ namespace GitUI.BranchTreePanel
             private void AddNodesToTree(
                 ref Nodes nodes,
                 List<SubmoduleNode> submoduleNodes,
-                GitModule threadModule,
+                VsrModule threadModule,
                 SubmoduleInfo topProject)
             {
                 // Create tree of SubmoduleFolderNode for each path directory and add input SubmoduleNodes as leaves.

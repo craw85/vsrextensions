@@ -22,9 +22,9 @@ namespace GitUI.CommandsDialogs.SettingsDialog
 
         public readonly RepoDistSettingsSet RepoDistSettingsSet;
         public readonly ConfigFileSettingsSet ConfigFileSettingsSet;
-        [CanBeNull] public readonly GitModule Module;
+        [CanBeNull] public readonly VsrModule Module;
 
-        public CommonLogic([CanBeNull] GitModule module)
+        public CommonLogic([CanBeNull] VsrModule module)
         {
             Module = module;
 

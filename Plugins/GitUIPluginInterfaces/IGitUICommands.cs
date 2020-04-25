@@ -17,7 +17,7 @@ namespace GitUIPluginInterfaces
         event EventHandler<GitUIEventArgs> PreCommit;
 
         [NotNull]
-        IGitModule GitModule { get; }
+        IVsrModule VsrModule { get; }
 
         IGitRemoteCommand CreateRemoteCommand();
 

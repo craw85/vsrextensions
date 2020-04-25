@@ -28,9 +28,9 @@ namespace GitCommandsTests.Submodules
             // Note that _repo2Module and _repo3Module point to the submodules under _repo1Module,
             // not _repo2.Module and _repo3.Module respectively. In general, the tests should here
             // should interact with these modules, not with _repo2 and _repo3.
-            private GitModule _repo1Module;
-            private GitModule _repo2Module;
-            private GitModule _repo3Module;
+            private VsrModule _repo1Module;
+            private VsrModule _repo2Module;
+            private VsrModule _repo3Module;
 
             private ISubmoduleStatusProvider _provider;
 
@@ -172,7 +172,7 @@ namespace GitCommandsTests.Submodules
                 result.OurSubmodules.All(i => i.Detailed == null).Should().BeTrue();
             }
 
-            private static IReadOnlyList<GitItemStatus> GetStatusChangedFiles(IGitModule module)
+            private static IReadOnlyList<GitItemStatus> GetStatusChangedFiles(IVsrModule module)
             {
                 var cmd = GitCommandHelpers.GetAllChangedFilesCmd(true, UntrackedFilesMode.Default, noLocks: true);
                 var output = module.GitExecutable.GetOutput(cmd);

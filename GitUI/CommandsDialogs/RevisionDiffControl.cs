@@ -881,7 +881,7 @@ namespace GitUI.CommandsDialogs
 
             foreach (var name in submodules)
             {
-                GitModule module = Module.GetSubmodule(name);
+                VsrModule module = Module.GetSubmodule(name);
 
                 // Reset all changes.
                 module.Reset(ResetMode.Hard);

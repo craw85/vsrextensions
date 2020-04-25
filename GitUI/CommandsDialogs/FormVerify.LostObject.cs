@@ -82,7 +82,7 @@ namespace GitUI.CommandsDialogs
             }
 
             [CanBeNull]
-            public static LostObject TryParse(GitModule module, string raw)
+            public static LostObject TryParse(VsrModule module, string raw)
             {
                 if (string.IsNullOrEmpty(raw))
                 {
@@ -156,7 +156,7 @@ namespace GitUI.CommandsDialogs
 
                 string VerifyHashAndRunCommand(ArgumentString commandFormat)
                 {
-                    return module.GitExecutable.GetOutput(string.Format(commandFormat, objectId), outputEncoding: GitModule.LosslessEncoding);
+                    return module.GitExecutable.GetOutput(string.Format(commandFormat, objectId), outputEncoding: VsrModule.LosslessEncoding);
                 }
 
                 LostObjectType GetObjectType(Group matchedGroup)

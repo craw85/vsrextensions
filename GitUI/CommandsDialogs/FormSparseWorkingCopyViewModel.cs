@@ -128,7 +128,7 @@ namespace GitUI.CommandsDialogs
         [NotNull]
         public FileInfo GetPathToSparseCheckoutFile()
         {
-            return new FileInfo(Path.Combine(_gitCommands.GitModule.ResolveGitInternalPath("info"), "sparse-checkout"));
+            return new FileInfo(Path.Combine(_gitCommands.VsrModule.ResolveGitInternalPath("info"), "sparse-checkout"));
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace GitUI.CommandsDialogs
         {
             // Re-apply tree to the index
             // TODO: check how it affects the uncommitted working copy changes
-            using (var fromProcess = new FormRemoteProcess(_gitCommands.Module, AppSettings.GitCommand, RefreshWorkingCopyCommandName))
+            using (var fromProcess = new FormRemoteProcess(_gitCommands.Module, AppSettings.VsrCommand, RefreshWorkingCopyCommandName))
             {
                 fromProcess.ShowDialog(Form.ActiveForm);
             }
@@ -183,7 +183,7 @@ namespace GitUI.CommandsDialogs
             if (IsRulesTextChanged)
             {
                 string newText = RulesText ?? "";
-                File.WriteAllBytes(GetPathToSparseCheckoutFile().FullName, GitModule.SystemEncoding.GetBytes(newText));
+                File.WriteAllBytes(GetPathToSparseCheckoutFile().FullName, VsrModule.SystemEncoding.GetBytes(newText));
                 SetRulesTextAsOnDisk(newText); // Update if OK
             }
 

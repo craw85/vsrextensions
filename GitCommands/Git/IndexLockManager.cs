@@ -30,18 +30,18 @@ namespace GitCommands.Git
     public sealed class IndexLockManager : IIndexLockManager
     {
         private const string IndexLock = "index.lock";
-        private readonly IGitModule _module;
+        private readonly IVsrModule _module;
         private readonly IGitDirectoryResolver _gitDirectoryResolver;
         private readonly IFileSystem _fileSystem;
 
-        public IndexLockManager(IGitModule module, IGitDirectoryResolver gitDirectoryResolver, IFileSystem fileSystem)
+        public IndexLockManager(IVsrModule module, IGitDirectoryResolver gitDirectoryResolver, IFileSystem fileSystem)
         {
             _module = module;
             _gitDirectoryResolver = gitDirectoryResolver;
             _fileSystem = fileSystem;
         }
 
-        public IndexLockManager(IGitModule module)
+        public IndexLockManager(IVsrModule module)
             : this(module, new GitDirectoryResolver(), new FileSystem())
         {
         }

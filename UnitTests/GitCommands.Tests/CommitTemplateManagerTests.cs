@@ -16,7 +16,7 @@ namespace GitCommandsTests
     public class CommitTemplateManagerTests
     {
         private readonly string _workingDir = @"c:\dev\repo";
-        private IGitModule _module;
+        private IVsrModule _module;
         private FileBase _file;
         private IFileSystem _fileSystem;
         private IFullPathResolver _fullPathResolver;
@@ -25,7 +25,7 @@ namespace GitCommandsTests
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
 
             _fullPathResolver = Substitute.For<IFullPathResolver>();
 

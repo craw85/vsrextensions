@@ -85,7 +85,7 @@ namespace GitUI.CommandsDialogs
                                 GitAttributesFile += Environment.NewLine;
                             }
 
-                            File.WriteAllBytes(x, GitModule.SystemEncoding.GetBytes(GitAttributesFile));
+                            File.WriteAllBytes(x, VsrModule.SystemEncoding.GetBytes(GitAttributesFile));
                         });
 
                 return true;

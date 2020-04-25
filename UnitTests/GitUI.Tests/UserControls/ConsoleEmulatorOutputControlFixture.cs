@@ -26,8 +26,8 @@ namespace GitUITests.UserControls
 
             string chunk1 = cmd.Substring(0, 10);
             string chunk2 = cmd.Substring(10, cmd.Length - 10) + Environment.NewLine + outputData;
-            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(GitModule.SystemEncoding.GetBytes(chunk1)));
-            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(GitModule.SystemEncoding.GetBytes(chunk2)));
+            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(VsrModule.SystemEncoding.GetBytes(chunk1)));
+            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(VsrModule.SystemEncoding.GetBytes(chunk2)));
 
             Assert.AreEqual(string.Empty, received);
         }
@@ -48,8 +48,8 @@ namespace GitUITests.UserControls
 
             string chunk1 = cmd.Substring(0, 10);
             string chunk2 = cmd.Substring(10, cmd.Length - 10) + Environment.NewLine + outputData;
-            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(GitModule.SystemEncoding.GetBytes(chunk1)));
-            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(GitModule.SystemEncoding.GetBytes(chunk2)));
+            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(VsrModule.SystemEncoding.GetBytes(chunk1)));
+            filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(VsrModule.SystemEncoding.GetBytes(chunk2)));
             filter.Flush();
 
             Assert.AreEqual(outputData, received);
@@ -82,7 +82,7 @@ namespace GitUITests.UserControls
 
             foreach (string chunk in outputData)
             {
-                filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(GitModule.SystemEncoding.GetBytes(chunk)));
+                filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(VsrModule.SystemEncoding.GetBytes(chunk)));
             }
 
             filter.Flush();
@@ -127,7 +127,7 @@ namespace GitUITests.UserControls
 
             foreach (string chunk in outputData)
             {
-                filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(GitModule.SystemEncoding.GetBytes(chunk)));
+                filter.AnsiStreamChunkReceived(null, new AnsiStreamChunkEventArgs(VsrModule.SystemEncoding.GetBytes(chunk)));
             }
 
             filter.Flush();

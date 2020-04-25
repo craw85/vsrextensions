@@ -61,7 +61,7 @@ namespace GitUI
                 return false;
             }
 
-            GitModule.StartPageantWithKey(path);
+            VsrModule.StartPageantWithKey(path);
             return true;
         }
     }

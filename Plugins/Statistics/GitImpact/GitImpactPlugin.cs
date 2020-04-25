@@ -19,12 +19,12 @@ namespace GitImpact
 
         public override bool Execute(GitUIEventArgs args)
         {
-            if (string.IsNullOrEmpty(args.GitModule.WorkingDir))
+            if (string.IsNullOrEmpty(args.VsrModule.WorkingDir))
             {
                 return false;
             }
 
-            using (var form = new FormImpact(args.GitModule))
+            using (var form = new FormImpact(args.VsrModule))
             {
                 form.ShowDialog(args.OwnerForm);
             }

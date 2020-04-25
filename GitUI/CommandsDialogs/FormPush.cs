@@ -98,7 +98,7 @@ namespace GitUI.CommandsDialogs
 
             InitializeComplete();
 
-            if (!GitVersion.Current.SupportPushForceWithLease)
+            if (!VsrVersion.Current.SupportPushForceWithLease)
             {
                 ckForceWithLease.Visible = false;
                 ForcePushTags.DataBindings.Add("Checked", ForcePushBranches, "Checked",
@@ -119,11 +119,11 @@ namespace GitUI.CommandsDialogs
             void Init()
             {
                 _gitRefs = Module.GetRefs();
-                if (GitVersion.Current.SupportPushWithRecursiveSubmodulesCheck)
+                if (VsrVersion.Current.SupportPushWithRecursiveSubmodulesCheck)
                 {
                     RecursiveSubmodules.Enabled = true;
                     RecursiveSubmodules.SelectedIndex = AppSettings.RecursiveSubmodules;
-                    if (!GitVersion.Current.SupportPushWithRecursiveSubmodulesOnDemand)
+                    if (!VsrVersion.Current.SupportPushWithRecursiveSubmodulesOnDemand)
                     {
                         RecursiveSubmodules.Items.RemoveAt(2);
                     }
@@ -358,7 +358,7 @@ namespace GitUI.CommandsDialogs
 
                 if (ForcePushBranches.Checked)
                 {
-                    if (GitVersion.Current.SupportPushForceWithLease)
+                    if (VsrVersion.Current.SupportPushForceWithLease)
                     {
                         var choice = MessageBox.Show(owner,
                                                      _useForceWithLeaseInstead.Text,
@@ -514,7 +514,7 @@ namespace GitUI.CommandsDialogs
                     {
                         Trace.Assert(form.ProcessArguments.StartsWith("push "), "Arguments should start with 'push' command");
 
-                        string forceArg = GitVersion.Current.SupportPushForceWithLease ? " --force-with-lease" : " -f";
+                        string forceArg = VsrVersion.Current.SupportPushForceWithLease ? " --force-with-lease" : " -f";
                         form.ProcessArguments = form.ProcessArguments.Insert("push".Length, forceArg);
                     }
 
@@ -866,8 +866,8 @@ namespace GitUI.CommandsDialogs
 
         private void FillTagDropDown()
         {
-            // var tags = Module.GetTagHeads(GitModule.GetTagHeadsOption.OrderByCommitDateDescending); // comment out to sort by commit date
-            var tags = Module.GetTagRefs(GitModule.GetTagRefsSortOrder.ByName)
+            // var tags = Module.GetTagHeads(VsrModule.GetTagHeadsOption.OrderByCommitDateDescending); // comment out to sort by commit date
+            var tags = Module.GetTagRefs(VsrModule.GetTagRefsSortOrder.ByName)
                 .Select(tag => tag.Name).ToList();
             tags.Insert(0, AllRefs);
             TagComboBox.DataSource = tags;

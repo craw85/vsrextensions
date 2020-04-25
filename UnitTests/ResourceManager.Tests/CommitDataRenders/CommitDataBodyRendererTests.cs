@@ -12,8 +12,8 @@ namespace ResourceManagerTests.CommitDataRenders
     [TestFixture]
     public class CommitDataBodyRendererTests
     {
-        private IGitModule _module;
-        private Func<IGitModule> _getModule;
+        private IVsrModule _module;
+        private Func<IVsrModule> _getModule;
         private ILinkFactory _linkFactory;
         private CommitDataBodyRenderer _renderer;
         private CommitDataBodyRenderer _rendererReal;
@@ -21,7 +21,7 @@ namespace ResourceManagerTests.CommitDataRenders
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _getModule = () => _module;
             _linkFactory = Substitute.For<ILinkFactory>();
 

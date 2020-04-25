@@ -12,7 +12,7 @@ namespace GitUI.CommandsDialogs.SettingsDialog
     public class CheckSettingsLogic
     {
         public readonly CommonLogic CommonLogic;
-        private GitModule Module => CommonLogic.Module;
+        private VsrModule Module => CommonLogic.Module;
         private ConfigFileSettings GlobalConfigFileSettings => CommonLogic.ConfigFileSettingsSet.GlobalSettings;
 
         public CheckSettingsLogic(CommonLogic commonLogic)
@@ -168,7 +168,7 @@ namespace GitUI.CommandsDialogs.SettingsDialog
                 return false;
             }
 
-            AppSettings.GitCommandValue = "git";
+            AppSettings.GitCommandValue = "vsr";
             return TestGitCommand(AppSettings.GitCommandValue);
 
             bool TestGitCommand(string command)
@@ -205,25 +205,16 @@ namespace GitUI.CommandsDialogs.SettingsDialog
                     yield return AppSettings.GitCommandValue;
                 }
 
-                foreach (var path in GetGitLocations())
+                var output = new Executable("where").GetOutput("vsr");
+
+                if (!string.IsNullOrEmpty(output))
                 {
-                    if (Directory.Exists(path + @"bin\"))
+                    var results = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var path in results)
                     {
-                        yield return path + @"bin\git.exe";
+                        yield return path;
                     }
                 }
-
-                foreach (var path in GetGitLocations())
-                {
-                    if (Directory.Exists(path + @"cmd\"))
-                    {
-                        yield return path + @"cmd\git.exe";
-                        yield return path + @"cmd\git.cmd";
-                    }
-                }
-
-                yield return "git";
-                yield return "git.cmd";
             }
         }
 

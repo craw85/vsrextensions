@@ -77,7 +77,7 @@ namespace GitUI.CommandsDialogs
                     "--no-abbrev",
                     item
                 };
-                var output = UICommands.GitModule.GitExecutable.GetOutput(arguments);
+                var output = UICommands.VsrModule.GitExecutable.GetOutput(arguments);
                 var refLines = ConvertReflogOutput().ToList();
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 _lastHitRowIndex = 0;

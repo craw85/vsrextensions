@@ -20,7 +20,7 @@
         bool IsTag { get; }
         string LocalName { get; }
         string MergeWith { get; set; }
-        IGitModule Module { get; }
+        IVsrModule Module { get; }
         string Remote { get; }
         string TrackingRemote { get; set; }
         bool IsSelected { get; set; }

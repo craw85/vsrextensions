@@ -30,7 +30,7 @@ namespace Bitbucket
         [CanBeNull] private readonly Settings _settings;
         private readonly BindingList<BitbucketUser> _reviewers = new BindingList<BitbucketUser>();
 
-        public BitbucketPullRequestForm([CanBeNull] Settings settings, IGitModule module)
+        public BitbucketPullRequestForm([CanBeNull] Settings settings, IVsrModule module)
         {
             InitializeComponent();
 

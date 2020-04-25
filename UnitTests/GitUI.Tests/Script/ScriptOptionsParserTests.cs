@@ -15,13 +15,13 @@ namespace GitUITests.Script
     [TestFixture]
     public class ScriptOptionsParserTests
     {
-        private IGitModule _module;
+        private IVsrModule _module;
         private IScriptHostControl _scriptHostControl;
 
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _scriptHostControl = Substitute.For<IScriptHostControl>();
         }
 

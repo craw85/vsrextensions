@@ -103,7 +103,7 @@ namespace GitUI.CommandsDialogs
 
             Diff.ExtraDiffArgumentsChanged += (sender, e) => UpdateSelectedFileViewers();
 
-            var isSubmodule = GitModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(FileName));
+            var isSubmodule = VsrModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(FileName));
 
             if (isSubmodule)
             {
@@ -246,9 +246,9 @@ namespace GitUI.CommandsDialogs
                     // keep a set of the file names already seen
                     var setOfFileNames = new HashSet<string> { fileName };
 
-                    var lines = Module.GitExecutable.GetOutputLines(args, outputEncoding: GitModule.LosslessEncoding);
+                    var lines = Module.GitExecutable.GetOutputLines(args, outputEncoding: VsrModule.LosslessEncoding);
 
-                    foreach (var line in lines.Select(GitModule.ReEncodeFileNameFromLossless))
+                    foreach (var line in lines.Select(VsrModule.ReEncodeFileNameFromLossless))
                     {
                         if (!string.IsNullOrEmpty(line) && setOfFileNames.Add(line))
                         {
@@ -366,7 +366,7 @@ namespace GitUI.CommandsDialogs
                 {
                     IsTracked = true,
                     Name = fileName,
-                    IsSubmodule = GitModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(fileName))
+                    IsSubmodule = VsrModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(fileName))
                 };
                 View.ViewGitItemRevisionAsync(file, revision.ObjectId);
             }
@@ -376,7 +376,7 @@ namespace GitUI.CommandsDialogs
                 {
                     IsTracked = true,
                     Name = fileName,
-                    IsSubmodule = GitModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(fileName))
+                    IsSubmodule = VsrModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(fileName))
                 };
                 var revisions = FileChanges.GetSelectedRevisions();
                 var selectedRev = revisions.FirstOrDefault();

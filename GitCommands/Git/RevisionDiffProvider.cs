@@ -31,7 +31,7 @@ namespace GitCommands.Git
     /// </summary>
     public sealed class RevisionDiffProvider : IRevisionDiffProvider
     {
-        // This is an instance class to not have static dependencies in GitModule
+        // This is an instance class to not have static dependencies in VsrModule
         private const string StagedOpt = "--cached";
 
         /// <summary>

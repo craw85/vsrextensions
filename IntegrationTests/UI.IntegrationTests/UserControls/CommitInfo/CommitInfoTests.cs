@@ -38,10 +38,10 @@ namespace GitExtensions.UITests.UserControls.CommitInfo
 
             // mock git executable
             _gitExecutable = new MockExecutable();
-            typeof(GitModule).GetField("_gitExecutable", BindingFlags.Instance | BindingFlags.NonPublic)
+            typeof(VsrModule).GetField("_gitExecutable", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(_commands.Module, _gitExecutable);
-            var cmdRunner = new GitCommandRunner(_gitExecutable, () => GitModule.SystemEncoding);
-            typeof(GitModule).GetField("_gitCommandRunner", BindingFlags.Instance | BindingFlags.NonPublic)
+            var cmdRunner = new GitCommandRunner(_gitExecutable, () => VsrModule.SystemEncoding);
+            typeof(VsrModule).GetField("_gitCommandRunner", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(_commands.Module, cmdRunner);
         }
 

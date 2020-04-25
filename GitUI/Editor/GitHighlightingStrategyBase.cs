@@ -16,7 +16,7 @@ namespace GitUI.Editor
 
         private readonly char _commentChar;
 
-        protected GitHighlightingStrategyBase(string name, GitModule module)
+        protected GitHighlightingStrategyBase(string name, VsrModule module)
         {
             Name = name;
 

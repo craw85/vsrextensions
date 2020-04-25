@@ -78,7 +78,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
         {
             comboBoxTags.Text = Strings.LoadingData;
             return _tagsLoader.LoadAsync(
-                () => Module.GetTagRefs(GitModule.GetTagRefsSortOrder.ByCommitDateDescending).ToList(),
+                () => Module.GetTagRefs(VsrModule.GetTagRefsSortOrder.ByCommitDateDescending).ToList(),
                 list =>
                 {
                     comboBoxTags.Text = string.Empty;

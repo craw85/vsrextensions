@@ -16,7 +16,7 @@ namespace GitUI
         private readonly ToolStripMenuItem _localToolStripMenuItem;
         private readonly ToolStripMenuItem _tagsToolStripMenuItem;
         private readonly ToolStripMenuItem _remoteToolStripMenuItem;
-        private GitModule Module => _NO_TRANSLATE_RevisionGrid.Module;
+        private VsrModule Module => _NO_TRANSLATE_RevisionGrid.Module;
 
         private static readonly string[] _noResultsFound = { Strings.NoResultsFound };
 

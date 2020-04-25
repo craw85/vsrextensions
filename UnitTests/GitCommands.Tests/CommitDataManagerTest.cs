@@ -12,13 +12,13 @@ namespace GitCommandsTests
     public class CommitDataManagerTest
     {
         private CommitDataManager _commitDataManager;
-        private IGitModule _module;
-        private Func<IGitModule> _getModule;
+        private IVsrModule _module;
+        private Func<IVsrModule> _getModule;
 
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _module.ReEncodeStringFromLossless(Arg.Any<string>()).Returns(x => x[0]);
             _module.ReEncodeCommitMessage(Arg.Any<string>(), Arg.Any<string>()).Returns(x => x[0]);
 

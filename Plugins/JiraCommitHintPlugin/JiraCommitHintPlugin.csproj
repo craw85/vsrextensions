@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Atlassian.SDK" Version="10.0.2" />
     <PackageReference Include="NString" Version="1.2.0" />

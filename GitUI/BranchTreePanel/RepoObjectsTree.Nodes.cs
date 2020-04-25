@@ -130,7 +130,7 @@ namespace GitUI.BranchTreePanel
 
                 uiCommands.UICommandsChanged += (a, e) =>
                 {
-                    // When GitModule has changed, clear selected node
+                    // When VsrModule has changed, clear selected node
                     if (TreeViewNode?.TreeView != null)
                     {
                         TreeViewNode.TreeView.SelectedNode = null;
@@ -176,7 +176,7 @@ namespace GitUI.BranchTreePanel
             /// must not trigger the event handling sequence.
             /// </summary>
             public bool IgnoreSelectionChangedEvent { get; set; }
-            protected GitModule Module => UICommands.Module;
+            protected VsrModule Module => UICommands.Module;
 
             protected bool IsAttached { get; private set; }
 
@@ -293,7 +293,7 @@ namespace GitUI.BranchTreePanel
             protected Tree Tree => Nodes.Tree;
             protected GitUICommands UICommands => Tree.UICommands;
 
-            protected GitModule Module => UICommands.Module;
+            protected VsrModule Module => UICommands.Module;
 
             protected Node(Tree tree)
             {

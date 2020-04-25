@@ -91,7 +91,7 @@ namespace GitUI.BranchTreePanel
             {
                 await TaskScheduler.Default;
                 token.ThrowIfCancellationRequested();
-                return FillTagTree(Module.GetTagRefs(GitModule.GetTagRefsSortOrder.ByName), token);
+                return FillTagTree(Module.GetTagRefs(VsrModule.GetTagRefsSortOrder.ByName), token);
             }
 
             private Nodes FillTagTree(IEnumerable<IGitRef> tags, CancellationToken token)

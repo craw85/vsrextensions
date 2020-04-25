@@ -82,7 +82,7 @@ namespace GitUI.CommandsDialogs
         {
             try
             {
-                var text = System.IO.File.ReadAllText(PatchFileNameEdit.Text, GitModule.LosslessEncoding);
+                var text = System.IO.File.ReadAllText(PatchFileNameEdit.Text, VsrModule.LosslessEncoding);
                 var patches = PatchProcessor.CreatePatchesFromString(text, new Lazy<Encoding>(() => Module.FilesEncoding)).ToList();
 
                 GridChangedFiles.DataSource = patches;

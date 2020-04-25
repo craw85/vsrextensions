@@ -33,14 +33,14 @@ namespace GitStatistics
 
         public override bool Execute(GitUIEventArgs args)
         {
-            if (string.IsNullOrEmpty(args.GitModule.WorkingDir))
+            if (string.IsNullOrEmpty(args.VsrModule.WorkingDir))
             {
                 return false;
             }
 
             var countSubmodule = !_ignoreSubmodules.ValueOrDefault(Settings);
 
-            var formStatistics = new FormGitStatistics(args.GitModule, _codeFiles.ValueOrDefault(Settings), countSubmodule)
+            var formStatistics = new FormGitStatistics(args.VsrModule, _codeFiles.ValueOrDefault(Settings), countSubmodule)
             {
                 DirectoriesToIgnore = _ignoreDirectories.ValueOrDefault(Settings).Replace("/", "\\")
             };

@@ -72,7 +72,7 @@ namespace GitCommandsTests.Git
         public void TestFetchArguments()
         {
             // TODO produce a valid working directory
-            var module = new GitModule(Path.GetTempPath());
+            var module = new VsrModule(Path.GetTempPath());
             {
                 // Specifying a remote and a local branch creates a local branch
                 var fetchCmd = module.FetchCmd("origin", "some-branch", "local").Arguments;
@@ -202,7 +202,7 @@ namespace GitCommandsTests.Git
         public void TestGetDiffChangedFilesFromString(string testName, StagedStatus stagedStatus, string statusString)
         {
             // TODO produce a valid working directory
-            var module = new GitModule(Path.GetTempPath());
+            var module = new VsrModule(Path.GetTempPath());
             using (ApprovalResults.ForScenario(testName.Replace(' ', '_')))
             {
                 // git diff -M -C -z --name-status
@@ -224,7 +224,7 @@ namespace GitCommandsTests.Git
         public void TestGetStatusChangedFilesFromString(string testName, string statusString)
         {
             // TODO produce a valid working directory
-            var module = new GitModule(Path.GetTempPath());
+            var module = new VsrModule(Path.GetTempPath());
             using (ApprovalResults.ForScenario(testName.Replace(' ', '_')))
             {
                 // git status --porcelain=2 --untracked-files=no -z
@@ -245,7 +245,7 @@ namespace GitCommandsTests.Git
             Directory.CreateDirectory(Path.Combine(root, "Externals", "conemu-inside-b"));
             Directory.CreateDirectory(Path.Combine(root, "Assets", "Core", "Vehicle Physics core assets"));
 
-            var testModule = new GitModule(root);
+            var testModule = new VsrModule(root);
 
             // Submodule name without spaces in the name
 
@@ -450,7 +450,7 @@ namespace GitCommandsTests.Git
         public void PushTagCmd()
         {
             // TODO test case where this is false
-            Assert.True(GitVersion.Current.PushCanAskForProgress);
+            Assert.True(VsrVersion.Current.PushCanAskForProgress);
 
             Assert.AreEqual(
                 "push --progress \"path\" tag tag",
@@ -485,7 +485,7 @@ namespace GitCommandsTests.Git
             // TODO test case where selectedFiles contains whitespaces (not currently quoted)
 
             // TODO test case where this is false
-            Assert.True(GitVersion.Current.StashUntrackedFilesSupported);
+            Assert.True(VsrVersion.Current.StashUntrackedFilesSupported);
 
             Assert.AreEqual(
                 "stash save",
@@ -592,7 +592,7 @@ namespace GitCommandsTests.Git
                 "-c rebase.autoSquash=false rebase -i --no-autosquash \"branch\"",
                 GitCommandHelpers.RebaseCmd("branch", interactive: true, preserveMerges: false, autosquash: false, autoStash: false).Arguments);
             Assert.AreEqual(
-                GitVersion.Current.SupportRebaseMerges ? "-c rebase.autoSquash=false rebase --rebase-merges \"branch\"" : "-c rebase.autoSquash=false rebase --preserve-merges \"branch\"",
+                VsrVersion.Current.SupportRebaseMerges ? "-c rebase.autoSquash=false rebase --rebase-merges \"branch\"" : "-c rebase.autoSquash=false rebase --preserve-merges \"branch\"",
                 GitCommandHelpers.RebaseCmd("branch", interactive: false, preserveMerges: true, autosquash: false, autoStash: false).Arguments);
             Assert.AreEqual(
                 "-c rebase.autoSquash=false rebase \"branch\"",
@@ -604,7 +604,7 @@ namespace GitCommandsTests.Git
                 "-c rebase.autoSquash=false rebase -i --autosquash \"branch\"",
                 GitCommandHelpers.RebaseCmd("branch", interactive: true, preserveMerges: false, autosquash: true, autoStash: false).Arguments);
             Assert.AreEqual(
-                GitVersion.Current.SupportRebaseMerges ? "-c rebase.autoSquash=false rebase -i --autosquash --rebase-merges --autostash \"branch\"" : "-c rebase.autoSquash=false rebase -i --autosquash --preserve-merges --autostash \"branch\"",
+                VsrVersion.Current.SupportRebaseMerges ? "-c rebase.autoSquash=false rebase -i --autosquash --rebase-merges --autostash \"branch\"" : "-c rebase.autoSquash=false rebase -i --autosquash --preserve-merges --autostash \"branch\"",
                 GitCommandHelpers.RebaseCmd("branch", interactive: true, preserveMerges: true, autosquash: true, autoStash: true).Arguments);
 
             // TODO quote 'onto'?

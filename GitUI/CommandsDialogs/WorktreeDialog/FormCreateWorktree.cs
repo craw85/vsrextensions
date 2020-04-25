@@ -41,12 +41,12 @@ namespace GitUI.CommandsDialogs.WorktreeDialog
 
             string GetWorktreeDirectory()
             {
-                return UICommands.GitModule.WorkingDir.TrimEnd('\\', '/');
+                return UICommands.VsrModule.WorkingDir.TrimEnd('\\', '/');
             }
 
             void LoadBranchesAsync()
             {
-                var selectedBranch = UICommands.GitModule.GetSelectedBranch();
+                var selectedBranch = UICommands.VsrModule.GetSelectedBranch();
                 ExistingBranches = Module.GetRefs(false);
                 comboBoxBranches.Text = Strings.LoadingData;
                 ThreadHelper.JoinableTaskFactory.RunAsync(async () =>

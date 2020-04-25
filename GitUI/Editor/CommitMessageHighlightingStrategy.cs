@@ -15,7 +15,7 @@ namespace GitUI.Editor
         private readonly TextMarker _markerSummaryTooLong = new TextMarker(0, 0, TextMarkerType.WaveLine, Color.Red) { ToolTip = "Summary line is too long." };
         private readonly TextMarker _markerSpacerNeeded = new TextMarker(0, 0, TextMarkerType.WaveLine, Color.Red) { ToolTip = "There must be a blank line after the summary." };
 
-        public CommitMessageHighlightingStrategy(GitModule module)
+        public CommitMessageHighlightingStrategy(VsrModule module)
             : base("GitCommitMessage", module)
         {
         }

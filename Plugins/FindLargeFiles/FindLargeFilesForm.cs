@@ -21,7 +21,7 @@ namespace FindLargeFiles
 
         private readonly float _threshold;
         private readonly GitUIEventArgs _gitUiCommands;
-        private readonly IGitModule _gitCommands;
+        private readonly IVsrModule _gitCommands;
         private string[] _revList;
         private readonly Dictionary<string, GitObject> _list = new Dictionary<string, GitObject>();
         private readonly SortableObjectsList _gitObjects = new SortableObjectsList();
@@ -47,7 +47,7 @@ namespace FindLargeFiles
 
             _threshold = threshold;
             _gitUiCommands = gitUiEventArgs;
-            _gitCommands = gitUiEventArgs?.GitModule;
+            _gitCommands = gitUiEventArgs?.VsrModule;
         }
 
         private void FindLargeFilesFunction()
@@ -210,15 +210,15 @@ namespace FindLargeFiles
                 foreach (GitObject gitObject in _gitObjects.Where(gitObject => gitObject.Delete))
                 {
                     sb.AppendLine(string.Format("\"{0}\" filter-branch --index-filter \"git rm -r -f --cached --ignore-unmatch {1}\" --prune-empty -- --all",
-                        AppSettings.GitCommand, gitObject.Path));
+                        AppSettings.VsrCommand, gitObject.Path));
                 }
 
                 sb.AppendLine(string.Format("for /f %%a IN ('\"{0}\" for-each-ref --format=%%^(refname^) refs/original/') DO \"{0}\" update-ref -d %%a",
-                    AppSettings.GitCommand));
+                    AppSettings.VsrCommand));
                 sb.AppendLine(string.Format("\"{0}\" reflog expire --expire=now --all",
-                    AppSettings.GitCommand));
+                    AppSettings.VsrCommand));
                 sb.AppendLine(string.Format("\"{0}\" gc --aggressive --prune=now",
-                    AppSettings.GitCommand));
+                    AppSettings.VsrCommand));
                 _gitUiCommands.GitUICommands.StartBatchFileProcessDialog(sb.ToString());
             }
 

@@ -14,13 +14,13 @@ namespace GitCommandsTests.Git.Gpg
     [TestFixture]
     public class GitGpgControllerTests
     {
-        private Func<IGitModule> _module;
+        private Func<IVsrModule> _module;
         private GitGpgController _gpgController;
 
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<Func<IGitModule>>();
+            _module = Substitute.For<Func<IVsrModule>>();
             _gpgController = new GitGpgController(_module);
         }
 

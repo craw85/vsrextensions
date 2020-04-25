@@ -21,7 +21,7 @@ namespace GitUI.CommandsDialogs
         public bool ShowDeleteInvalidRepositoryDialog(string repositoryPath)
         {
             int invalidPathCount = ThreadHelper.JoinableTaskFactory.Run(() => RepositoryHistoryManager.Locals.LoadRecentHistoryAsync())
-                                                                   .Count(repo => !GitModule.IsValidGitWorkingDir(repo.Path));
+                                                                   .Count(repo => !VsrModule.IsValidGitWorkingDir(repo.Path));
             string commandButtonCaptions = Strings.RemoveSelectedInvalidRepository;
             if (invalidPathCount > 1)
             {
@@ -49,7 +49,7 @@ namespace GitUI.CommandsDialogs
             else if (PSTaskDialog.cTaskDialog.CommandButtonResult == 1)
             {
                 /* Remove all invalid repos */
-                ThreadHelper.JoinableTaskFactory.Run(() => RepositoryHistoryManager.Locals.RemoveInvalidRepositoriesAsync(repoPath => GitModule.IsValidGitWorkingDir(repoPath)));
+                ThreadHelper.JoinableTaskFactory.Run(() => RepositoryHistoryManager.Locals.RemoveInvalidRepositoriesAsync(repoPath => VsrModule.IsValidGitWorkingDir(repoPath)));
             }
 
             return true;

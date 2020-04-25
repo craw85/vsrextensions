@@ -324,7 +324,7 @@ namespace GitCommands
         {
             return new GitPush(remote.ToPosixPath(), pushActions)
             {
-                ReportProgress = GitVersion.Current.PushCanAskForProgress
+                ReportProgress = VsrVersion.Current.PushCanAskForProgress
             }.ToString();
         }
 
@@ -339,7 +339,7 @@ namespace GitCommands
             return new GitArgumentBuilder("push")
             {
                 force,
-                { GitVersion.Current.PushCanAskForProgress, "--progress" },
+                { VsrVersion.Current.PushCanAskForProgress, "--progress" },
                 path.ToPosixPath().Trim().Quote(),
                 { all, "--tags" },
                 { !all, $"tag {tag.Replace(" ", "")}" }
@@ -358,7 +358,7 @@ namespace GitCommands
             return new GitArgumentBuilder("stash")
             {
                 { isPartialStash, "push", "save" },
-                { untracked && GitVersion.Current.StashUntrackedFilesSupported, "-u" },
+                { untracked && VsrVersion.Current.StashUntrackedFilesSupported, "-u" },
                 { keepIndex, "--keep-index" },
                 { isPartialStash && !string.IsNullOrWhiteSpace(message), "-m" },
                 { !string.IsNullOrWhiteSpace(message), message.Quote() },
@@ -418,7 +418,7 @@ namespace GitCommands
                 { interactive, "-i" },
                 { interactive && autosquash, "--autosquash" },
                 { interactive && !autosquash, "--no-autosquash" },
-                { preserveMerges, GitVersion.Current.SupportRebaseMerges ? "--rebase-merges" : "--preserve-merges" },
+                { preserveMerges, VsrVersion.Current.SupportRebaseMerges ? "--rebase-merges" : "--preserve-merges" },
                 { autoStash, "--autostash" },
                 from.QuoteNE(),
                 branch.Quote(),
@@ -499,11 +499,11 @@ namespace GitCommands
         public static ArgumentString GetAllChangedFilesCmd(bool excludeIgnoredFiles, UntrackedFilesMode untrackedFiles, IgnoreSubmodulesMode ignoreSubmodules = IgnoreSubmodulesMode.None, bool noLocks = false)
         {
             var args = new GitArgumentBuilder("status", gitOptions:
-                noLocks && GitVersion.Current.SupportNoOptionalLocks
+                noLocks && VsrVersion.Current.SupportNoOptionalLocks
                     ? (ArgumentString)"--no-optional-locks"
                     : default)
             {
-                $"--porcelain{(GitVersion.Current.SupportStatusPorcelainV2 ? "=2" : "")} -z",
+                $"--porcelain{(VsrVersion.Current.SupportStatusPorcelainV2 ? "=2" : "")} -z",
                 untrackedFiles,
                 { !excludeIgnoredFiles, "--ignored" }
             };
@@ -518,7 +518,7 @@ namespace GitCommands
         }
 
         [CanBeNull]
-        public static async Task<GitSubmoduleStatus> GetCurrentSubmoduleChangesAsync(GitModule module, string fileName, string oldFileName, bool staged, bool noLocks = false)
+        public static async Task<GitSubmoduleStatus> GetCurrentSubmoduleChangesAsync(VsrModule module, string fileName, string oldFileName, bool staged, bool noLocks = false)
         {
             Patch patch = await module.GetCurrentChangesAsync(fileName, oldFileName, staged, "", noLocks: noLocks).ConfigureAwait(false);
             string text = patch != null ? patch.Text : "";
@@ -526,13 +526,13 @@ namespace GitCommands
         }
 
         [CanBeNull]
-        public static Task<GitSubmoduleStatus> GetCurrentSubmoduleChangesAsync(GitModule module, string submodule, bool noLocks = false)
+        public static Task<GitSubmoduleStatus> GetCurrentSubmoduleChangesAsync(VsrModule module, string submodule, bool noLocks = false)
         {
             return GetCurrentSubmoduleChangesAsync(module, submodule, submodule, false, noLocks: noLocks);
         }
 
         [CanBeNull]
-        public static GitSubmoduleStatus ParseSubmoduleStatus(string text, GitModule module, string fileName)
+        public static GitSubmoduleStatus ParseSubmoduleStatus(string text, VsrModule module, string fileName)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -625,7 +625,7 @@ namespace GitCommands
         /// <param name="staged">required to determine if <see cref="StagedStatus"/> allows stage/unstage.</param>
         /// <returns>list with the parsed GitItemStatus</returns>
         /// <seealso href="https://git-scm.com/docs/git-diff"/>
-        public static IReadOnlyList<GitItemStatus> GetDiffChangedFilesFromString(IGitModule module, string statusString, StagedStatus staged)
+        public static IReadOnlyList<GitItemStatus> GetDiffChangedFilesFromString(IVsrModule module, string statusString, StagedStatus staged)
         {
             return GetAllChangedFilesFromString_v1(module, statusString, true, staged);
         }
@@ -670,9 +670,9 @@ namespace GitCommands
         /// <param name="statusString">output from the git command</param>
         /// <returns>list with the parsed GitItemStatus</returns>
         /// <seealso href="https://git-scm.com/docs/git-status"/>
-        public static IReadOnlyList<GitItemStatus> GetStatusChangedFilesFromString(IGitModule module, string statusString)
+        public static IReadOnlyList<GitItemStatus> GetStatusChangedFilesFromString(IVsrModule module, string statusString)
         {
-            if (GitVersion.Current.SupportStatusPorcelainV2)
+            if (VsrVersion.Current.SupportStatusPorcelainV2)
             {
                 return GetAllChangedFilesFromString_v2(statusString);
             }
@@ -825,12 +825,12 @@ namespace GitCommands
         /// Parse git-status --porcelain=1 and git-diff --name-status
         /// Outputs are similar, except that git-status has status for both worktree and index
         /// </summary>
-        /// <param name="module">The GitModule</param>
+        /// <param name="module">The VsrModule</param>
         /// <param name="statusString">Output from Git command</param>
         /// <param name="fromDiff">Parse git-diff</param>
         /// <param name="staged">The staged status <see cref="GitItemStatus"/>, only relevant for git-diff (parsed for git-status)</param>
         /// <returns>list with the git items</returns>
-        private static IReadOnlyList<GitItemStatus> GetAllChangedFilesFromString_v1(IGitModule module, string statusString, bool fromDiff, StagedStatus staged)
+        private static IReadOnlyList<GitItemStatus> GetAllChangedFilesFromString_v1(IVsrModule module, string statusString, bool fromDiff, StagedStatus staged)
         {
             var diffFiles = new List<GitItemStatus>();
 

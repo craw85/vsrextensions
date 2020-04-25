@@ -26,7 +26,7 @@ namespace Bitbucket
 
         public override bool Execute(GitUIEventArgs args)
         {
-            Settings settings = Bitbucket.Settings.Parse(args.GitModule, Settings, this);
+            Settings settings = Bitbucket.Settings.Parse(args.VsrModule, Settings, this);
             if (settings == null)
             {
                 MessageBox.Show(args.OwnerForm,
@@ -37,7 +37,7 @@ namespace Bitbucket
                 return false;
             }
 
-            using (var frm = new BitbucketPullRequestForm(settings, args.GitModule))
+            using (var frm = new BitbucketPullRequestForm(settings, args.VsrModule))
             {
                 frm.ShowDialog(args.OwnerForm);
             }

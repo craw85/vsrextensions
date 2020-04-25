@@ -5,8 +5,8 @@ using JetBrains.Annotations;
 
 namespace GitUIPluginInterfaces
 {
-    /// <summary>Provides manipulation with git module.</summary>
-    public interface IGitModule
+    /// <summary>Provides manipulation with vsr module.</summary>
+    public interface IVsrModule
     {
         [NotNull]
         IConfigFileSettings LocalConfigFile { get; }
@@ -91,7 +91,7 @@ namespace GitUIPluginInterfaces
         /// </remarks>
         IReadOnlyList<string> GetSubmodulesLocalPaths(bool recursive = true);
 
-        IGitModule GetSubmodule(string submoduleName);
+        IVsrModule GetSubmodule(string submoduleName);
 
         /// <summary>
         /// Retrieves registered remotes by running <c>git remote show</c> command.

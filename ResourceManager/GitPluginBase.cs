@@ -50,7 +50,7 @@ namespace ResourceManager
 
         public virtual void Register(IGitUICommands gitUiCommands)
         {
-            SettingsContainer.SetSettingsSource(gitUiCommands.GitModule.GetEffectiveSettings());
+            SettingsContainer.SetSettingsSource(gitUiCommands.VsrModule.GetEffectiveSettings());
         }
 
         public virtual void Unregister(IGitUICommands gitUiCommands)

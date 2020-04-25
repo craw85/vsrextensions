@@ -32,13 +32,13 @@ namespace DeleteUnusedBranches
         private readonly DeleteUnusedBranchesFormSettings _settings;
 
         private readonly SortableBranchesList _branches = new SortableBranchesList();
-        private readonly IGitModule _gitCommands;
+        private readonly IVsrModule _gitCommands;
         private readonly IGitUICommands _gitUiCommands;
         private readonly IGitPlugin _gitPlugin;
         private readonly GitBranchOutputCommandParser _commandOutputParser;
         private CancellationTokenSource _refreshCancellation;
 
-        public DeleteUnusedBranchesForm(DeleteUnusedBranchesFormSettings settings, IGitModule gitCommands, IGitUICommands gitUiCommands, IGitPlugin gitPlugin)
+        public DeleteUnusedBranchesForm(DeleteUnusedBranchesFormSettings settings, IVsrModule gitCommands, IGitUICommands gitUiCommands, IGitPlugin gitPlugin)
         {
             _settings = settings;
             _gitCommands = gitCommands;
@@ -286,7 +286,7 @@ namespace DeleteUnusedBranches
             }
 
             IsRefreshing = true;
-            var curBranch = _gitUiCommands.GitModule.GetSelectedBranch();
+            var curBranch = _gitUiCommands.VsrModule.GetSelectedBranch();
             var context = new RefreshContext(
                 _gitCommands,
                 IncludeRemoteBranches.Checked,
@@ -355,7 +355,7 @@ namespace DeleteUnusedBranches
 
         private readonly struct RefreshContext
         {
-            public RefreshContext(IGitModule commands, bool includeRemotes, bool includeUnmerged, string referenceBranch,
+            public RefreshContext(IVsrModule commands, bool includeRemotes, bool includeUnmerged, string referenceBranch,
                 string remoteRepositoryName, string regexFilter, bool regexIgnoreCase, bool regexDoesNotMatch,
                 TimeSpan obsolescenceDuration, CancellationToken cancellationToken)
             {
@@ -371,7 +371,7 @@ namespace DeleteUnusedBranches
                 CancellationToken = cancellationToken;
             }
 
-            public IGitModule Commands { get; }
+            public IVsrModule Commands { get; }
             public bool IncludeRemotes { get; }
             public bool IncludeUnmerged { get; }
             public string ReferenceBranch { get; }

@@ -25,7 +25,7 @@ namespace CommonTestUtils
 
             Directory.CreateDirectory(path);
 
-            var module = new GitModule(path);
+            var module = new VsrModule(path);
             module.Init(bare: false, shared: false);
             Module = module;
 
@@ -54,7 +54,7 @@ namespace CommonTestUtils
         /// <summary>
         /// Gets the module.
         /// </summary>
-        public GitModule Module { get; private set; }
+        public VsrModule Module { get; private set; }
 
         /// <summary>
         /// Gets the temporary path where test repositories will be created for integration tests.
@@ -116,7 +116,7 @@ namespace CommonTestUtils
         /// <param name="helper">GitModuleTestHelper to add as a submodule of this.</param>
         /// <param name="path">Relative submodule path.</param>
         /// <returns>Module of added submodule</returns>
-        public GitModule AddSubmodule(GitModuleTestHelper helper, string path)
+        public VsrModule AddSubmodule(GitModuleTestHelper helper, string path)
         {
             // Submodules require at least one commit
             helper.Module.GitExecutable.GetOutput(@"commit --allow-empty -m ""Empty commit""");
@@ -124,18 +124,18 @@ namespace CommonTestUtils
             Module.GitExecutable.GetOutput(GitCommandHelpers.AddSubmoduleCmd(helper.Module.WorkingDir.ToPosixPath(), path, null, true));
             Module.GitExecutable.GetOutput(@"commit -am ""Add submodule""");
 
-            return new GitModule(Path.Combine(Module.WorkingDir, path).ToPosixPath());
+            return new VsrModule(Path.Combine(Module.WorkingDir, path).ToPosixPath());
         }
 
         /// <summary>
         /// Updates and inits submodules recursively, returning all submodule Modules
         /// </summary>
         /// <returns>All submodule Modules</returns>
-        public IEnumerable<GitModule> GetSubmodulesRecursive()
+        public IEnumerable<VsrModule> GetSubmodulesRecursive()
         {
             Module.GitExecutable.GetOutput(@"submodule update --init --recursive");
             var paths = Module.GetSubmodulesLocalPaths(recursive: true);
-            return paths.Select(path => new GitModule(Path.Combine(Module.WorkingDir, path).ToNativePath()));
+            return paths.Select(path => new VsrModule(Path.Combine(Module.WorkingDir, path).ToNativePath()));
         }
 
         public void Dispose()

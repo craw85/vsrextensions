@@ -160,7 +160,7 @@ namespace GitUI.UserControls
 
         public void AnsiStreamChunkReceived(object sender, AnsiStreamChunkEventArgs args)
         {
-            var text = args.GetText(GitModule.SystemEncoding);
+            var text = args.GetText(VsrModule.SystemEncoding);
             string filtered = FilterOutConsoleCommandLine(text);
             if (filtered != null)
             {

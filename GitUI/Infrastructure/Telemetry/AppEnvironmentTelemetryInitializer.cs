@@ -25,7 +25,7 @@ namespace GitUI.Infrastructure.Telemetry
                 sshClient = "Other";
             }
 
-            telemetry.Context.GlobalProperties["Git"] = GitVersion.Current.ToString();
+            telemetry.Context.GlobalProperties["Git"] = VsrVersion.Current.ToString();
             telemetry.Context.GlobalProperties["SSH"] = sshClient;
             telemetry.Context.GlobalProperties["SSH.Path"] = sshPath;
         }

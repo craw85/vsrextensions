@@ -535,7 +535,7 @@ Inactive remote is completely invisible to git.");
             }
             else
             {
-                GitModule.StartPageantWithKey(PuttySshKey.Text);
+                VsrModule.StartPageantWithKey(PuttySshKey.Text);
             }
         }
 

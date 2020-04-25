@@ -17,9 +17,9 @@ namespace GitCommands.Git
 
     public sealed class GitDescribeProvider : IGitDescribeProvider
     {
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
-        public GitDescribeProvider(Func<IGitModule> getModule)
+        public GitDescribeProvider(Func<IVsrModule> getModule)
         {
             _getModule = getModule;
         }
@@ -56,13 +56,13 @@ namespace GitCommands.Git
             description = description.Substring(0, commitCountPos);
             return (description, commitCount);
 
-            IGitModule GetModule()
+            IVsrModule GetModule()
             {
                 var module = _getModule();
 
                 if (module == null)
                 {
-                    throw new ArgumentException($"Require a valid instance of {nameof(IGitModule)}");
+                    throw new ArgumentException($"Require a valid instance of {nameof(IVsrModule)}");
                 }
 
                 return module;

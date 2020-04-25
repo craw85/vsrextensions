@@ -449,7 +449,7 @@ namespace GitUI
             if (!string.IsNullOrEmpty(filter))
             {
                 // hash filtering only possible in memory
-                var cmdLineSafe = GitVersion.Current.IsRegExStringCmdPassable(filter);
+                var cmdLineSafe = VsrVersion.Current.IsRegExStringCmdPassable(filter);
                 revListArgs = " --regexp-ignore-case ";
                 if (filterCommit)
                 {
@@ -806,7 +806,7 @@ namespace GitUI
                 DisposeRevisionReader();
 
                 var newCurrentCheckout = Module.GetCurrentCheckout();
-                GitModule capturedModule = Module;
+                VsrModule capturedModule = Module;
 
                 // If the current checkout changed, don't get the currently selected rows, select the
                 // new current checkout instead.
@@ -1089,7 +1089,7 @@ namespace GitUI
         }
 
         [CanBeNull]
-        private static async Task<SuperProjectInfo> GetSuperprojectCheckoutAsync(Func<IGitRef, bool> showRemoteRef, GitModule gitModule, bool noLocks = false)
+        private static async Task<SuperProjectInfo> GetSuperprojectCheckoutAsync(Func<IGitRef, bool> showRemoteRef, VsrModule gitModule, bool noLocks = false)
         {
             if (gitModule.SuperprojectModule == null)
             {
@@ -2317,7 +2317,7 @@ namespace GitUI
                 revisions
             };
 
-            var mergeBaseCommitId = UICommands.GitModule.GitExecutable.GetOutput(args).TrimEnd('\n');
+            var mergeBaseCommitId = UICommands.VsrModule.GitExecutable.GetOutput(args).TrimEnd('\n');
             if (string.IsNullOrWhiteSpace(mergeBaseCommitId))
             {
                 MessageBox.Show(_noMergeBaseCommit.Text, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);

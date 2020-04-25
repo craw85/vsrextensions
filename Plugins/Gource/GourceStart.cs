@@ -21,7 +21,7 @@ namespace Gource
             InitializeComplete();
             PathToGource = pathToGource;
             GitUIArgs = gitUIArgs;
-            GitWorkingDir = gitUIArgs?.GitModule.WorkingDir;
+            GitWorkingDir = gitUIArgs?.VsrModule.WorkingDir;
             GourceArguments = gourceArguments;
 
             WorkingDir.Text = GitWorkingDir;
@@ -93,7 +93,7 @@ namespace Gource
             }
 
             var args = new GitArgumentBuilder("log") { "--pretty=format:\"%aE|%aN\"" };
-            var lines = GitUIArgs.GitModule.GitExecutable.GetOutput(args).Split('\n');
+            var lines = GitUIArgs.VsrModule.GitExecutable.GetOutput(args).Split('\n');
 
             var authors = lines.Select(
                 line =>

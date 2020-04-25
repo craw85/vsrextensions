@@ -160,7 +160,7 @@ namespace GitHub3
 
         public async Task<string> AddUpstreamRemoteAsync()
         {
-            var gitModule = _currentGitUiCommands.GitModule;
+            var gitModule = _currentGitUiCommands.VsrModule;
             var hostedRemote = GetHostedRemotesForModule().FirstOrDefault(r => r.IsOwnedByMe);
             if (hostedRemote == null)
             {
@@ -192,12 +192,12 @@ namespace GitHub3
         /// </summary>
         public IReadOnlyList<IHostedRemote> GetHostedRemotesForModule()
         {
-            if (_currentGitUiCommands?.GitModule == null)
+            if (_currentGitUiCommands?.VsrModule == null)
             {
                 return Array.Empty<IHostedRemote>();
             }
 
-            var gitModule = _currentGitUiCommands.GitModule;
+            var gitModule = _currentGitUiCommands.VsrModule;
             return Remotes().ToList();
 
             IEnumerable<IHostedRemote> Remotes()

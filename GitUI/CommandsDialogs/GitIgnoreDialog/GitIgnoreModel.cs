@@ -24,7 +24,7 @@ namespace GitUI.CommandsDialogs.GitIgnoreDialog
 
         private readonly IFullPathResolver _fullPathResolver;
 
-        public GitIgnoreModel(IGitModule module)
+        public GitIgnoreModel(IVsrModule module)
         {
             Translator.Translate(this, AppSettings.CurrentTranslation);
             _fullPathResolver = new FullPathResolver(() => module.WorkingDir);

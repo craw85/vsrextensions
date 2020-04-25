@@ -17,7 +17,7 @@ namespace GitUI
                 return string.Empty;
             }
 
-            string branchName = GitModule.GetSelectedBranchFast(repositoryPath);
+            string branchName = VsrModule.GetSelectedBranchFast(repositoryPath);
             if (string.IsNullOrWhiteSpace(branchName) || branchName == DetachedHeadParser.DetachedBranch)
             {
                 branchName = $"({Strings.NoBranch})";

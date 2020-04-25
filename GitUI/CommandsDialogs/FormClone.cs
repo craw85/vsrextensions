@@ -31,7 +31,7 @@ namespace GitUI.CommandsDialogs
 
         private readonly bool _openedFromProtocolHandler;
         private readonly string _url;
-        private readonly EventHandler<GitModuleEventArgs> _gitModuleChanged;
+        private readonly EventHandler<VsrModuleEventArgs> _gitModuleChanged;
         private readonly IReadOnlyList<string> _defaultBranchItems;
         private string _puttySshKey;
 
@@ -41,7 +41,7 @@ namespace GitUI.CommandsDialogs
             InitializeComponent();
         }
 
-        public FormClone(GitUICommands commands, string url, bool openedFromProtocolHandler, EventHandler<GitModuleEventArgs> gitModuleChanged)
+        public FormClone(GitUICommands commands, string url, bool openedFromProtocolHandler, EventHandler<VsrModuleEventArgs> gitModuleChanged)
             : base(commands)
         {
             _gitModuleChanged = gitModuleChanged;
@@ -173,7 +173,7 @@ namespace GitUI.CommandsDialogs
 
             FromTextUpdate(null, null);
 
-            cbLfs.Visible = !GitVersion.Current.DepreciatedLfsClone;
+            cbLfs.Visible = !VsrVersion.Current.DepreciatedLfsClone;
             cbLfs.Enabled = Module.HasLfsSupport();
             if (!cbLfs.Enabled || !cbLfs.Visible)
             {
@@ -245,7 +245,7 @@ namespace GitUI.CommandsDialogs
                                                           CentralRepository.Checked,
                                                           cbIntializeAllSubmodules.Checked,
                                                           branch, depth, isSingleBranch, cbLfs.Checked);
-                using (var fromProcess = new FormRemoteProcess(Module, AppSettings.GitCommand, cloneCmd))
+                using (var fromProcess = new FormRemoteProcess(Module, AppSettings.VsrCommand, cloneCmd))
                 {
                     fromProcess.SetUrlTryingToConnect(sourceRepo);
                     fromProcess.ShowDialog(this);
@@ -265,7 +265,7 @@ namespace GitUI.CommandsDialogs
 
                 if (!string.IsNullOrEmpty(_puttySshKey))
                 {
-                    var clonedGitModule = new GitModule(dirTo);
+                    var clonedGitModule = new VsrModule(dirTo);
                     clonedGitModule.SetSetting(string.Format(SettingKeyString.RemotePuttySshKey, "origin"), _puttySshKey);
                     clonedGitModule.LocalConfigFile.Save();
                 }
@@ -279,7 +279,7 @@ namespace GitUI.CommandsDialogs
                 else if (ShowInTaskbar == false && _gitModuleChanged != null &&
                     AskIfNewRepositoryShouldBeOpened(dirTo))
                 {
-                    _gitModuleChanged(this, new GitModuleEventArgs(new GitModule(dirTo)));
+                    _gitModuleChanged(this, new VsrModuleEventArgs(new VsrModule(dirTo)));
                 }
 
                 Close();

@@ -26,7 +26,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
 
         private DashboardTheme _selectedTheme;
 
-        public event EventHandler<GitModuleEventArgs> GitModuleChanged;
+        public event EventHandler<VsrModuleEventArgs> GitModuleChanged;
 
         public Dashboard()
         {
@@ -193,7 +193,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
             }
         }
 
-        protected virtual void OnModuleChanged(object sender, GitModuleEventArgs e)
+        protected virtual void OnModuleChanged(object sender, VsrModuleEventArgs e)
         {
             var handler = GitModuleChanged;
             handler?.Invoke(this, e);
@@ -228,10 +228,10 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
 
         private void openItem_Click(object sender, EventArgs e)
         {
-            GitModule module = FormOpenDirectory.OpenModule(this, currentModule: null);
+            VsrModule module = FormOpenDirectory.OpenModule(this, currentModule: null);
             if (module != null)
             {
-                OnModuleChanged(this, new GitModuleEventArgs(module));
+                OnModuleChanged(this, new VsrModuleEventArgs(module));
             }
         }
 

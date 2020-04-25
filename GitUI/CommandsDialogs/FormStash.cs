@@ -239,7 +239,7 @@ namespace GitUI.CommandsDialogs
 
         private void StashClick(object sender, EventArgs e)
         {
-            if (chkIncludeUntrackedFiles.Checked && !GitVersion.Current.StashUntrackedFilesSupported)
+            if (chkIncludeUntrackedFiles.Checked && !VsrVersion.Current.StashUntrackedFilesSupported)
             {
                 MessageBox.Show(_stashUntrackedFilesNotSupported.Text, _stashUntrackedFilesNotSupportedCaption.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -255,7 +255,7 @@ namespace GitUI.CommandsDialogs
 
         private void StashSelectedFiles_Click(object sender, EventArgs e)
         {
-            if (chkIncludeUntrackedFiles.Checked && !GitVersion.Current.StashUntrackedFilesSupported)
+            if (chkIncludeUntrackedFiles.Checked && !VsrVersion.Current.StashUntrackedFilesSupported)
             {
                 MessageBox.Show(_stashUntrackedFilesNotSupported.Text, _stashUntrackedFilesNotSupportedCaption.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

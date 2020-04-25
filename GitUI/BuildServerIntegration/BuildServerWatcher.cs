@@ -33,14 +33,14 @@ namespace GitUI.BuildServerIntegration
         private readonly object _buildServerCredentialsLock = new object();
         private readonly RevisionGridControl _revisionGrid;
         private readonly RevisionDataGridView _revisionGridView;
-        private readonly Func<GitModule> _module;
+        private readonly Func<VsrModule> _module;
         private readonly IRepoNameExtractor _repoNameExtractor;
         private IDisposable _buildStatusCancellationToken;
         private IBuildServerAdapter _buildServerAdapter;
 
         internal BuildStatusColumnProvider ColumnProvider { get; }
 
-        public BuildServerWatcher(RevisionGridControl revisionGrid, RevisionDataGridView revisionGridView, Func<GitModule> module)
+        public BuildServerWatcher(RevisionGridControl revisionGrid, RevisionDataGridView revisionGridView, Func<VsrModule> module)
         {
             _revisionGrid = revisionGrid;
             _revisionGridView = revisionGridView;

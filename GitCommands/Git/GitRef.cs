@@ -24,9 +24,9 @@ namespace GitCommands
         private readonly string _remoteSettingName;
         private readonly GitRefType _type;
 
-        public IGitModule Module { get; }
+        public IVsrModule Module { get; }
 
-        public GitRef(IGitModule module, [CanBeNull] ObjectId objectId, string completeName, string remote = "")
+        public GitRef(IVsrModule module, [CanBeNull] ObjectId objectId, string completeName, string remote = "")
         {
             Module = module;
             ObjectId = objectId;
@@ -178,7 +178,7 @@ namespace GitCommands
             return configFile.GetValue(_mergeSettingName).RemovePrefix(GitRefName.RefsHeadsPrefix);
         }
 
-        public static GitRef NoHead(GitModule module)
+        public static GitRef NoHead(VsrModule module)
         {
             return new GitRef(module, null, "");
         }

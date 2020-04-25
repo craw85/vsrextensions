@@ -20,12 +20,12 @@ namespace GitCommands.Settings
 
         #region CreateXXX
 
-        public static RepoDistSettings CreateEffective(GitModule module)
+        public static RepoDistSettings CreateEffective(VsrModule module)
         {
             return CreateLocal(module, CreateDistributed(module, CreateGlobal()), SettingLevel.Effective);
         }
 
-        private static RepoDistSettings CreateLocal(GitModule module, RepoDistSettings lowerPriority,
+        private static RepoDistSettings CreateLocal(VsrModule module, RepoDistSettings lowerPriority,
             SettingLevel settingLevel, bool allowCache = true)
         {
             ////if (module.IsBareRepository()
@@ -34,19 +34,19 @@ namespace GitCommands.Settings
                 settingLevel);
         }
 
-        public static RepoDistSettings CreateLocal(GitModule module, bool allowCache = true)
+        public static RepoDistSettings CreateLocal(VsrModule module, bool allowCache = true)
         {
             return CreateLocal(module, null, SettingLevel.Local, allowCache);
         }
 
-        private static RepoDistSettings CreateDistributed(GitModule module, RepoDistSettings lowerPriority, bool allowCache = true)
+        private static RepoDistSettings CreateDistributed(VsrModule module, RepoDistSettings lowerPriority, bool allowCache = true)
         {
             return new RepoDistSettings(lowerPriority,
                 GitExtSettingsCache.Create(Path.Combine(module.WorkingDir, AppSettings.SettingsFileName), allowCache),
                 SettingLevel.Distributed);
         }
 
-        public static RepoDistSettings CreateDistributed(GitModule module, bool allowCache = true)
+        public static RepoDistSettings CreateDistributed(VsrModule module, bool allowCache = true)
         {
             return CreateDistributed(module, null, allowCache);
         }

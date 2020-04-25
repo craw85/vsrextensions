@@ -11,7 +11,7 @@ namespace GitImpact
     {
         private readonly TranslationString _authorCommits = new TranslationString("{0} ({1} Commits, {2} Changed Lines)");
 
-        public FormImpact(IGitModule module)
+        public FormImpact(IVsrModule module)
         {
             InitializeComponent();
             InitializeComplete();

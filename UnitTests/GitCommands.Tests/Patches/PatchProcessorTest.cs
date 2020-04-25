@@ -25,7 +25,7 @@ namespace GitCommandsTests.Patches
             {
                 var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Patches/testdata", fileName);
                 var bytes = File.ReadAllBytes(path);
-                return GitModule.LosslessEncoding.GetString(bytes);
+                return VsrModule.LosslessEncoding.GetString(bytes);
             }
         }
 
@@ -178,14 +178,14 @@ index cdf8bebba,55ff37bb9..000000000
             void AppendHeaderLine(string line)
             {
                 patchText.Append(line).Append("\n");
-                patchOutput.Append(GitModule.ReEncodeString(line, GitModule.SystemEncoding, GitModule.LosslessEncoding));
+                patchOutput.Append(VsrModule.ReEncodeString(line, VsrModule.SystemEncoding, VsrModule.LosslessEncoding));
                 patchOutput.Append("\n");
             }
 
             void AppendDiffLine(string line)
             {
                 patchText.Append(line).Append("\n");
-                patchOutput.Append(GitModule.ReEncodeString(line, Encoding.UTF8, GitModule.LosslessEncoding));
+                patchOutput.Append(VsrModule.ReEncodeString(line, Encoding.UTF8, VsrModule.LosslessEncoding));
                 patchOutput.Append("\n");
             }
         }

@@ -13,13 +13,13 @@ namespace GitCommandsTests
     [TestFixture]
     public class GitRevisionInfoProviderTests
     {
-        private IGitModule _module;
+        private IVsrModule _module;
         private GitRevisionInfoProvider _provider;
 
         [SetUp]
         public void Setup()
         {
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _provider = new GitRevisionInfoProvider(() => _module);
         }
 

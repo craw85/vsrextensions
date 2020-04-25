@@ -463,19 +463,7 @@ namespace GitUI.CommandsDialogs.SettingsDialog.Pages
                 return false;
             }
 
-            if (GitVersion.Current < GitVersion.LastSupportedVersion)
-            {
-                RenderSettingUnset(GitFound, GitFound_Fix, string.Format(_wrongGitVersion.Text, GitVersion.Current, GitVersion.LastRecommendedVersion));
-                return false;
-            }
-
-            if (GitVersion.Current < GitVersion.LastRecommendedVersion)
-            {
-                RenderSettingNotRecommended(GitFound, GitFound_Fix, string.Format(_notRecommendedGitVersion.Text, GitVersion.Current, GitVersion.LastRecommendedVersion));
-                return false;
-            }
-
-            RenderSettingSet(GitFound, GitFound_Fix, string.Format(_gitVersionFound.Text, GitVersion.Current));
+            RenderSettingSet(GitFound, GitFound_Fix, string.Format(_gitVersionFound.Text, VsrVersion.Current));
             return true;
         }
 

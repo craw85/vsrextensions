@@ -105,7 +105,7 @@ namespace GitUI.UserControls
                 KillProcess();
 
                 // process used to execute external commands
-                var outputEncoding = GitModule.SystemEncoding;
+                var outputEncoding = VsrModule.SystemEncoding;
                 var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = false,

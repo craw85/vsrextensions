@@ -18,17 +18,17 @@ namespace GitCommands.Settings
             SettingLevel = settingLevel;
         }
 
-        public static ConfigFileSettings CreateEffective(GitModule module)
+        public static ConfigFileSettings CreateEffective(VsrModule module)
         {
             return CreateLocal(module, CreateGlobal(CreateSystemWide()), SettingLevel.Effective);
         }
 
-        public static ConfigFileSettings CreateLocal(GitModule module, bool allowCache = true)
+        public static ConfigFileSettings CreateLocal(VsrModule module, bool allowCache = true)
         {
             return CreateLocal(module, null, SettingLevel.Local, allowCache);
         }
 
-        private static ConfigFileSettings CreateLocal(GitModule module, ConfigFileSettings lowerPriority,
+        private static ConfigFileSettings CreateLocal(VsrModule module, ConfigFileSettings lowerPriority,
             SettingLevel settingLevel, bool allowCache = true)
         {
             return new ConfigFileSettings(lowerPriority,

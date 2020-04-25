@@ -42,9 +42,9 @@ namespace GitCommands
         private const string CommitDataFormat = "%H%n%T%n%P%n%aN <%aE>%n%at%n%cN <%cE>%n%ct%n%e%n%B%nNotes:%n%-N";
         private const string BodyAndNotesFormat = "%H%n%e%n%B%nNotes:%n%-N";
 
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
-        public CommitDataManager(Func<IGitModule> getModule)
+        public CommitDataManager(Func<IVsrModule> getModule)
         {
             _getModule = getModule;
         }
@@ -176,13 +176,13 @@ namespace GitCommands
         }
 
         [NotNull]
-        private IGitModule GetModule()
+        private IVsrModule GetModule()
         {
             var module = _getModule();
 
             if (module == null)
             {
-                throw new ArgumentException($"Require a valid instance of {nameof(IGitModule)}");
+                throw new ArgumentException($"Require a valid instance of {nameof(IVsrModule)}");
             }
 
             return module;
@@ -207,9 +207,9 @@ namespace GitCommands
             };
 
             // Do not cache this command, since notes can be added
-            data = GetModule().GitExecutable.GetOutput(arguments, outputEncoding: GitModule.LosslessEncoding);
+            data = GetModule().GitExecutable.GetOutput(arguments, outputEncoding: VsrModule.LosslessEncoding);
 
-            if (GitModule.IsGitErrorMessage(data))
+            if (VsrModule.IsGitErrorMessage(data))
             {
                 error = "Cannot find commit " + commitId;
                 return false;

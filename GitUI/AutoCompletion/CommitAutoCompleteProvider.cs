@@ -15,9 +15,9 @@ namespace GitUI.AutoCompletion
     public class CommitAutoCompleteProvider : IAutoCompleteProvider
     {
         private static readonly Lazy<Dictionary<string, Regex>> _regexes = new Lazy<Dictionary<string, Regex>>(ParseRegexes);
-        private readonly GitModule _module;
+        private readonly VsrModule _module;
 
-        public CommitAutoCompleteProvider(GitModule module)
+        public CommitAutoCompleteProvider(VsrModule module)
         {
             _module = module;
         }
@@ -118,7 +118,7 @@ namespace GitUI.AutoCompletion
         }
 
         [CanBeNull]
-        private static async Task<string> GetChangedFileTextAsync(GitModule module, GitItemStatus file)
+        private static async Task<string> GetChangedFileTextAsync(VsrModule module, GitItemStatus file)
         {
             var changes = await module.GetCurrentChangesAsync(file.Name, file.OldName, file.Staged == StagedStatus.Index, "-U1000000")
                 .ConfigureAwait(false);

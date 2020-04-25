@@ -23,7 +23,7 @@ namespace GitCommandsTests
         private static readonly ObjectId Sha2 = ObjectId.Parse("d12782217535ef00f4f84773d5d33691bbf81d00");
         private static readonly ObjectId Sha3 = ObjectId.Parse("dd678b7160a9a5890c8725e33930947af210c765");
 
-        private GitModule _gitModule;
+        private VsrModule _gitModule;
         private MockExecutable _executable;
 
         [SetUp]
@@ -31,7 +31,7 @@ namespace GitCommandsTests
         {
             _executable = new MockExecutable();
 
-            _gitModule = GetGitModuleWithExecutable(executable: _executable);
+            _gitModule = GetVsrModuleWithExecutable(executable: _executable);
         }
 
         [TearDown]
@@ -103,7 +103,7 @@ namespace GitCommandsTests
         [TestCase(@"\353\221\220\353\213\244\777.txt", @"\353\221\220\353\213\244\777.txt")] // valid and invalid in the same string
         public void UnescapeOctalCodePoints_handles_octal_codes(string input, string expected)
         {
-            Assert.AreEqual(expected, GitModule.UnescapeOctalCodePoints(input));
+            Assert.AreEqual(expected, VsrModule.UnescapeOctalCodePoints(input));
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace GitCommandsTests
             // If nothing was escaped in the original string, the same string instance is returned.
             const string s = "Hello, World!";
 
-            Assert.AreSame(s, GitModule.UnescapeOctalCodePoints(s));
+            Assert.AreSame(s, VsrModule.UnescapeOctalCodePoints(s));
         }
 
         [TestCase(null, null)]
@@ -123,21 +123,21 @@ namespace GitCommandsTests
         [TestCase(@"Привет, World!", @"\320\237\321\200\320\270\320\262\320\265\321\202, World!")] // escaped and not escaped in the same string
         public void EscapeOctalCodePoints_handles_text(string input, string expected)
         {
-            Assert.AreEqual(expected, GitModule.EscapeOctalCodePoints(input));
+            Assert.AreEqual(expected, VsrModule.EscapeOctalCodePoints(input));
         }
 
         [TestCase("Hello, World!")]
         [TestCase("두다.txt")]
         public void UnescapeOctalCodePoints_reverses_EscapeOctalCodePoints(string input)
         {
-            Assert.AreEqual(input, GitModule.UnescapeOctalCodePoints(GitModule.EscapeOctalCodePoints(input)));
+            Assert.AreEqual(input, VsrModule.UnescapeOctalCodePoints(VsrModule.EscapeOctalCodePoints(input)));
         }
 
         [Test]
         public void FetchCmd()
         {
             // TODO test case where this is false
-            Assert.IsTrue(GitVersion.Current.FetchCanAskForProgress);
+            Assert.IsTrue(VsrVersion.Current.FetchCanAskForProgress);
 
             using (_executable.StageOutput("rev-parse \"refs/heads/remotebranch~0\"", null))
             {
@@ -179,7 +179,7 @@ namespace GitCommandsTests
         public void PushAllCmd()
         {
             // TODO test case where this is false
-            Assert.IsTrue(GitVersion.Current.PushCanAskForProgress);
+            Assert.IsTrue(VsrVersion.Current.PushCanAskForProgress);
 
             Assert.AreEqual(
                 "push --progress --all \"remote\"",
@@ -714,7 +714,7 @@ namespace GitCommandsTests
                 // Add submodule
                 moduleTestHelperSuper.Module.GitExecutable.GetOutput(GitCommandHelpers.AddSubmoduleCmd(moduleTestHelperSub.Module.WorkingDir.ToPosixPath(), "sub repo", null, true));
                 moduleTestHelperSuper.Module.GitExecutable.GetOutput(@"commit -am ""Add submodule""");
-                GitModule moduleSub = new GitModule(Path.Combine(moduleTestHelperSuper.Module.WorkingDir, "sub repo").ToPosixPath());
+                VsrModule moduleSub = new VsrModule(Path.Combine(moduleTestHelperSuper.Module.WorkingDir, "sub repo").ToPosixPath());
 
                 // Init submodule
                 moduleTestHelperSuper.Module.GitExecutable.GetOutput(@"submodule update --init --recursive");
@@ -810,10 +810,10 @@ namespace GitCommandsTests
         [TestCase(new string[] { "abc", "def" }, "checkout-index --index --force -- \"abc\" \"def\"")]
         public void ResetFiles_should_work_as_expected(string[] files, string args)
         {
-            // Real GitModule is need to access AppSettings.GitCommand static property, avoid exception with dummy GitModule
+            // Real VsrModule is need to access AppSettings.GitCommand static property, avoid exception with dummy VsrModule
             using (var moduleTestHelper = new GitModuleTestHelper())
             {
-                var gitModule = GetGitModuleWithExecutable(_executable, module: moduleTestHelper.Module);
+                var gitModule = GetVsrModuleWithExecutable(_executable, module: moduleTestHelper.Module);
                 string dummyCommandOutput = "The answer is 42. Just check that the Git arguments are as expected.";
                 _executable.StageOutput(args, dummyCommandOutput);
                 var result = gitModule.ResetFiles(files.ToList());
@@ -824,10 +824,10 @@ namespace GitCommandsTests
         [TestCaseSource(nameof(BatchUnstageFilesTestCases))]
         public void BatchUnstageFiles_should_work_as_expected(GitItemStatus[] files, string[] args, bool expectedResult)
         {
-            // Real GitModule is need to access AppSettings.GitCommand static property, avoid exception with dummy GitModule
+            // Real VsrModule is need to access AppSettings.GitCommand static property, avoid exception with dummy VsrModule
             using (var moduleTestHelper = new GitModuleTestHelper())
             {
-                var gitModule = GetGitModuleWithExecutable(_executable, module: moduleTestHelper.Module);
+                var gitModule = GetVsrModuleWithExecutable(_executable, module: moduleTestHelper.Module);
 
                 foreach (var arg in args)
                 {
@@ -868,22 +868,22 @@ namespace GitCommandsTests
         };
 
         /// <summary>
-        /// Create a GitModule with mockable GitExecutable
+        /// Create a VsrModule with mockable GitExecutable
         /// </summary>
         /// <param name="path">Path to the module</param>
         /// <param name="executable">The mock executable</param>
-        /// <returns>The GitModule</returns>
-        private GitModule GetGitModuleWithExecutable(IExecutable executable, string path = "", GitModule module = null)
+        /// <returns>The VsrModule</returns>
+        private VsrModule GetVsrModuleWithExecutable(IExecutable executable, string path = "", VsrModule module = null)
         {
             if (module == null)
             {
-                module = new GitModule(path);
+                module = new VsrModule(path);
             }
 
-            typeof(GitModule).GetField("_gitExecutable", BindingFlags.Instance | BindingFlags.NonPublic)
+            typeof(VsrModule).GetField("_gitExecutable", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(module, executable);
-            var cmdRunner = new GitCommandRunner(executable, () => GitModule.SystemEncoding);
-            typeof(GitModule).GetField("_gitCommandRunner", BindingFlags.Instance | BindingFlags.NonPublic)
+            var cmdRunner = new GitCommandRunner(executable, () => VsrModule.SystemEncoding);
+            typeof(VsrModule).GetField("_gitCommandRunner", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(module, cmdRunner);
 
             return module;

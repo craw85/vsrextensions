@@ -43,7 +43,7 @@ namespace GitExtensions
 
             try
             {
-                DiagnosticsClient.Initialize(ThisAssembly.Git.IsDirty);
+                DiagnosticsClient.Initialize(VsrInfo.IsDirty);
 
                 if (!Debugger.IsAttached)
                 {
@@ -63,8 +63,8 @@ namespace GitExtensions
             }
 
             // This is done here so these values can be used in the GitGui project but this project is the authority of the values.
-            UserEnvironmentInformation.Initialise(ThisAssembly.Git.Sha, ThisAssembly.Git.IsDirty);
-            AppTitleGenerator.Initialise(ThisAssembly.Git.Sha, ThisAssembly.Git.Branch);
+            UserEnvironmentInformation.Initialise(VsrInfo.Sha, VsrInfo.IsDirty);
+            AppTitleGenerator.Initialise(VsrInfo.Sha, VsrInfo.Branch);
 
             // NOTE we perform the rest of the application's startup in another method to defer
             // the JIT processing more types than required to configure NBug.
@@ -184,7 +184,7 @@ namespace GitExtensions
                         dirArg = Path.GetDirectoryName(dirArg);
                     }
 
-                    workingDir = GitModule.TryFindGitWorkingDir(dirArg);
+                    workingDir = VsrModule.TryFindGitWorkingDir(dirArg);
 
                     if (Directory.Exists(workingDir))
                     {
@@ -200,7 +200,7 @@ namespace GitExtensions
 
             if (args.Length <= 1 && workingDir == null && AppSettings.StartWithRecentWorkingDir)
             {
-                if (GitModule.IsValidGitWorkingDir(AppSettings.RecentWorkingDir))
+                if (VsrModule.IsValidGitWorkingDir(AppSettings.RecentWorkingDir))
                 {
                     workingDir = AppSettings.RecentWorkingDir;
                 }
@@ -211,7 +211,7 @@ namespace GitExtensions
                 // If no working dir is yet found, try to find one relative to the current working directory.
                 // This allows the `fileeditor` command to discover repository configuration which is
                 // required for core.commentChar support.
-                workingDir = GitModule.TryFindGitWorkingDir(Environment.CurrentDirectory);
+                workingDir = VsrModule.TryFindGitWorkingDir(Environment.CurrentDirectory);
             }
 
             return workingDir;
@@ -338,7 +338,7 @@ namespace GitExtensions
         {
             // if the error happens before we had a chance to init the environment information
             // the call to GetInformation() will fail. A double Initialise() call is safe.
-            UserEnvironmentInformation.Initialise(ThisAssembly.Git.Sha, ThisAssembly.Git.IsDirty);
+            UserEnvironmentInformation.Initialise(VsrInfo.Sha, VsrInfo.IsDirty);
             var envInfo = UserEnvironmentInformation.GetInformation();
 
             using (var form = new GitUI.NBugReports.BugReportForm())

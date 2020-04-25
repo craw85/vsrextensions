@@ -31,7 +31,7 @@ namespace GitUI.Editor
             { 'd', ("drop", new HighlightColor(Color.Red, bold: true, italic: false)) }
         };
 
-        public RebaseTodoHighlightingStrategy([NotNull] GitModule module)
+        public RebaseTodoHighlightingStrategy([NotNull] VsrModule module)
             : base("GitRebaseTodo", module)
         {
         }

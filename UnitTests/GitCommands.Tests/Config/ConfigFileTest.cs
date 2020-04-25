@@ -18,14 +18,14 @@ namespace GitCommandsTests.Config
     [TestFixture]
     public class ConfigFileTest
     {
-        private GitModule _module;
-        private GitModule Module
+        private VsrModule _module;
+        private VsrModule Module
         {
             get
             {
                 if (_module == null)
                 {
-                    _module = new GitModule(GetTempFolder());
+                    _module = new VsrModule(GetTempFolder());
                 }
 
                 return _module;
@@ -97,7 +97,7 @@ namespace GitCommandsTests.Config
             // TEST DATA
             {
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), GetDefaultConfigFileContent(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), GetDefaultConfigFileContent(), VsrModule.SystemEncoding);
             }
 
             var configFile = new ConfigFile(GetConfigFileName() + "\\", false);
@@ -127,7 +127,7 @@ namespace GitCommandsTests.Config
             configFile.Save();
 
             byte[] expectedFileContent =
-                GitModule.SystemEncoding.GetBytes(
+                VsrModule.SystemEncoding.GetBytes(
                     string.Format("[branch \"BranchName1\"]{0}\tremote = origin1{0}", Environment.NewLine));
 
             Assert.IsTrue(File.Exists(GetConfigFileName()));
@@ -212,7 +212,7 @@ namespace GitCommandsTests.Config
             // TEST DATA
             {
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), GetDefaultConfigFileContent(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), GetDefaultConfigFileContent(), VsrModule.SystemEncoding);
             }
 
             var configFile = new ConfigFile(GetConfigFileName(), true);
@@ -234,7 +234,7 @@ namespace GitCommandsTests.Config
             // TEST DATA
             {
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), GetDefaultConfigFileContent(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), GetDefaultConfigFileContent(), VsrModule.SystemEncoding);
 
                 // Make sure it is hidden
                 var configFile = new FileInfo(GetConfigFileName());
@@ -282,7 +282,7 @@ namespace GitCommandsTests.Config
                 content.AppendLine("	path = c:/Program Files (x86)/KDiff3/kdiff3.exe");
 
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), content.ToString(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), content.ToString(), VsrModule.SystemEncoding);
             }
 
             // CHECK GET CONFIG VALUE
@@ -337,7 +337,7 @@ namespace GitCommandsTests.Config
                 content.AppendLine("	puttykeyfile = C:/Users/sergiy.pustovit/spustovit_sintez_key_1.ppk");
 
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), content.ToString(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), content.ToString(), VsrModule.SystemEncoding);
             }
 
             // CHECK GET CONFIG VALUE
@@ -376,7 +376,7 @@ namespace GitCommandsTests.Config
                 content.AppendLine("	logregex = \"\\n([A-Z][A-Z0-9]+-/d+)\"");
 
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), content.ToString(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), content.ToString(), VsrModule.SystemEncoding);
             }
 
             // CHECK GET CONFIG VALUE
@@ -433,7 +433,7 @@ namespace GitCommandsTests.Config
                 content.AppendLine("merge = \"refs/heads/jb/RevisionLinks#1582\"");
 
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), content.ToString(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), content.ToString(), VsrModule.SystemEncoding);
             }
 
             // CHECK GET CONFIG VALUE
@@ -459,7 +459,7 @@ namespace GitCommandsTests.Config
                 content.AppendLine("	url = http://192.168.0.1:8080/browse/%BUGID% ; url");
 
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), content.ToString(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), content.ToString(), VsrModule.SystemEncoding);
             }
 
             // CHECK GET CONFIG VALUE
@@ -480,7 +480,7 @@ namespace GitCommandsTests.Config
                 content.AppendLine("	test = test");
 
                 // Write test config
-                File.WriteAllText(GetConfigFileName(), content.ToString(), GitModule.SystemEncoding);
+                File.WriteAllText(GetConfigFileName(), content.ToString(), VsrModule.SystemEncoding);
             }
 
             // CHECK GET CONFIG VALUE

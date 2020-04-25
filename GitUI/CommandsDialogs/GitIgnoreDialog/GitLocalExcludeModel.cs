@@ -24,9 +24,9 @@ namespace GitUI.CommandsDialogs.GitIgnoreDialog
         private readonly TranslationString _saveFileQuestion =
             new TranslationString("Save changes to .git/info/exclude?");
 
-        private readonly IGitModule _module;
+        private readonly IVsrModule _module;
 
-        public GitLocalExcludeModel(IGitModule module)
+        public GitLocalExcludeModel(IVsrModule module)
         {
             _module = module;
 

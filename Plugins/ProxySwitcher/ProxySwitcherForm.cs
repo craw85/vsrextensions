@@ -13,7 +13,7 @@ namespace ProxySwitcher
     {
         private readonly ProxySwitcherPlugin _plugin;
         private readonly ISettingsSource _settings;
-        private readonly IGitModule _gitCommands;
+        private readonly IVsrModule _gitCommands;
 
         #region Translation
         private readonly TranslationString _pluginDescription = new TranslationString("Proxy Switcher");
@@ -38,7 +38,7 @@ namespace ProxySwitcher
             Text = _pluginDescription.Text;
             _plugin = plugin;
             _settings = settings;
-            _gitCommands = gitUiCommands.GitModule;
+            _gitCommands = gitUiCommands.VsrModule;
         }
 
         private void ProxySwitcherForm_Load(object sender, EventArgs e)

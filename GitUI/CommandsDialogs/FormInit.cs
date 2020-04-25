@@ -23,9 +23,9 @@ namespace GitUI.CommandsDialogs
         private readonly TranslationString _initMsgBoxCaption =
             new TranslationString("Create new repository");
 
-        private readonly EventHandler<GitModuleEventArgs> _gitModuleChanged;
+        private readonly EventHandler<VsrModuleEventArgs> _gitModuleChanged;
 
-        public FormInit(string dir, EventHandler<GitModuleEventArgs> gitModuleChanged)
+        public FormInit(string dir, EventHandler<VsrModuleEventArgs> gitModuleChanged)
         {
             _gitModuleChanged = gitModuleChanged;
             InitializeComponent();
@@ -60,7 +60,7 @@ namespace GitUI.CommandsDialogs
                 return;
             }
 
-            var module = new GitModule(directoryPath);
+            var module = new VsrModule(directoryPath);
 
             if (!System.IO.Directory.Exists(module.WorkingDir))
             {
@@ -69,7 +69,7 @@ namespace GitUI.CommandsDialogs
 
             MessageBox.Show(this, module.Init(Central.Checked, Central.Checked), _initMsgBoxCaption.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            _gitModuleChanged?.Invoke(this, new GitModuleEventArgs(module));
+            _gitModuleChanged?.Invoke(this, new VsrModuleEventArgs(module));
 
             ThreadHelper.JoinableTaskFactory.Run(() => RepositoryHistoryManager.Locals.AddAsMostRecentAsync(directoryPath));
             Close();

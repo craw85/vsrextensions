@@ -76,12 +76,12 @@ namespace ResourceManager
             return datetime.LocalDateTime.ToString("G");
         }
 
-        public static string GetSubmoduleText(GitModule superproject, string name, string hash)
+        public static string GetSubmoduleText(VsrModule superproject, string name, string hash)
         {
             var sb = new StringBuilder();
             sb.AppendLine("Submodule " + name);
             sb.AppendLine();
-            GitModule module = superproject.GetSubmodule(name);
+            VsrModule module = superproject.GetSubmodule(name);
 
             // TODO File access for Git revision access
             if (module.IsValidGitWorkingDir())
@@ -109,7 +109,7 @@ namespace ResourceManager
             return sb.ToString();
         }
 
-        public static string ProcessSubmodulePatch(GitModule module, string fileName, Patch patch)
+        public static string ProcessSubmodulePatch(VsrModule module, string fileName, Patch patch)
         {
             string text = patch?.Text;
             var status = GitCommandHelpers.ParseSubmoduleStatus(text, module, fileName);
@@ -121,7 +121,7 @@ namespace ResourceManager
             return ProcessSubmoduleStatus(module, status);
         }
 
-        public static string ProcessSubmoduleStatus([NotNull] GitModule module, [NotNull] GitSubmoduleStatus status)
+        public static string ProcessSubmoduleStatus([NotNull] VsrModule module, [NotNull] GitSubmoduleStatus status)
         {
             if (module == null)
             {
@@ -133,7 +133,7 @@ namespace ResourceManager
                 throw new ArgumentNullException(nameof(status));
             }
 
-            GitModule gitModule = module.GetSubmodule(status.Name);
+            VsrModule gitModule = module.GetSubmodule(status.Name);
             var sb = new StringBuilder();
             sb.AppendLine("Submodule " + status.Name + " Change");
 

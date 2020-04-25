@@ -17,11 +17,11 @@ namespace GitCommands.Git
 
     public sealed class SystemEncodingReader : ISystemEncodingReader
     {
-        private readonly IGitModule _module;
+        private readonly IVsrModule _module;
 
-        public SystemEncodingReader(IGitModule module)
+        public SystemEncodingReader(IVsrModule module)
         {
-            _module = module ?? new GitModule("");
+            _module = module ?? new VsrModule("");
         }
 
         public SystemEncodingReader()

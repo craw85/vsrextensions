@@ -66,7 +66,7 @@ namespace GitCommandsTests.DiffMergeTools
         [Test]
         public void ConfiguredMergeTool_should_return_value_in_config_file()
         {
-            _configurationManager.ConfiguredMergeTool.Should().Be(GitVersion.Current.SupportGuiMergeTool ? MergeToolName : MergeToolNameNoGui);
+            _configurationManager.ConfiguredMergeTool.Should().Be(VsrVersion.Current.SupportGuiMergeTool ? MergeToolName : MergeToolNameNoGui);
         }
 
         [TestCase(null)]

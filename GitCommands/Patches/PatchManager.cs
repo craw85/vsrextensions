@@ -13,7 +13,7 @@ namespace GitCommands.Patches
     public static class PatchManager
     {
         [CanBeNull]
-        public static byte[] GetResetWorkTreeLinesAsPatch([NotNull] GitModule module, [NotNull] string text, int selectionPosition, int selectionLength, [NotNull] Encoding fileContentEncoding)
+        public static byte[] GetResetWorkTreeLinesAsPatch([NotNull] VsrModule module, [NotNull] string text, int selectionPosition, int selectionLength, [NotNull] Encoding fileContentEncoding)
         {
             var selectedChunks = GetSelectedChunks(text, selectionPosition, selectionLength, out var header);
 
@@ -91,7 +91,7 @@ namespace GitCommands.Patches
         }
 
         [CanBeNull]
-        public static byte[] GetSelectedLinesAsNewPatch([NotNull] GitModule module, [NotNull] string newFileName, [NotNull] string text, int selectionPosition, int selectionLength, [NotNull] Encoding fileContentEncoding, bool reset, byte[] filePreamble, string treeGuid)
+        public static byte[] GetSelectedLinesAsNewPatch([NotNull] VsrModule module, [NotNull] string newFileName, [NotNull] string text, int selectionPosition, int selectionLength, [NotNull] Encoding fileContentEncoding, bool reset, byte[] filePreamble, string treeGuid)
         {
             var selectedChunks = FromNewFile(module, text, selectionPosition, selectionLength, reset, filePreamble, fileContentEncoding);
             var isTracked = treeGuid != null;
@@ -131,7 +131,7 @@ namespace GitCommands.Patches
         [NotNull]
         private static byte[] GetPatchBytes([NotNull] string header, [NotNull] string body, [NotNull] Encoding fileContentEncoding)
         {
-            byte[] hb = EncodingHelper.ConvertTo(GitModule.SystemEncoding, header);
+            byte[] hb = EncodingHelper.ConvertTo(VsrModule.SystemEncoding, header);
             byte[] bb = EncodingHelper.ConvertTo(fileContentEncoding, body);
             byte[] result = new byte[hb.Length + bb.Length];
             hb.CopyTo(result, 0);
@@ -189,7 +189,7 @@ namespace GitCommands.Patches
         }
 
         [NotNull]
-        private static IReadOnlyList<Chunk> FromNewFile([NotNull] GitModule module, [NotNull] string text, int selectionPosition, int selectionLength, bool reset, [NotNull] byte[] filePreamble, [NotNull] Encoding fileContentEncoding)
+        private static IReadOnlyList<Chunk> FromNewFile([NotNull] VsrModule module, [NotNull] string text, int selectionPosition, int selectionLength, bool reset, [NotNull] byte[] filePreamble, [NotNull] Encoding fileContentEncoding)
         {
             return new[] { Chunk.FromNewFile(module, text, selectionPosition, selectionLength, reset, filePreamble, fileContentEncoding) };
         }
@@ -570,7 +570,7 @@ namespace GitCommands.Patches
                         inPreContext = false;
                         result.AddDiffLine(patchLine, false);
                     }
-                    else if (line.StartsWith(GitModule.NoNewLineAtTheEnd))
+                    else if (line.StartsWith(VsrModule.NoNewLineAtTheEnd))
                     {
                         if (result.CurrentSubChunk.AddedLines.Count > 0 && result.CurrentSubChunk.PostContext.Count == 0)
                         {
@@ -595,7 +595,7 @@ namespace GitCommands.Patches
         }
 
         [NotNull]
-        public static Chunk FromNewFile([NotNull] GitModule module, [NotNull] string fileText, int selectionPosition, int selectionLength, bool reset, [NotNull] byte[] filePreamble, [NotNull] Encoding fileContentEncoding)
+        public static Chunk FromNewFile([NotNull] VsrModule module, [NotNull] string fileText, int selectionPosition, int selectionLength, bool reset, [NotNull] byte[] filePreamble, [NotNull] Encoding fileContentEncoding)
         {
             var result = new Chunk { _startLine = 0 };
 
@@ -636,7 +636,7 @@ namespace GitCommands.Patches
                 {
                     if (line != string.Empty)
                     {
-                        result.CurrentSubChunk.IsNoNewLineAtTheEnd = GitModule.NoNewLineAtTheEnd;
+                        result.CurrentSubChunk.IsNoNewLineAtTheEnd = VsrModule.NoNewLineAtTheEnd;
                         result.AddDiffLine(patchLine, reset);
                         if (reset && patchLine.Selected)
                         {
@@ -651,7 +651,7 @@ namespace GitCommands.Patches
                                 result.CurrentSubChunk.AddedLines.Add(clonedLine);
                             }
 
-                            result.CurrentSubChunk.WasNoNewLineAtTheEnd = GitModule.NoNewLineAtTheEnd;
+                            result.CurrentSubChunk.WasNoNewLineAtTheEnd = VsrModule.NoNewLineAtTheEnd;
                         }
                     }
                 }

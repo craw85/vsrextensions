@@ -58,9 +58,9 @@ namespace GitCommands.Statistics
         public event Action<Commit> CommitLoaded;
 
         private readonly CancellationTokenSequence _cancellationTokenSequence = new CancellationTokenSequence();
-        private readonly IGitModule _module;
+        private readonly IVsrModule _module;
 
-        public ImpactLoader(IGitModule module)
+        public ImpactLoader(IVsrModule module)
         {
             _module = module;
         }
@@ -143,7 +143,7 @@ namespace GitCommands.Statistics
             return tasks;
         }
 
-        private void LoadModuleInfo(string command, IGitModule module, CancellationToken token)
+        private void LoadModuleInfo(string command, IVsrModule module, CancellationToken token)
         {
             using (var lineEnumerator = module.GitExecutable.GetOutputLines(command).GetEnumerator())
             {

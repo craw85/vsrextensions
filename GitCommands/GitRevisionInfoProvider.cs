@@ -17,9 +17,9 @@ namespace GitCommands
 
     public sealed class GitRevisionInfoProvider : IGitRevisionInfoProvider
     {
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
-        public GitRevisionInfoProvider(Func<IGitModule> getModule)
+        public GitRevisionInfoProvider(Func<IVsrModule> getModule)
         {
             _getModule = getModule;
         }
@@ -46,7 +46,7 @@ namespace GitCommands
 
             if (module == null)
             {
-                throw new ArgumentException($"Require a valid instance of {nameof(IGitModule)}");
+                throw new ArgumentException($"Require a valid instance of {nameof(IVsrModule)}");
             }
 
             return YieldSubItems();

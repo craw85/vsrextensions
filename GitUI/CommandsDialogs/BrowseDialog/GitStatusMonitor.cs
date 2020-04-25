@@ -236,7 +236,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             }
         }
 
-        private IGitModule Module => UICommandsSource.UICommands.Module;
+        private IVsrModule Module => UICommandsSource.UICommands.Module;
 
         private IGitUICommandsSource UICommandsSource { get; set; }
 
@@ -341,12 +341,12 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             // don't update status while repository is being modified by GitExt,
             // repository status may change after these actions.
             if (UICommandsSource.UICommands.RepoChangedNotifier.IsLocked ||
-                (GitVersion.Current.RaceConditionWhenGitStatusIsUpdatingIndex && Module.IsRunningGitProcess()))
+                (VsrVersion.Current.RaceConditionWhenGitStatusIsUpdatingIndex && Module.IsRunningGitProcess()))
             {
                 return;
             }
 
-            IGitModule module;
+            IVsrModule module;
             CancellationToken cancelToken;
             int commandStartTime;
 

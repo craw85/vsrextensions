@@ -16,7 +16,7 @@ namespace GitCommandsTests.Remote
     [TestFixture]
     internal class ConfigFileRemoteSettingsManagerTests
     {
-        private IGitModule _module;
+        private IVsrModule _module;
         private IConfigFileSettings _configFile;
         private IConfigFileRemoteSettingsManager _remotesManager;
 
@@ -25,7 +25,7 @@ namespace GitCommandsTests.Remote
         {
             _configFile = Substitute.For<IConfigFileSettings>();
 
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _module.LocalConfigFile.Returns(_configFile);
 
             _remotesManager = new ConfigFileRemoteSettingsManager(() => _module);

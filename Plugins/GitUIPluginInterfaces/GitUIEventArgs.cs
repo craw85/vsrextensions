@@ -16,6 +16,6 @@ namespace GitUIPluginInterfaces
 
         public IWin32Window OwnerForm { get; }
 
-        public IGitModule GitModule => GitUICommands.GitModule;
+        public IVsrModule VsrModule => GitUICommands.VsrModule;
     }
 }

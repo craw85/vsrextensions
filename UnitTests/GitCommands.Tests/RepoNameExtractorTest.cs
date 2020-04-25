@@ -10,7 +10,7 @@ namespace GitCommandsTests
     [TestFixture]
     public class RepoNameExtractorTest
     {
-        private IGitModule _module;
+        private IVsrModule _module;
         private IConfigFileSettings _configFile;
         private IRepoNameExtractor _repoNameExtractor;
 
@@ -19,7 +19,7 @@ namespace GitCommandsTests
         {
             _configFile = Substitute.For<IConfigFileSettings>();
 
-            _module = Substitute.For<IGitModule>();
+            _module = Substitute.For<IVsrModule>();
             _module.LocalConfigFile.Returns(_configFile);
             _repoNameExtractor = new RepoNameExtractor(() => _module);
         }

@@ -40,7 +40,7 @@ namespace JiraCommitHintPlugin
         private readonly StringSetting _jqlQuerySettings = new StringSetting("JDL Query", "JQL Query", "assignee = currentUser() and resolution is EMPTY ORDER BY updatedDate DESC", true);
         private readonly StringSetting _stringTemplateSetting = new StringSetting("Jira Message Template", "Message Template", DefaultFormat, true);
         private readonly string _jiraFields = $"{{{string.Join("} {", typeof(Issue).GetProperties().Where(i => i.CanRead).Select(i => i.Name).OrderBy(i => i).ToArray())}}}";
-        private IGitModule _gitModule;
+        private IVsrModule _gitModule;
         private JiraTaskDTO[] _currentMessages;
         private Button _btnPreview;
 
@@ -167,7 +167,7 @@ namespace JiraCommitHintPlugin
         public override void Register(IGitUICommands gitUiCommands)
         {
             base.Register(gitUiCommands);
-            _gitModule = gitUiCommands.GitModule;
+            _gitModule = gitUiCommands.VsrModule;
             gitUiCommands.PostSettings += gitUiCommands_PostSettings;
             gitUiCommands.PreCommit += gitUiCommands_PreCommit;
             gitUiCommands.PostCommit += gitUiCommands_PostRepositoryChanged;

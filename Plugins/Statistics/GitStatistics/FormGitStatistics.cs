@@ -32,7 +32,7 @@ namespace GitStatistics
 
         private readonly string _codeFilePattern;
         private readonly bool _countSubmodules;
-        private readonly IGitModule _module;
+        private readonly IVsrModule _module;
 
         private LineCounter _lineCounter;
 
@@ -55,7 +55,7 @@ namespace GitStatistics
 
         public string DirectoriesToIgnore { get; set; }
 
-        public FormGitStatistics(IGitModule module, string codeFilePattern, bool countSubmodules)
+        public FormGitStatistics(IVsrModule module, string codeFilePattern, bool countSubmodules)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -174,7 +174,7 @@ namespace GitStatistics
             if (_countSubmodules)
             {
                 var submodules = _module.GetSubmodulesInfo()
-                    .Select(submodule => new GitModule(Path.Combine(_module.WorkingDir, submodule.LocalPath)));
+                    .Select(submodule => new VsrModule(Path.Combine(_module.WorkingDir, submodule.LocalPath)));
 
                 foreach (var submodule in submodules)
                 {
@@ -187,7 +187,7 @@ namespace GitStatistics
 
             return;
 
-            void LoadLinesOfCodeForModule(IGitModule module)
+            void LoadLinesOfCodeForModule(IVsrModule module)
             {
                 var filesToCheck = module
                     .GetTree(module.RevParse("HEAD"), full: true)

@@ -73,7 +73,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             try
             {
                 var github = new Client();
-                Repository gitExtRepo = github.getRepository("gitextensions", "gitextensions");
+                Repository gitExtRepo = github.getRepository("eatplayhate", "versionr");
 
                 var configData = gitExtRepo?.GetRef("heads/configdata");
 
@@ -83,7 +83,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
                     return;
                 }
 
-                var releases = tree.Tree.FirstOrDefault(entry => "GitExtensions.releases".Equals(entry.Path, StringComparison.InvariantCultureIgnoreCase));
+                var releases = tree.Tree.FirstOrDefault(entry => ".releases".Equals(entry.Path, StringComparison.InvariantCultureIgnoreCase));
 
                 if (releases?.Blob.Value != null)
                 {

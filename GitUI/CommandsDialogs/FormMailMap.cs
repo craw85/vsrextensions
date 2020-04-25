@@ -85,7 +85,7 @@ namespace GitUI.CommandsDialogs
                                 MailMapFile += Environment.NewLine;
                             }
 
-                            File.WriteAllBytes(x, GitModule.SystemEncoding.GetBytes(MailMapFile));
+                            File.WriteAllBytes(x, VsrModule.SystemEncoding.GetBytes(MailMapFile));
                         });
 
                 UICommands.RepoChangedNotifier.Notify();

@@ -59,7 +59,7 @@ namespace GitImpact
             MouseWheel += ImpactControl_MouseWheel;
         }
 
-        public void Init(IGitModule module)
+        public void Init(IVsrModule module)
         {
             _impactLoader = new ImpactLoader(module)
             {

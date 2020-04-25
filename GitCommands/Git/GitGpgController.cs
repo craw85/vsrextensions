@@ -55,7 +55,7 @@ namespace GitCommands.Gpg
 
     public class GitGpgController : IGitGpgController
     {
-        private readonly Func<IGitModule> _getModule;
+        private readonly Func<IVsrModule> _getModule;
 
         /* Commit GPG status */
         private const string GoodSign = "G";
@@ -82,7 +82,7 @@ namespace GitCommands.Gpg
         /// Obtain the tag verification message for all the tag in current git revision
         /// </summary>
         /// <returns>Full concatenated string coming from GPG analysis on all tags on current git revision.</returns>
-        public GitGpgController(Func<IGitModule> getModule)
+        public GitGpgController(Func<IVsrModule> getModule)
         {
             _getModule = getModule;
         }
@@ -270,12 +270,12 @@ namespace GitCommands.Gpg
             return tagVerifyMessage;
         }
 
-        private IGitModule GetModule()
+        private IVsrModule GetModule()
         {
             var module = _getModule();
             if (module == null)
             {
-                throw new ArgumentException($"Require a valid instance of {nameof(IGitModule)}");
+                throw new ArgumentException($"Require a valid instance of {nameof(IVsrModule)}");
             }
 
             return module;

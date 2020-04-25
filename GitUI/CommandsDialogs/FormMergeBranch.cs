@@ -68,7 +68,7 @@ namespace GitUI.CommandsDialogs
                 }
             }
 
-            if (!GitVersion.Current.SupportMergeUnrelatedHistory)
+            if (!VsrVersion.Current.SupportMergeUnrelatedHistory)
             {
                 allowUnrelatedHistories.Visible = false;
                 allowUnrelatedHistories.Checked = false;

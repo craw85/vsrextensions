@@ -54,7 +54,7 @@ namespace GitCommands
         private readonly CancellationTokenSequence _cancellationTokenSequence = new CancellationTokenSequence();
 
         public void Execute(
-            GitModule module,
+            VsrModule module,
             IReadOnlyList<IGitRef> refs,
             IObserver<GitRevision> subject,
             RefFilterOptions refFilterOptions,
@@ -74,7 +74,7 @@ namespace GitCommands
         }
 
         private async Task ExecuteAsync(
-            GitModule module,
+            VsrModule module,
             IReadOnlyList<IGitRef> refs,
             IObserver<GitRevision> subject,
             RefFilterOptions refFilterOptions,
@@ -114,7 +114,7 @@ namespace GitCommands
             // cache it for the duration of the loop.
             var logOutputEncoding = module.LogOutputEncoding;
 
-            using (var process = module.GitCommandRunner.RunDetached(arguments, redirectOutput: true, outputEncoding: GitModule.LosslessEncoding))
+            using (var process = module.GitCommandRunner.RunDetached(arguments, redirectOutput: true, outputEncoding: VsrModule.LosslessEncoding))
             {
                 token.ThrowIfCancellationRequested();
 
@@ -206,7 +206,7 @@ namespace GitCommands
             };
         }
 
-        private static void UpdateSelectedRef(GitModule module, IReadOnlyList<IGitRef> refs, string branchName)
+        private static void UpdateSelectedRef(VsrModule module, IReadOnlyList<IGitRef> refs, string branchName)
         {
             var selectedRef = refs.FirstOrDefault(head => head.Name == branchName);
 
@@ -229,7 +229,7 @@ namespace GitCommands
 
         [ContractAnnotation("=>false,revision:null")]
         [ContractAnnotation("=>true,revision:notnull")]
-        private static bool TryParseRevision(GitModule module, ArraySegment<byte> chunk, StringPool stringPool, Encoding logOutputEncoding, out GitRevision revision)
+        private static bool TryParseRevision(VsrModule module, ArraySegment<byte> chunk, StringPool stringPool, Encoding logOutputEncoding, out GitRevision revision)
         {
             // The 'chunk' of data contains a complete git log item, encoded.
             // This method decodes that chunk and produces a revision object.

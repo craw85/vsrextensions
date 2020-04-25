@@ -187,9 +187,9 @@ namespace GitUITests.UserControls
             sut.IsHighlighted(new GitRevision(ObjectId.Random()) { AuthorEmail = authorEmail }).Should().Be(expected);
         }
 
-        private static GitModule NewModule()
+        private static VsrModule NewModule()
         {
-            return new GitModule(Path.GetTempPath());
+            return new VsrModule(Path.GetTempPath());
         }
 
         private static GitRevision NewRevisionWithAuthorEmail(string authorEmail)

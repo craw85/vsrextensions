@@ -41,7 +41,7 @@ namespace GitUI.CommandsDialogs.SettingsDialog
 
         protected CommonLogic CommonLogic => CheckSettingsLogic.CommonLogic;
 
-        protected GitModule Module => CommonLogic.Module;
+        protected VsrModule Module => CommonLogic.Module;
 
         protected ToolTip ToolTip => toolTip1;
 

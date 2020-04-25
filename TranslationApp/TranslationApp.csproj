@@ -3,6 +3,7 @@
     <ApplicationIcon>..\Logo\git-extensions-logo.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
     <StartupObject />
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />

@@ -11,7 +11,7 @@ namespace GitUI.Script
     public static class ScriptRunner
     {
         /// <summary>Tries to run scripts identified by a <paramref name="command"/></summary>
-        public static CommandStatus ExecuteScriptCommand(IWin32Window owner, GitModule module, int command, IGitUICommands uiCommands, RevisionGridControl revisionGrid)
+        public static CommandStatus ExecuteScriptCommand(IWin32Window owner, VsrModule module, int command, IGitUICommands uiCommands, RevisionGridControl revisionGrid)
         {
             var anyScriptExecuted = false;
             var needsGridRefresh = false;
@@ -29,13 +29,13 @@ namespace GitUI.Script
             return new CommandStatus(anyScriptExecuted, needsGridRefresh);
         }
 
-        public static CommandStatus RunScript(IWin32Window owner, IGitModule module, string scriptKey, IGitUICommands uiCommands, RevisionGridControl revisionGrid)
+        public static CommandStatus RunScript(IWin32Window owner, IVsrModule module, string scriptKey, IGitUICommands uiCommands, RevisionGridControl revisionGrid)
         {
             return RunScript(owner, module, scriptKey, uiCommands, revisionGrid,
                 msg => MessageBox.Show(owner, msg, Strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error));
         }
 
-        public static CommandStatus RunScript(IWin32Window owner, IGitModule module, string scriptKey, IGitUICommands uiCommands,
+        public static CommandStatus RunScript(IWin32Window owner, IVsrModule module, string scriptKey, IGitUICommands uiCommands,
             RevisionGridControl revisionGrid, Action<string> showError)
         {
             if (string.IsNullOrEmpty(scriptKey))
@@ -72,7 +72,7 @@ namespace GitUI.Script
             return RunScript(owner, module, script, uiCommands, revisionGrid, showError);
         }
 
-        private static CommandStatus RunScript(IWin32Window owner, IGitModule module, ScriptInfo scriptInfo, IGitUICommands uiCommands,
+        private static CommandStatus RunScript(IWin32Window owner, IVsrModule module, ScriptInfo scriptInfo, IGitUICommands uiCommands,
             RevisionGridControl revisionGrid, Action<string> showError)
         {
             if (scriptInfo.AskConfirmation && MessageBox.Show(owner, $"Do you want to execute '{scriptInfo.Name}'?", "Script", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
@@ -159,7 +159,7 @@ namespace GitUI.Script
             return new CommandStatus(executed: true, needsGridRefresh: !scriptInfo.RunInBackground);
         }
 
-        private static string ExpandCommandVariables(string originalCommand, IGitModule module)
+        private static string ExpandCommandVariables(string originalCommand, IVsrModule module)
         {
             return originalCommand.Replace("{WorkingDir}", module.WorkingDir);
         }
@@ -173,7 +173,7 @@ namespace GitUI.Script
             if (originalCommand.Equals("git", StringComparison.CurrentCultureIgnoreCase) ||
                 originalCommand.Equals("{git}", StringComparison.CurrentCultureIgnoreCase))
             {
-                return AppSettings.GitCommand;
+                return AppSettings.VsrCommand;
             }
 
             if (originalCommand.Equals("gitextensions", StringComparison.CurrentCultureIgnoreCase) ||

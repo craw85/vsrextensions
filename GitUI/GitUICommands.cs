@@ -26,11 +26,11 @@ namespace GitUI
         private readonly IFindFilePredicateProvider _findFilePredicateProvider;
 
         [NotNull]
-        public GitModule Module { get; private set; }
+        public VsrModule Module { get; private set; }
         public ILockableNotifier RepoChangedNotifier { get; }
         [CanBeNull] public IBrowseRepo BrowseRepo { get; set; }
 
-        public GitUICommands([NotNull] GitModule module)
+        public GitUICommands([NotNull] VsrModule module)
         {
             Module = module ?? throw new ArgumentNullException(nameof(module));
 
@@ -43,11 +43,11 @@ namespace GitUI
         }
 
         public GitUICommands([CanBeNull] string workingDir)
-            : this(new GitModule(workingDir))
+            : this(new VsrModule(workingDir))
         {
         }
 
-        public IGitModule GitModule => Module;
+        public IVsrModule VsrModule => Module;
 
         #region Events
 
@@ -406,7 +406,7 @@ namespace GitUI
             return DoActionOnRepo(owner, true, true, null, null, Action);
         }
 
-        public bool StartCloneDialog(IWin32Window owner, string url = null, bool openedFromProtocolHandler = false, EventHandler<GitModuleEventArgs> gitModuleChanged = null)
+        public bool StartCloneDialog(IWin32Window owner, string url = null, bool openedFromProtocolHandler = false, EventHandler<VsrModuleEventArgs> gitModuleChanged = null)
         {
             bool Action()
             {
@@ -421,7 +421,7 @@ namespace GitUI
             return DoActionOnRepo(owner, false, false, null, null, Action);
         }
 
-        public bool StartCloneDialog(IWin32Window owner, string url, EventHandler<GitModuleEventArgs> gitModuleChanged)
+        public bool StartCloneDialog(IWin32Window owner, string url, EventHandler<VsrModuleEventArgs> gitModuleChanged)
         {
             return StartCloneDialog(owner, url, false, gitModuleChanged);
         }
@@ -520,7 +520,7 @@ namespace GitUI
             return DoActionOnRepo(owner, true, false, PreCommit, PostCommit, Action);
         }
 
-        public bool StartInitializeDialog(IWin32Window owner = null, string dir = null, EventHandler<GitModuleEventArgs> gitModuleChanged = null)
+        public bool StartInitializeDialog(IWin32Window owner = null, string dir = null, EventHandler<VsrModuleEventArgs> gitModuleChanged = null)
         {
             bool Action()
             {
@@ -1337,7 +1337,7 @@ namespace GitUI
             }
         }
 
-        public void StartCloneForkFromHoster(IWin32Window owner, IRepositoryHostPlugin gitHoster, EventHandler<GitModuleEventArgs> gitModuleChanged)
+        public void StartCloneForkFromHoster(IWin32Window owner, IRepositoryHostPlugin gitHoster, EventHandler<VsrModuleEventArgs> gitModuleChanged)
         {
             WrapRepoHostingCall(Strings.ForkCloneRepo, gitHoster, gh =>
             {
@@ -1890,11 +1890,11 @@ namespace GitUI
             public bool ErrorOccurred { get; private set; }
             public string CommandOutput { get; private set; }
 
-            private readonly GitModule _module;
+            private readonly VsrModule _module;
 
             public event EventHandler<GitRemoteCommandCompletedEventArgs> Completed;
 
-            internal GitRemoteCommand(GitModule module)
+            internal GitRemoteCommand(VsrModule module)
             {
                 _module = module;
             }

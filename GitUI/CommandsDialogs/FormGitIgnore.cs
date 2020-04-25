@@ -153,7 +153,7 @@ namespace GitUI.CommandsDialogs
                                 fileContent += Environment.NewLine;
                             }
 
-                            File.WriteAllBytes(x, GitModule.SystemEncoding.GetBytes(fileContent));
+                            File.WriteAllBytes(x, VsrModule.SystemEncoding.GetBytes(fileContent));
                             _originalGitIgnoreFileContent = fileContent;
                         });
                 return true;

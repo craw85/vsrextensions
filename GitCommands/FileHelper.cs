@@ -55,7 +55,7 @@ namespace GitCommands
             ".tiff",
         };
 
-        public static bool IsBinaryFileName(GitModule module, string fileName)
+        public static bool IsBinaryFileName(VsrModule module, string fileName)
         {
             return !string.IsNullOrWhiteSpace(fileName)
                    && (IsBinaryAccordingToGitAttributes(module, fileName)
@@ -63,7 +63,7 @@ namespace GitCommands
         }
 
         /// <returns>null if no info in .gitattributes (or ambiguous). True if marked as binary, false if marked as text</returns>
-        private static bool? IsBinaryAccordingToGitAttributes(GitModule module, string fileName)
+        private static bool? IsBinaryAccordingToGitAttributes(VsrModule module, string fileName)
         {
             string[] diffValues = { "set", "astextplain", "ada", "bibtext", "cpp", "csharp", "fortran", "html", "java", "matlab", "objc", "pascal", "perl", "php", "python", "ruby", "tex" };
             var cmd = new GitArgumentBuilder("check-attr")

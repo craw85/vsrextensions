@@ -14,6 +14,7 @@
 
     <IsPublishable>true</IsPublishable>
     <PublishDir Condition="'$(IsPublishable)' == 'true'">$(AppPublishDir)</PublishDir>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,11 +27,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GitInfo">
-      <Version>2.0.21</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="WiX" Version="$(WiXVersion)" />
  </ItemGroup>
 

@@ -21,7 +21,7 @@ namespace GitUI
     {
         [CanBeNull]
         private static Patch GetItemPatch(
-            [NotNull] GitModule module,
+            [NotNull] VsrModule module,
             [NotNull] GitItemStatus file,
             [CanBeNull] ObjectId firstId,
             [CanBeNull] ObjectId secondId,

@@ -15,7 +15,7 @@ namespace GitUI.CommandsDialogs
         void AddRecentRepositories([NotNull] ToolStripDropDownItem menuItemContainer,
                                    [NotNull] Repository repo,
                                    [NotNull] string caption,
-                                   [NotNull] Action<object, GitModuleEventArgs> setGitModule);
+                                   [NotNull] Action<object, VsrModuleEventArgs> setGitModule);
         Task<GpgInfo> LoadGpgInfoAsync(GitRevision revision);
     }
 
@@ -37,7 +37,7 @@ namespace GitUI.CommandsDialogs
         public void AddRecentRepositories([NotNull] ToolStripDropDownItem menuItemContainer,
                                           [NotNull] Repository repo,
                                           [NotNull] string caption,
-                                          [NotNull] Action<object, GitModuleEventArgs> setGitModule)
+                                          [NotNull] Action<object, VsrModuleEventArgs> setGitModule)
         {
             string branchName = _repositoryCurrentBranchNameProvider.GetCurrentBranchName(repo.Path);
             var item = new ToolStripMenuItem(caption)
@@ -86,19 +86,19 @@ namespace GitUI.CommandsDialogs
                                _gitGpgController.GetTagVerifyMessage(revision));
         }
 
-        private void ChangeWorkingDir(string path, Action<object, GitModuleEventArgs> setGitModule)
+        private void ChangeWorkingDir(string path, Action<object, VsrModuleEventArgs> setGitModule)
         {
-            var module = new GitModule(path);
+            var module = new VsrModule(path);
             if (module.IsValidGitWorkingDir())
             {
-                setGitModule(this, new GitModuleEventArgs(module));
+                setGitModule(this, new VsrModuleEventArgs(module));
                 return;
             }
 
             _invalidRepositoryRemover.ShowDeleteInvalidRepositoryDialog(path);
         }
 
-        private void OpenRepo(string repoPath, Action<object, GitModuleEventArgs> setGitModule)
+        private void OpenRepo(string repoPath, Action<object, VsrModuleEventArgs> setGitModule)
         {
             if (Control.ModifierKeys != Keys.Control)
             {

@@ -81,7 +81,7 @@ namespace GitUI.Script
             return option.StartsWith("s");
         }
 
-        public static (string arguments, bool abort) Parse([CanBeNull] string arguments, [NotNull] IGitModule module, IWin32Window owner, IScriptHostControl scriptHostControl)
+        public static (string arguments, bool abort) Parse([CanBeNull] string arguments, [NotNull] IVsrModule module, IWin32Window owner, IScriptHostControl scriptHostControl)
         {
             if (string.IsNullOrWhiteSpace(arguments))
             {
@@ -233,7 +233,7 @@ namespace GitUI.Script
 
         [CanBeNull]
         private static GitRevision GetCurrentRevision(
-            [NotNull] IGitModule module, [CanBeNull] IScriptHostControl scriptHostControl, List<IGitRef> currentTags, List<IGitRef> currentLocalBranches,
+            [NotNull] IVsrModule module, [CanBeNull] IScriptHostControl scriptHostControl, List<IGitRef> currentTags, List<IGitRef> currentLocalBranches,
             List<IGitRef> currentRemoteBranches, List<IGitRef> currentBranches)
         {
             GitRevision currentRevision;
@@ -285,7 +285,7 @@ namespace GitUI.Script
         }
 
         private static string ParseScriptArguments([NotNull] string arguments, [NotNull] string option, IWin32Window owner,
-            IScriptHostControl scriptHostControl, IGitModule module, IReadOnlyList<GitRevision> allSelectedRevisions,
+            IScriptHostControl scriptHostControl, IVsrModule module, IReadOnlyList<GitRevision> allSelectedRevisions,
             in IList<IGitRef> selectedTags, in IList<IGitRef> selectedBranches, in IList<IGitRef> selectedLocalBranches,
             in IList<IGitRef> selectedRemoteBranches, in IList<string> selectedRemotes, GitRevision selectedRevision,
             in IList<IGitRef> currentTags, in IList<IGitRef> currentBranches, in IList<IGitRef> currentLocalBranches,
@@ -545,12 +545,12 @@ namespace GitUI.Script
             public string CreateOption([NotNull] string option, bool quoted)
                 => ScriptOptionsParser.CreateOption(option, quoted);
 
-            public GitRevision GetCurrentRevision(IGitModule module, [CanBeNull] IScriptHostControl scriptHostControl, List<IGitRef> currentTags,
+            public GitRevision GetCurrentRevision(IVsrModule module, [CanBeNull] IScriptHostControl scriptHostControl, List<IGitRef> currentTags,
                 List<IGitRef> currentLocalBranches, List<IGitRef> currentRemoteBranches, List<IGitRef> currentBranches)
                 => ScriptOptionsParser.GetCurrentRevision(module, scriptHostControl, currentTags, currentLocalBranches, currentRemoteBranches, currentBranches);
 
             public string ParseScriptArguments(string arguments, string option, IWin32Window owner, IScriptHostControl scriptHostControl,
-                IGitModule module, IReadOnlyList<GitRevision> allSelectedRevisions, List<IGitRef> selectedTags, List<IGitRef> selectedBranches,
+                IVsrModule module, IReadOnlyList<GitRevision> allSelectedRevisions, List<IGitRef> selectedTags, List<IGitRef> selectedBranches,
                 List<IGitRef> selectedLocalBranches, List<IGitRef> selectedRemoteBranches, List<string> selectedRemotes, GitRevision selectedRevision,
                 List<IGitRef> currentTags, List<IGitRef> currentBranches, List<IGitRef> currentLocalBranches, List<IGitRef> currentRemoteBranches,
                 GitRevision currentRevision, string currentRemote)

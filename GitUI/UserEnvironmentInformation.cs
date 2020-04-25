@@ -25,19 +25,19 @@ namespace GitUI
             string gitVer;
             try
             {
-                gitVer = GitVersion.Current?.Full;
+                gitVer = VsrVersion.Current?.Full;
             }
             catch (Exception)
             {
                 gitVer = null;
             }
 
-            var gitVersionInfo = GetGitVersionInfo(gitVer, GitVersion.LastSupportedVersion, GitVersion.LastRecommendedVersion);
+            var gitVersionInfo = GetGitVersionInfo(gitVer, VsrVersion.LastSupportedVersion, VsrVersion.LastRecommendedVersion);
 
             // Build and open FormAbout design to make sure info still looks good if you change this code.
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine($"- Git Extensions {AppSettings.ProductVersion}");
+            sb.AppendLine($"- Vsr Extensions {AppSettings.ProductVersion}");
             sb.AppendLine($"- Build {_sha}{(_dirty ? " (Dirty)" : "")}");
             sb.AppendLine($"- Git {gitVersionInfo}");
             sb.AppendLine($"- {Environment.OSVersion}");
@@ -47,14 +47,14 @@ namespace GitUI
             return sb.ToString();
         }
 
-        public static string GetGitVersionInfo(string gitVersion, GitVersion lastSupportedVersion, GitVersion recommendedVersion)
+        public static string GetGitVersionInfo(string gitVersion, VsrVersion lastSupportedVersion, VsrVersion recommendedVersion)
         {
             if (string.IsNullOrWhiteSpace(gitVersion))
             {
                 return $"- (minimum: {lastSupportedVersion}, recommended: {recommendedVersion})";
             }
 
-            var actualVersion = new GitVersion(gitVersion);
+            var actualVersion = new VsrVersion(gitVersion);
             if (actualVersion < lastSupportedVersion)
             {
                 return $"{gitVersion} (minimum: {lastSupportedVersion}, please update!)";

@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\GitCommands\GitCommands.csproj" />
     <ProjectReference Include="..\..\..\GitExtUtils\GitExtUtils.csproj" />

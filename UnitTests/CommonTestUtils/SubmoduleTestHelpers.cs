@@ -7,7 +7,7 @@ namespace CommonTestUtils
 {
     public class SubmoduleTestHelpers
     {
-        public static async Task<SubmoduleInfoResult> UpdateSubmoduleStructureAndWaitForResultAsync(ISubmoduleStatusProvider provider, GitModule module, bool updateStatus = false)
+        public static async Task<SubmoduleInfoResult> UpdateSubmoduleStructureAndWaitForResultAsync(ISubmoduleStatusProvider provider, VsrModule module, bool updateStatus = false)
         {
             SubmoduleInfoResult result = null;
             provider.StatusUpdated += ProviderStatusUpdated;
@@ -33,7 +33,7 @@ namespace CommonTestUtils
             }
         }
 
-        public static async Task UpdateSubmoduleStatusAndWaitForResultAsync(ISubmoduleStatusProvider provider, GitModule module, IReadOnlyList<GitItemStatus> gitStatus)
+        public static async Task UpdateSubmoduleStatusAndWaitForResultAsync(ISubmoduleStatusProvider provider, VsrModule module, IReadOnlyList<GitItemStatus> gitStatus)
         {
             provider.UpdateSubmodulesStatus(workingDirectory: module.WorkingDir, gitStatus: gitStatus, forceUpdate: true);
 

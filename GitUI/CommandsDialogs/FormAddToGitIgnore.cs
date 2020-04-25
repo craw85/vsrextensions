@@ -77,7 +77,7 @@ namespace GitUI.CommandsDialogs
                 {
                     var gitIgnoreFileAddition = new StringBuilder();
 
-                    if (File.Exists(fileName) && !File.ReadAllText(fileName, GitModule.SystemEncoding).EndsWith(Environment.NewLine))
+                    if (File.Exists(fileName) && !File.ReadAllText(fileName, VsrModule.SystemEncoding).EndsWith(Environment.NewLine))
                     {
                         gitIgnoreFileAddition.Append(Environment.NewLine);
                     }
@@ -88,7 +88,7 @@ namespace GitUI.CommandsDialogs
                         gitIgnoreFileAddition.Append(Environment.NewLine);
                     }
 
-                    using (TextWriter tw = new StreamWriter(x, true, GitModule.SystemEncoding))
+                    using (TextWriter tw = new StreamWriter(x, true, VsrModule.SystemEncoding))
                     {
                         tw.Write(gitIgnoreFileAddition);
                     }
