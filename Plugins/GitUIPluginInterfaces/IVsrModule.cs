@@ -67,7 +67,7 @@ namespace GitUIPluginInterfaces
         string ResolveGitInternalPath(string relativePath);
 
         /// <summary>Indicates whether the specified directory contains a git repository.</summary>
-        bool IsValidGitWorkingDir();
+        bool IsValidVersionrWorkingDir();
 
         /// <summary>Indicates HEAD is not pointing to a branch (i.e. it is detached).</summary>
         bool IsDetachedHead();

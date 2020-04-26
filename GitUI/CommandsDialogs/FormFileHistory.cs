@@ -103,7 +103,7 @@ namespace GitUI.CommandsDialogs
 
             Diff.ExtraDiffArgumentsChanged += (sender, e) => UpdateSelectedFileViewers();
 
-            var isSubmodule = VsrModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(FileName));
+            var isSubmodule = VsrModule.IsValidVersionrWorkingDir(_fullPathResolver.Resolve(FileName));
 
             if (isSubmodule)
             {
@@ -366,7 +366,7 @@ namespace GitUI.CommandsDialogs
                 {
                     IsTracked = true,
                     Name = fileName,
-                    IsSubmodule = VsrModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(fileName))
+                    IsSubmodule = VsrModule.IsValidVersionrWorkingDir(_fullPathResolver.Resolve(fileName))
                 };
                 View.ViewGitItemRevisionAsync(file, revision.ObjectId);
             }
@@ -376,7 +376,7 @@ namespace GitUI.CommandsDialogs
                 {
                     IsTracked = true,
                     Name = fileName,
-                    IsSubmodule = VsrModule.IsValidGitWorkingDir(_fullPathResolver.Resolve(fileName))
+                    IsSubmodule = VsrModule.IsValidVersionrWorkingDir(_fullPathResolver.Resolve(fileName))
                 };
                 var revisions = FileChanges.GetSelectedRevisions();
                 var selectedRev = revisions.FirstOrDefault();

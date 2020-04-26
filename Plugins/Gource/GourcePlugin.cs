@@ -54,7 +54,7 @@ namespace Gource
 
         public override bool Execute(GitUIEventArgs args)
         {
-            if (!args.VsrModule.IsValidGitWorkingDir())
+            if (!args.VsrModule.IsValidVersionrWorkingDir())
             {
                 MessageBox.Show(args.OwnerForm, _currentDirectoryIsNotValidGit.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

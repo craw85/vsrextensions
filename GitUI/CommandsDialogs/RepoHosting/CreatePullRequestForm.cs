@@ -68,7 +68,7 @@ namespace GitUI.CommandsDialogs.RepoHosting
 
                     this.UnMask();
 
-                    _currentBranch = Module.IsValidGitWorkingDir() ? Module.GetSelectedBranch() : "";
+                    _currentBranch = Module.IsValidVersionrWorkingDir() ? Module.GetSelectedBranch() : "";
                     LoadRemotes(foreignHostedRemotes);
                     LoadMyBranches();
                 });

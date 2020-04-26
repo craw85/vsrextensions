@@ -19,6 +19,7 @@ using GitUI;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.Threading;
+using Versionr;
 
 namespace GitCommands
 {
@@ -59,7 +60,7 @@ namespace GitCommands
 
             (VsrModule superprojectModule, string submodulePath, string submoduleName) InitialiseSubmoduleProperties()
             {
-                if (!IsValidGitWorkingDir())
+                if (!IsValidVersionrWorkingDir())
                 {
                     return (null, null, null);
                 }
@@ -117,9 +118,32 @@ namespace GitCommands
                 return (null, null, null);
 
                 bool HasGitModulesFile(string path)
-                    => File.Exists(Path.Combine(path, ".gitmodules")) && IsValidGitWorkingDir(path);
+                    => File.Exists(Path.Combine(path, ".gitmodules")) && IsValidVersionrWorkingDir(path);
             }
         }
+
+        private Area _cachedArea;
+        private Area Area
+        {
+            get
+            {
+                if (CacheVersionrWorkspace)
+                {
+                    if (_cachedArea == null)
+                    {
+                        _cachedArea = Area.Load(new DirectoryInfo(WorkingDir));
+                    }
+
+                    return _cachedArea;
+                }
+                else
+                {
+                    return Area.Load(new DirectoryInfo(WorkingDir));
+                }
+            }
+        }
+
+        private bool CacheVersionrWorkspace => AppSettings.CacheVersionrWorkspace;
 
         /// <summary>
         /// Gets the directory which contains the git repository.
@@ -296,13 +320,13 @@ namespace GitCommands
         public Encoding LogOutputEncoding => EffectiveConfigFile.LogOutputEncoding ?? CommitEncoding;
 
         /// <summary>Indicates whether the <see cref="WorkingDir"/> contains a git repository.</summary>
-        public bool IsValidGitWorkingDir()
+        public bool IsValidVersionrWorkingDir()
         {
-            return IsValidGitWorkingDir(WorkingDir);
+            return IsValidVersionrWorkingDir(WorkingDir);
         }
 
         /// <summary>Indicates whether the specified directory contains a versionr repository.</summary>
-        public static bool IsValidGitWorkingDir([CanBeNull] string dir)
+        public static bool IsValidVersionrWorkingDir([CanBeNull] string dir)
         {
             if (string.IsNullOrEmpty(dir))
             {
@@ -461,6 +485,11 @@ namespace GitCommands
             }
         }
 
+        public Status GetStatus()
+        {
+            return Area.Status;
+        }
+
         /// <summary>
         /// Searches from <paramref name="startDir"/> and up through the directory
         /// hierarchy for a valid git working directory. If found, the path is returned,
@@ -473,7 +502,7 @@ namespace GitCommands
 
             while (!string.IsNullOrWhiteSpace(dir))
             {
-                if (IsValidGitWorkingDir(dir))
+                if (IsValidVersionrWorkingDir(dir))
                 {
                     return dir.EnsureTrailingPathSeparator();
                 }
@@ -3657,7 +3686,7 @@ namespace GitCommands
         public SubmoduleStatus CheckSubmoduleStatus([CanBeNull] ObjectId commit, [CanBeNull] ObjectId oldCommit, CommitData data, CommitData oldData, bool loadData = false)
         {
             // TODO File access for Git revision access
-            if (!IsValidGitWorkingDir() || oldCommit == null)
+            if (!IsValidVersionrWorkingDir() || oldCommit == null)
             {
                 return SubmoduleStatus.NewSubmodule;
             }

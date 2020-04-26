@@ -325,6 +325,12 @@ namespace GitCommands
             }
         }
 
+        public static bool CacheVersionrWorkspace
+        {
+            get => GetBool("cacheversionrworkspace", false);
+            set => SetBool("cacheversionrworkspace", value);
+        }
+
         public static bool StashKeepIndex
         {
             get => GetBool("stashkeepindex", false);

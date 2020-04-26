@@ -509,7 +509,7 @@ namespace GitUI.CommandsDialogs
                     // Fast submodules check
                     return Module.GetSubmodulesLocalPaths()
                         .Select(submoduleName => Module.GetSubmodule(submoduleName))
-                        .All(submodule => submodule.IsValidGitWorkingDir());
+                        .All(submodule => submodule.IsValidVersionrWorkingDir());
                 }
 
                 bool AskIfSubmodulesShouldBeInitialized()

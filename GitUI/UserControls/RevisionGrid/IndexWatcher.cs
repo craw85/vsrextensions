@@ -44,7 +44,7 @@ namespace GitUI.UserControls.RevisionGrid
 
         private void SetFileSystemWatcher()
         {
-            if (!Module.IsValidGitWorkingDir())
+            if (!Module.IsValidVersionrWorkingDir())
             {
                 GitIndexWatcher.EnableRaisingEvents = false;
                 RefsWatcher.EnableRaisingEvents = false;

@@ -445,14 +445,14 @@ namespace GitUI.Editor
         {
             string fullPath = Path.GetFullPath(_fullPathResolver.Resolve(fileName));
 
-            if (isSubmodule && !VsrModule.IsValidGitWorkingDir(fullPath))
+            if (isSubmodule && !VsrModule.IsValidVersionrWorkingDir(fullPath))
             {
                 return ViewTextAsync(fileName, "Invalid submodule: " + fileName);
             }
 
             if (!isSubmodule && (fileName.EndsWith("/") || Directory.Exists(fullPath)))
             {
-                if (!VsrModule.IsValidGitWorkingDir(fullPath))
+                if (!VsrModule.IsValidVersionrWorkingDir(fullPath))
                 {
                     return ViewTextAsync(fileName, "Directory: " + fileName);
                 }
@@ -826,7 +826,7 @@ namespace GitUI.Editor
                 // File system access for other than Worktree,
                 // to handle that git-status does not detect details for untracked (git-diff --no-index will not give info)
                 var fullPath = Path.Combine(Module.WorkingDir, file.Name);
-                if (Directory.Exists(fullPath) && VsrModule.IsValidGitWorkingDir(fullPath))
+                if (Directory.Exists(fullPath) && VsrModule.IsValidVersionrWorkingDir(fullPath))
                 {
                     isSubmodule = true;
                 }

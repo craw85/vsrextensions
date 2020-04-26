@@ -166,7 +166,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
             }
 
             var chosenModule = new VsrModule(path.EnsureTrailingPathSeparator());
-            if (!chosenModule.IsValidGitWorkingDir())
+            if (!chosenModule.IsValidVersionrWorkingDir())
             {
                 return null;
             }

@@ -79,7 +79,7 @@ namespace GitUI
 
             _NO_TRANSLATE_toolStripBranches.Items.Clear();
 
-            if (Module.IsValidGitWorkingDir())
+            if (Module.IsValidVersionrWorkingDir())
             {
                 ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
                 {
@@ -103,7 +103,7 @@ namespace GitUI
                 }).FileAndForget();
             }
 
-            _NO_TRANSLATE_toolStripBranches.Enabled = Module.IsValidGitWorkingDir();
+            _NO_TRANSLATE_toolStripBranches.Enabled = Module.IsValidVersionrWorkingDir();
         }
 
         private List<string> GetBranchHeads(bool local, bool remote)

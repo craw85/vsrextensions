@@ -89,7 +89,7 @@ namespace GitUI.CommandsDialogs
         private void ChangeWorkingDir(string path, Action<object, VsrModuleEventArgs> setGitModule)
         {
             var module = new VsrModule(path);
-            if (module.IsValidGitWorkingDir())
+            if (module.IsValidVersionrWorkingDir())
             {
                 setGitModule(this, new VsrModuleEventArgs(module));
                 return;

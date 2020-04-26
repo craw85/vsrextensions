@@ -530,7 +530,7 @@ namespace GitUI.CommandsDialogs
             LayoutRevisionInfo();
             InternalInitialize(false);
 
-            if (!Module.IsValidGitWorkingDir())
+            if (!Module.IsValidVersionrWorkingDir())
             {
                 base.OnLoad(e);
                 return;
@@ -548,7 +548,7 @@ namespace GitUI.CommandsDialogs
                 this.InvokeAsync(
                         () =>
                         {
-                            RefreshButton.Image = indexChanged && AppSettings.UseFastChecks && Module.IsValidGitWorkingDir()
+                            RefreshButton.Image = indexChanged && AppSettings.UseFastChecks && Module.IsValidVersionrWorkingDir()
                                 ? Images.ReloadRevisionsDirty
                                 : Images.ReloadRevisions;
                         })
@@ -773,7 +773,7 @@ namespace GitUI.CommandsDialogs
                 _repositoryHostsToolStripMenuItem.Text = PluginRegistry.GitHosters[0].Description;
             }
 
-            UpdatePluginMenu(Module.IsValidGitWorkingDir());
+            UpdatePluginMenu(Module.IsValidVersionrWorkingDir());
         }
 
         /// <summary>
@@ -820,7 +820,7 @@ namespace GitUI.CommandsDialogs
 
                 bool bareRepository = Module.IsBareRepository();
                 bool isDashboard = _dashboard != null && _dashboard.Visible;
-                bool validBrowseDir = !isDashboard && Module.IsValidGitWorkingDir();
+                bool validBrowseDir = !isDashboard && Module.IsValidVersionrWorkingDir();
 
                 branchSelect.Text = validBrowseDir ? Module.GetSelectedBranch() : "";
                 toolStripButtonLevelUp.Enabled = hasWorkingDir && !bareRepository;
@@ -1392,7 +1392,7 @@ namespace GitUI.CommandsDialogs
 
             _dashboard?.RefreshContent();
 
-            _gitStatusMonitor.Active = NeedsGitStatusMonitor() && Module.IsValidGitWorkingDir();
+            _gitStatusMonitor.Active = NeedsGitStatusMonitor() && Module.IsValidVersionrWorkingDir();
 
             RefreshDefaultPullAction();
         }
@@ -1786,7 +1786,7 @@ namespace GitUI.CommandsDialogs
             _submoduleStatusProvider.Init();
 
             UICommands = new GitUICommands(module);
-            if (Module.IsValidGitWorkingDir())
+            if (Module.IsValidVersionrWorkingDir())
             {
                 var path = Module.WorkingDir;
                 ThreadHelper.JoinableTaskFactory.Run(() => RepositoryHistoryManager.Locals.AddAsMostRecentAsync(path));

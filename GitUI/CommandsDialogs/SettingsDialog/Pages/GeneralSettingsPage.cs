@@ -78,6 +78,7 @@ namespace GitUI.CommandsDialogs.SettingsDialog.Pages
 
         protected override void SettingsToPage()
         {
+            chkCacheVersionrWorkspace.Checked = AppSettings.CacheVersionrWorkspace;
             chkCheckForUncommittedChangesInCheckoutBranch.Checked = AppSettings.CheckForUncommittedChangesInCheckoutBranch;
             chkStartWithRecentWorkingDir.Checked = AppSettings.StartWithRecentWorkingDir;
             chkUseHistogramDiffAlgorithm.Checked = AppSettings.UseHistogramDiffAlgorithm;
@@ -107,6 +108,7 @@ namespace GitUI.CommandsDialogs.SettingsDialog.Pages
 
         protected override void PageToSettings()
         {
+            AppSettings.CacheVersionrWorkspace = chkCacheVersionrWorkspace.Checked;
             AppSettings.CheckForUncommittedChangesInCheckoutBranch = chkCheckForUncommittedChangesInCheckoutBranch.Checked;
             AppSettings.StartWithRecentWorkingDir = chkStartWithRecentWorkingDir.Checked;
             AppSettings.UseHistogramDiffAlgorithm = chkUseHistogramDiffAlgorithm.Checked;

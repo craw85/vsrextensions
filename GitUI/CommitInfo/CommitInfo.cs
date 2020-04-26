@@ -143,7 +143,7 @@ namespace GitUI.CommitInfo
 
         private void RefreshSortedTags()
         {
-            if (!Module.IsValidGitWorkingDir())
+            if (!Module.IsValidVersionrWorkingDir())
             {
                 return;
             }

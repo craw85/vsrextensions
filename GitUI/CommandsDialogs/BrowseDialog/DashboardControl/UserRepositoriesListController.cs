@@ -50,7 +50,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
 
         public bool IsValidGitWorkingDir(string path)
         {
-            return VsrModule.IsValidGitWorkingDir(path);
+            return VsrModule.IsValidVersionrWorkingDir(path);
         }
 
         public (IReadOnlyList<RecentRepoInfo> recentRepositories, IReadOnlyList<RecentRepoInfo> favouriteRepositories) PreRenderRepositories(Graphics g)

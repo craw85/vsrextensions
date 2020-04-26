@@ -836,7 +836,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog.DashboardControl
                 {
                     VsrModule module = new VsrModule(dir);
 
-                    if (!module.IsValidGitWorkingDir())
+                    if (!module.IsValidVersionrWorkingDir())
                     {
                         MessageBox.Show(this, Strings.DirectoryInvalidRepository,
                             _cannotOpenTheFolder.Text, MessageBoxButtons.OK,

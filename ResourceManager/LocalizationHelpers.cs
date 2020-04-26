@@ -84,7 +84,7 @@ namespace ResourceManager
             VsrModule module = superproject.GetSubmodule(name);
 
             // TODO File access for Git revision access
-            if (module.IsValidGitWorkingDir())
+            if (module.IsValidVersionrWorkingDir())
             {
                 // TEMP, will be moved in the follow up refactor
                 ICommitDataManager commitDataManager = new CommitDataManager(() => module);
@@ -145,7 +145,7 @@ namespace ResourceManager
             CommitData oldCommitData = null;
 
             // TODO File access for Git revision access
-            if (gitModule.IsValidGitWorkingDir())
+            if (gitModule.IsValidVersionrWorkingDir())
             {
                 if (status.OldCommit != null)
                 {
@@ -174,7 +174,7 @@ namespace ResourceManager
             CommitData commitData = null;
 
             // TODO File access for Git revision access
-            if (gitModule.IsValidGitWorkingDir())
+            if (gitModule.IsValidVersionrWorkingDir())
             {
                 if (status.Commit != null)
                 {

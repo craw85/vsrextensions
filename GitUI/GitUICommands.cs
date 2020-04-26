@@ -79,7 +79,7 @@ namespace GitUI
 
         private bool RequiresValidWorkingDir([CanBeNull] object owner)
         {
-            if (!Module.IsValidGitWorkingDir())
+            if (!Module.IsValidVersionrWorkingDir())
             {
                 MessageBoxes.NotValidGitDirectory(owner as IWin32Window);
                 return false;
@@ -313,7 +313,7 @@ namespace GitUI
             {
                 // The action may not have required a valid working directory to run, but if there isn't one,
                 // we shouldn't send a "repo changed" notify.
-                bool requestNotify = actionDone && changesRepo && Module.IsValidGitWorkingDir();
+                bool requestNotify = actionDone && changesRepo && Module.IsValidVersionrWorkingDir();
                 RepoChangedNotifier.UnLock(requestNotify);
             }
 
@@ -526,7 +526,7 @@ namespace GitUI
             {
                 if (dir == null)
                 {
-                    dir = Module.IsValidGitWorkingDir() ? Module.WorkingDir : string.Empty;
+                    dir = Module.IsValidVersionrWorkingDir() ? Module.WorkingDir : string.Empty;
                 }
 
                 using (var frm = new FormInit(dir, gitModuleChanged))

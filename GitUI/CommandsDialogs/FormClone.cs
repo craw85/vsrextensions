@@ -158,7 +158,7 @@ namespace GitUI.CommandsDialogs
             // this would clone the new repo at the same level as the current one by default
             if (string.IsNullOrWhiteSpace(_NO_TRANSLATE_To.Text) && !string.IsNullOrWhiteSpace(Module.WorkingDir))
             {
-                if (Module.IsValidGitWorkingDir())
+                if (Module.IsValidVersionrWorkingDir())
                 {
                     if (Path.GetPathRoot(Module.WorkingDir) != Module.WorkingDir)
                     {

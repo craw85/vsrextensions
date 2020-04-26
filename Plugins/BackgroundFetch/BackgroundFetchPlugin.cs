@@ -61,7 +61,7 @@ namespace BackgroundFetch
             int fetchInterval = _fetchInterval.ValueOrDefault(Settings);
 
             var gitModule = _currentGitUiCommands.VsrModule;
-            if (fetchInterval > 0 && gitModule.IsValidGitWorkingDir())
+            if (fetchInterval > 0 && gitModule.IsValidVersionrWorkingDir())
             {
                 _cancellationToken =
                     Observable.Timer(TimeSpan.FromSeconds(Math.Max(5, fetchInterval)))

@@ -131,7 +131,7 @@ namespace GitCommands.Statistics
                     from submoduleName in _module.GetSubmodulesLocalPaths()
                     select _module.GetSubmodule(submoduleName)
                     into submodule
-                    where submodule.IsValidGitWorkingDir()
+                    where submodule.IsValidVersionrWorkingDir()
                     select ThreadHelper.JoinableTaskFactory.RunAsync(
                         async () =>
                         {

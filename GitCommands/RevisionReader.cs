@@ -9,6 +9,7 @@ using GitUI;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.Threading;
+using Versionr;
 
 namespace GitCommands
 {
@@ -93,7 +94,7 @@ namespace GitCommands
 
             token.ThrowIfCancellationRequested();
 
-            var branchName = module.IsValidGitWorkingDir()
+            var branchName = module.IsValidVersionrWorkingDir()
                 ? module.GetSelectedBranch()
                 : "";
 
@@ -109,6 +110,57 @@ namespace GitCommands
 #if TRACE
             var sw = Stopwatch.StartNew();
 #endif
+
+            var status = module.GetStatus();
+
+            foreach (var statusEntry in status.Elements.OrderBy(x => x.CanonicalName))
+            {
+                bool maybe = GitRevision.IsFullSha1Hash(statusEntry.Hash);
+
+                // if (statusEntry.Code != StatusCode.Ignored &&
+                //            statusEntry.Code != StatusCode.Excluded &&
+                //            statusEntry.Code != StatusCode.Unchanged)
+              //  {
+             //        var revision = new GitRevision(statusEntry. objectId)
+             //       {
+             //           ParentIds = parentIds,
+             //           TreeGuid = treeId,
+             //           Author = author,
+             //           AuthorEmail = authorEmail,
+             //           AuthorDate = authorDate,
+             //           Committer = committer,
+             //           CommitterEmail = committerEmail,
+             //           CommitDate = commitDate,
+             //           MessageEncoding = encodingName,
+             //           Subject = subject,
+             //           Body = body,
+             //           Name = additionalData,
+             //           HasMultiLineMessage = !ReferenceEquals(subject, body),
+             //           HasNotes = false
+             //       };
+             //
+             //       if (revisionPredicate == null || revisionPredicate(revision))
+             //       {
+             //           // The full commit message body is used initially in InMemFilter, after which it isn't
+             //           // strictly needed and can be re-populated asynchronously.
+             //           //
+             //           // We keep full multiline message bodies within the last six months.
+             //           // Commits earlier than that have their properties set to null and the
+             //           // memory will be GCd.
+             //           if (DateTime.Now - revision.AuthorDate > TimeSpan.FromDays(30 * 6))
+             //           {
+             //               revision.Body = null;
+             //           }
+             //
+             //           // Look up any refs associated with this revision
+             //           revision.Refs = refsByObjectId[revision.ObjectId].AsReadOnlyList();
+             //
+             //           revisionCount++;
+             //
+             //           subject.OnNext(revision);
+             //       }
+             //   }
+            }
 
             // This property is relatively expensive to call for every revision, so
             // cache it for the duration of the loop.

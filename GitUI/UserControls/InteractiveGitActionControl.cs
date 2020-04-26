@@ -44,7 +44,7 @@ namespace GitUI.UserControls
         {
             // get the current state of the repo
 
-            if (!Module.IsValidGitWorkingDir())
+            if (!Module.IsValidVersionrWorkingDir())
             {
                 return;
             }

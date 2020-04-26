@@ -200,7 +200,7 @@ namespace GitExtensions
 
             if (args.Length <= 1 && workingDir == null && AppSettings.StartWithRecentWorkingDir)
             {
-                if (VsrModule.IsValidGitWorkingDir(AppSettings.RecentWorkingDir))
+                if (VsrModule.IsValidVersionrWorkingDir(AppSettings.RecentWorkingDir))
                 {
                     workingDir = AppSettings.RecentWorkingDir;
                 }
