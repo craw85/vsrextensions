@@ -490,6 +490,12 @@ namespace GitCommands
             return Area.Status;
         }
 
+        public IEnumerable<Versionr.Objects.Version> GetLog(int limit)
+        {
+            var headVersion = Area.GetBranchHeadVersion(Area.CurrentBranch);
+            return Area.GetLogicalHistory(headVersion, false, false, false, limit);
+        }
+
         /// <summary>
         /// Searches from <paramref name="startDir"/> and up through the directory
         /// hierarchy for a valid git working directory. If found, the path is returned,

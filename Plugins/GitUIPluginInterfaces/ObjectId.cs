@@ -15,6 +15,21 @@ namespace GitUIPluginInterfaces
     /// </remarks>
     public sealed class ObjectId : IEquatable<ObjectId>, IComparable<ObjectId>
     {
+        // TODO: VSR - 'supporting' Guids here until I decide what to do with this class
+        [NotNull]
+        [MustUseReturnValue]
+        public static ObjectId FromGuid(Guid g)
+        {
+            string s = g.ToString().Replace("-", "") + "00000000";
+
+            if (!TryParse(s, 0, out var id))
+            {
+                throw new FormatException($"Unable to parse object ID \"{s}\".");
+            }
+
+            return id;
+        }
+
         private static readonly ThreadLocal<byte[]> _buffer = new ThreadLocal<byte[]>(() => new byte[Sha1ByteCount], trackAllValues: false);
         private static readonly Random _random = new Random();
 

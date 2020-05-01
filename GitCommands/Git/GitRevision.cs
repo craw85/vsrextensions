@@ -22,8 +22,8 @@ namespace GitCommands
         /// Artificial commit for the combined diff</summary>
         public const string CombinedDiffGuid = "3333333333333333333333333333333333333333";
 
-        public static readonly Regex Sha1HashRegex = new Regex(@"^[a-f\d]{40}$", RegexOptions.Compiled);
-        public static readonly Regex Sha1HashShortRegex = new Regex(@"\b[a-f\d]{7,40}\b", RegexOptions.Compiled);
+        public static readonly Regex Sha1HashRegex = new Regex(@"^[A-F\d]{40}$", RegexOptions.Compiled);
+        public static readonly Regex Sha1HashShortRegex = new Regex(@"\b[A-F\d]{7,40}\b", RegexOptions.Compiled);
 
         private BuildInfo _buildStatus;
 
@@ -117,7 +117,7 @@ namespace GitCommands
         /// Returns a value indicating whether <paramref name="id"/> is a valid SHA-1 hash.
         /// </summary>
         /// <remarks>
-        /// To be valid the string must contain exactly 40 lower-case hexadecimal characters.
+        /// To be valid the string must contain exactly 40 upper-case hexadecimal characters.
         /// </remarks>
         /// <param name="id">The string to validate.</param>
         /// <returns><c>true</c> if <paramref name="id"/> is a valid SHA-1 hash, otherwise <c>false</c>.</returns>

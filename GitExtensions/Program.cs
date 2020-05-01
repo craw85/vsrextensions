@@ -36,8 +36,9 @@ namespace GitExtensions
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            ThemeModule.Load();
-            Application.ApplicationExit += (s, e) => ThemeModule.Unload();
+            // TODO: VSR - removed this because it was failing after switching to x64
+            // ThemeModule.Load();
+            // Application.ApplicationExit += (s, e) => ThemeModule.Unload();
 
             HighDpiMouseCursors.Enable();
 

@@ -111,55 +111,48 @@ namespace GitCommands
             var sw = Stopwatch.StartNew();
 #endif
 
-            var status = module.GetStatus();
+            var versions = module.GetLog(1000); // TODO: VSR - limit is in revisionFilter variable
 
-            foreach (var statusEntry in status.Elements.OrderBy(x => x.CanonicalName))
+            foreach (var version in versions)
             {
-                bool maybe = GitRevision.IsFullSha1Hash(statusEntry.Hash);
+                var revision = new GitRevision(ObjectId.FromGuid(version.ID))
+                {
+                    ParentIds = version.Parent.HasValue ? new[] { ObjectId.FromGuid(version.Parent.Value) } : null,
+                    TreeGuid = null, // TODO: VSR
+                    Author = version.Author,
+                    AuthorEmail = version.Email,
+                    AuthorDate = version.Timestamp, // TODO: VSR
+                    Committer = version.Author, // TODO: VSR
+                    CommitterEmail = version.Email, // TODO: VSR
+                    CommitDate = version.Timestamp,
+                    MessageEncoding = null, // TODO: VSR
+                    Subject = version.Message,
+                    Body = version.Message, // TODO: VSR
+                    Name = version.ShortName, // TODO: VSR
+                    HasMultiLineMessage = false, // TODO: VSR - !ReferenceEquals(Subject, Body),
+                    HasNotes = false
+                };
 
-                // if (statusEntry.Code != StatusCode.Ignored &&
-                //            statusEntry.Code != StatusCode.Excluded &&
-                //            statusEntry.Code != StatusCode.Unchanged)
-              //  {
-             //        var revision = new GitRevision(statusEntry. objectId)
-             //       {
-             //           ParentIds = parentIds,
-             //           TreeGuid = treeId,
-             //           Author = author,
-             //           AuthorEmail = authorEmail,
-             //           AuthorDate = authorDate,
-             //           Committer = committer,
-             //           CommitterEmail = committerEmail,
-             //           CommitDate = commitDate,
-             //           MessageEncoding = encodingName,
-             //           Subject = subject,
-             //           Body = body,
-             //           Name = additionalData,
-             //           HasMultiLineMessage = !ReferenceEquals(subject, body),
-             //           HasNotes = false
-             //       };
-             //
-             //       if (revisionPredicate == null || revisionPredicate(revision))
-             //       {
-             //           // The full commit message body is used initially in InMemFilter, after which it isn't
-             //           // strictly needed and can be re-populated asynchronously.
-             //           //
-             //           // We keep full multiline message bodies within the last six months.
-             //           // Commits earlier than that have their properties set to null and the
-             //           // memory will be GCd.
-             //           if (DateTime.Now - revision.AuthorDate > TimeSpan.FromDays(30 * 6))
-             //           {
-             //               revision.Body = null;
-             //           }
-             //
-             //           // Look up any refs associated with this revision
-             //           revision.Refs = refsByObjectId[revision.ObjectId].AsReadOnlyList();
-             //
-             //           revisionCount++;
-             //
-             //           subject.OnNext(revision);
-             //       }
-             //   }
+                if (revisionPredicate == null || revisionPredicate(revision))
+                {
+                    // The full commit message body is used initially in InMemFilter, after which it isn't
+                    // strictly needed and can be re-populated asynchronously.
+                    //
+                    // We keep full multiline message bodies within the last six months.
+                    // Commits earlier than that have their properties set to null and the
+                    // memory will be GCd.
+                    if (DateTime.Now - revision.AuthorDate > TimeSpan.FromDays(30 * 6))
+                    {
+                        revision.Body = null;
+                    }
+
+                    // Look up any refs associated with this revision
+                    revision.Refs = refsByObjectId[revision.ObjectId].AsReadOnlyList();
+
+                    revisionCount++;
+
+                    subject.OnNext(revision);
+                }
             }
 
             // This property is relatively expensive to call for every revision, so
