@@ -6049,7 +6049,7 @@ ancestor tree.</source>
         
       </trans-unit>
       <trans-unit id="_warningOpenFailed.Text">
-        <source>The selected directory is not a valid git repository.</source>
+        <source>The selected directory is not a valid versionr repository.</source>
         <target>O diretório selecionado não é um repositório git válido</target>
         
       </trans-unit>

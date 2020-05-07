@@ -14,7 +14,7 @@ namespace GitUI.CommandsDialogs.BrowseDialog
 {
     public partial class FormOpenDirectory : GitExtensionsForm
     {
-        private readonly TranslationString _warningOpenFailed = new TranslationString("The selected directory is not a valid git repository.");
+        private readonly TranslationString _warningOpenFailed = new TranslationString("The selected directory is not a valid versionr repository.");
 
         [CanBeNull] private VsrModule _chosenModule;
 

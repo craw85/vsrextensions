@@ -75,11 +75,11 @@ namespace GitCommands.Git
                 return string.Empty;
             }
 
-            var gitPath = Path.Combine(repositoryPath, ".git");
-            if (_fileSystem.File.Exists(gitPath))
+            var vsrPath = Path.Combine(repositoryPath, ".versionr");
+            if (_fileSystem.File.Exists(vsrPath))
             {
                 const string gitdir = "gitdir:";
-                var line = _fileSystem.File.ReadLines(gitPath).FirstOrDefault(l => l.StartsWith(gitdir));
+                var line = _fileSystem.File.ReadLines(vsrPath).FirstOrDefault(l => l.StartsWith(gitdir));
                 if (line != null)
                 {
                     string path = line.Substring(gitdir.Length).Trim().ToNativePath();
@@ -92,8 +92,8 @@ namespace GitCommands.Git
                 }
             }
 
-            gitPath = gitPath.EnsureTrailingPathSeparator();
-            return !_fileSystem.Directory.Exists(gitPath) ? repositoryPath : gitPath;
+            vsrPath = vsrPath.EnsureTrailingPathSeparator();
+            return !_fileSystem.Directory.Exists(vsrPath) ? repositoryPath : vsrPath;
         }
     }
 }

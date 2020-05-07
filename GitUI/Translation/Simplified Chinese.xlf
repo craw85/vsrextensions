@@ -6321,7 +6321,7 @@ ancestor tree.</source>
         
       </trans-unit>
       <trans-unit id="_warningOpenFailed.Text">
-        <source>The selected directory is not a valid git repository.</source>
+        <source>The selected directory is not a valid versionr repository.</source>
         <target>所选目录是无效版本库</target>
         
       </trans-unit>

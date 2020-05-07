@@ -6262,7 +6262,7 @@ nivel. Este ajuste también se le hace al árbol del ancestro en común.</target
         
       </trans-unit>
       <trans-unit id="_warningOpenFailed.Text">
-        <source>The selected directory is not a valid git repository.</source>
+        <source>The selected directory is not a valid versionr repository.</source>
         
       </trans-unit>
       <trans-unit id="folderBrowserButton.Text">

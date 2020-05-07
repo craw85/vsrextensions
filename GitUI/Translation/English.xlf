@@ -5054,7 +5054,7 @@ ancestor tree.</source>
         <target />
       </trans-unit>
       <trans-unit id="_warningOpenFailed.Text">
-        <source>The selected directory is not a valid git repository.</source>
+        <source>The selected directory is not a valid versionr repository.</source>
         <target />
       </trans-unit>
       <trans-unit id="folderBrowserButton.Text">

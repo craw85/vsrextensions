@@ -6302,7 +6302,7 @@ Cet ajustement est également fait à l'arbre de l'ancêtre commun.  </target>
         
       </trans-unit>
       <trans-unit id="_warningOpenFailed.Text">
-        <source>The selected directory is not a valid git repository.</source>
+        <source>The selected directory is not a valid versionr repository.</source>
         <target>Le répertoire sélectionné n'est pas un dépôt git valide</target>
         
       </trans-unit>

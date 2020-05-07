@@ -6348,7 +6348,7 @@ auf den gemeinsamen Vorfahrenbaum angewendet.</target>
         
       </trans-unit>
       <trans-unit id="_warningOpenFailed.Text">
-        <source>The selected directory is not a valid git repository.</source>
+        <source>The selected directory is not a valid versionr repository.</source>
         <target>Das ausgewählte Verzeichnis ist kein gültiges Git Repositor.y</target>
         
       </trans-unit>

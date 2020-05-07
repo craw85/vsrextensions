@@ -127,18 +127,24 @@ namespace GitCommands
         {
             get
             {
+                if (string.IsNullOrEmpty(WorkingDir) || !Directory.Exists(WorkingDir))
+                {
+                    return null;
+                }
+
+                var dir = new DirectoryInfo(WorkingDir);
                 if (CacheVersionrWorkspace)
                 {
                     if (_cachedArea == null)
                     {
-                        _cachedArea = Area.Load(new DirectoryInfo(WorkingDir));
+                        _cachedArea = Area.Load(dir);
                     }
 
                     return _cachedArea;
                 }
                 else
                 {
-                    return Area.Load(new DirectoryInfo(WorkingDir));
+                    return Area.Load(dir);
                 }
             }
         }
@@ -2847,18 +2853,10 @@ namespace GitCommands
         /// <returns>Current branchname</returns>
         public string GetSelectedBranch(bool setDefaultIfEmpty)
         {
-            string head = GetSelectedBranchFast(WorkingDir, setDefaultIfEmpty);
+            var area = Area;
 
-            if (!string.IsNullOrEmpty(head))
-            {
-                return head;
-            }
-
-            var args = new GitArgumentBuilder("symbolic-ref") { "HEAD" };
-            var result = _gitExecutable.Execute(args);
-
-            return result.ExitCode == 0
-                ? result.StandardOutput
+            return area != null
+                ? area.CurrentBranch.Name
                 : setDefaultIfEmpty ? DetachedHeadParser.DetachedBranch : string.Empty;
         }
 
