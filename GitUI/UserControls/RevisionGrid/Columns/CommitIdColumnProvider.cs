@@ -39,7 +39,7 @@ namespace GitUI.UserControls.RevisionGrid.Columns
             var monospaceFont = style.MonospaceFont;
             if (!_widthByLengthByFont.TryGetValue(monospaceFont, out var widthByLength))
             {
-                widthByLength = Enumerable.Range(0, ObjectId.Sha1CharCount + 1).Select(c => TextRenderer.MeasureText(new string('8', c), monospaceFont).Width).ToArray();
+                widthByLength = Enumerable.Range(0, ObjectId.GuidCharCount + 1).Select(c => TextRenderer.MeasureText(new string('8', c), monospaceFont).Width).ToArray();
 
                 _widthByLengthByFont[monospaceFont] = widthByLength;
             }

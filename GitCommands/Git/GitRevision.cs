@@ -13,14 +13,14 @@ namespace GitCommands
     public sealed class GitRevision : IGitItem, INotifyPropertyChanged
     {
         /// <summary>40 characters of 1's</summary>
-        public const string WorkTreeGuid = "1111111111111111111111111111111111111111";
+        public const string WorkTreeGuid = "11111111-1111-1111-1111-111111111111";
 
         /// <summary>40 characters of 2's</summary>
-        public const string IndexGuid = "2222222222222222222222222222222222222222";
+        public const string IndexGuid = "22222222-2222-2222-2222-222222222222";
 
         /// <summary>40 characters of 2's
         /// Artificial commit for the combined diff</summary>
-        public const string CombinedDiffGuid = "3333333333333333333333333333333333333333";
+        public const string CombinedDiffGuid = "33333333-3333-3333-3333-333333333333";
 
         public static readonly Regex Sha1HashRegex = new Regex(@"^[A-F\d]{40}$", RegexOptions.Compiled);
         public static readonly Regex Sha1HashShortRegex = new Regex(@"\b[A-F\d]{7,40}\b", RegexOptions.Compiled);

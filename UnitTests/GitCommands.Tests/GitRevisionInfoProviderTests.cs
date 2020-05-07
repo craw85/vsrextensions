@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using FluentAssertions;
 using GitCommands;
 using GitCommands.Git;
@@ -35,9 +34,7 @@ namespace GitCommandsTests
             var item = Substitute.For<IGitItem>();
 
             // ObjectId checks input, use Try to get an illegal value
-            ObjectId objectId;
-            var sourceBytes = Encoding.ASCII.GetBytes("");
-            ObjectId.TryParseAsciiHexBytes(sourceBytes, 0, out objectId);
+            ObjectId.TryParse("", out ObjectId objectId);
             item.ObjectId.Returns(objectId);
 
             ((Action)(() => _provider.LoadChildren(item))).Should().Throw<ArgumentException>();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,11 +18,11 @@ using NUnit.Framework;
 namespace GitCommandsTests
 {
     [TestFixture]
-    public sealed class GitModuleTests
+    public sealed class VsrModuleTests
     {
-        private static readonly ObjectId Sha1 = ObjectId.Parse("3183d1e95383c44302d4b25a7c647ee169765bd8");
-        private static readonly ObjectId Sha2 = ObjectId.Parse("d12782217535ef00f4f84773d5d33691bbf81d00");
-        private static readonly ObjectId Sha3 = ObjectId.Parse("dd678b7160a9a5890c8725e33930947af210c765");
+        private static readonly ObjectId Guid1 = ObjectId.Parse("1d601b70-c20c-45c5-aa33-65708a12f7d4");
+        private static readonly ObjectId Guid2 = ObjectId.Parse("2c8ed4c8-7cfe-4626-a061-28fef42b420a");
+        private static readonly ObjectId Guid3 = ObjectId.Parse("df50dce2-7d22-43a3-87fc-1af982ce5316");
 
         private VsrModule _gitModule;
         private MockExecutable _executable;
@@ -358,9 +359,9 @@ namespace GitCommandsTests
             string output,
             string[] expected)
         {
-            using (_executable.StageOutput(cmd + " " + Sha1.ToString(), output))
+            using (_executable.StageOutput(cmd + " " + Guid1.ToString(), output))
             {
-                var result = _gitModule.GetAllBranchesWhichContainGivenCommit(Sha1, getLocal, getRemote);
+                var result = _gitModule.GetAllBranchesWhichContainGivenCommit(Guid1, getLocal, getRemote);
                 Assert.AreEqual(result, expected);
             }
         }
@@ -374,7 +375,7 @@ namespace GitCommandsTests
             bool getRemote,
             string[] expected)
         {
-            var result = _gitModule.GetAllBranchesWhichContainGivenCommit(Sha1, getLocal, getRemote);
+            var result = _gitModule.GetAllBranchesWhichContainGivenCommit(Guid1, getLocal, getRemote);
             Assert.AreEqual(result, expected);
         }
 
@@ -396,7 +397,7 @@ namespace GitCommandsTests
         [Test]
         public void RevParse_should_return_ObjectId_if_revisionExpression_is_valid_hash()
         {
-            var revisionExpression = new string('1', ObjectId.Sha1CharCount);
+            var revisionExpression = new Guid("11111111-1111-1111-1111-111111111111").ToString();
             _gitModule.RevParse(revisionExpression).Should().Be(ObjectId.WorkTreeId);
         }
 
@@ -404,7 +405,7 @@ namespace GitCommandsTests
         public void RevParse_should_query_git_and_return_ObjectId_if_get_valid_hash()
         {
             var revisionExpression = "11111";
-            using (_executable.StageOutput($"rev-parse \"{revisionExpression}~0\"", new string('1', ObjectId.Sha1CharCount), 0))
+            using (_executable.StageOutput($"rev-parse \"{revisionExpression}~0\"", new Guid("11111111-1111-1111-1111-111111111111").ToString(), 0))
             {
                 _gitModule.RevParse(revisionExpression).Should().Be(ObjectId.WorkTreeId);
             }
@@ -570,16 +571,16 @@ namespace GitCommandsTests
             {
                 "-n 1",
                 "--format=format:%P",
-                Sha1
+                Guid1
             };
 
             using (_executable.StageOutput(
                 args.ToString(),
-                $"{Sha2} {Sha3}"))
+                $"{Guid2} {Guid3}"))
             {
-                var parents = _gitModule.GetParents(Sha1);
+                var parents = _gitModule.GetParents(Guid1);
 
-                Assert.AreEqual(parents, new[] { Sha2, Sha3 });
+                Assert.AreEqual(parents, new[] { Guid2, Guid3 });
             }
         }
 
