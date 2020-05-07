@@ -22,8 +22,8 @@ namespace GitCommands
         /// Artificial commit for the combined diff</summary>
         public const string CombinedDiffGuid = "33333333-3333-3333-3333-333333333333";
 
-        public static readonly Regex Sha1HashRegex = new Regex(@"^[A-F\d]{40}$", RegexOptions.Compiled);
-        public static readonly Regex Sha1HashShortRegex = new Regex(@"\b[A-F\d]{7,40}\b", RegexOptions.Compiled);
+        public static readonly Regex GuidRegex = new Regex(@"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", RegexOptions.Compiled);
+        public static readonly Regex GuidShortRegex = new Regex(@"\b[0-9a-fA-F]{8}\b", RegexOptions.Compiled);
 
         private BuildInfo _buildStatus;
 
@@ -123,7 +123,7 @@ namespace GitCommands
         /// <returns><c>true</c> if <paramref name="id"/> is a valid SHA-1 hash, otherwise <c>false</c>.</returns>
         public static bool IsFullSha1Hash(string id)
         {
-            return Sha1HashRegex.IsMatch(id);
+            return GuidRegex.IsMatch(id);
         }
     }
 }

@@ -20,6 +20,7 @@ using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.Threading;
 using Versionr;
+using Versionr.Objects;
 
 namespace GitCommands
 {
@@ -1260,7 +1261,7 @@ namespace GitCommands
             {
                 // TODO use Regex here to avoid allocations
                 string[] tab = parents.Split(' ');
-                return tab.Length > 2 && tab.All(parent => GitRevision.Sha1HashRegex.IsMatch(parent));
+                return tab.Length > 2 && tab.All(parent => GitRevision.GuidRegex.IsMatch(parent));
             }
         }
 
@@ -2464,78 +2465,123 @@ namespace GitCommands
         public IReadOnlyList<GitItemStatus> GetDiffFilesWithSubmodulesStatus(ObjectId firstId, ObjectId secondId, ObjectId parentToSecond)
         {
             var stagedStatus = GitCommandHelpers.GetStagedStatus(firstId, secondId, parentToSecond);
-            var status = GetDiffFiles(firstId?.ToString(), secondId?.ToString(), stagedStatus);
+            var status = GetDiffFiles(firstId, secondId, stagedStatus);
             GetSubmoduleStatus(status, firstId, secondId);
             return status;
         }
 
-        public IReadOnlyList<GitItemStatus> GetDiffFiles(string firstRevision, string secondRevision, StagedStatus stagedStatus, bool noCache = false)
+        public IReadOnlyList<GitItemStatus> GetDiffFiles(ObjectId firstRevision, ObjectId secondRevision, StagedStatus stagedStatus, bool noCache = false)
         {
-            noCache = noCache || firstRevision.IsArtificial() || secondRevision.IsArtificial();
+            noCache = noCache || firstRevision.IsArtificial || secondRevision.IsArtificial;
 
-            var output = _gitExecutable.GetOutput(
-                new GitArgumentBuilder("diff")
-                {
-                    "--no-color",
-                    "-M -C -z --name-status",
-                    _revisionDiffProvider.Get(firstRevision, secondRevision)
-                },
-                cache: noCache ? null : GitCommandCache);
+            var area = Area;
 
-            var result = GitCommandHelpers.GetDiffChangedFilesFromString(this, output, stagedStatus).ToList();
+            var baseVersion = area.GetVersion(firstRevision.ToGuid());
+            var compareVersion = area.GetVersion(secondRevision.ToGuid());
 
-            if (IsGitErrorMessage(output))
+            var baseRecords = area.GetRecords(baseVersion);
+            var compareRecords = area.GetRecords(compareVersion);
+
+            var result = new List<GitItemStatus>();
+
+            // List additions
+            var added = new HashSet<Record>(compareRecords, RecordPathComparer.Instance);
+            added.ExceptWith(baseRecords);
+            result.AddRange(added.Select(x => CreateItemStatus(x, StatusCode.Added)));
+
+            // List deletions
+            var deleted = new HashSet<Record>(baseRecords, RecordPathComparer.Instance);
+            deleted.ExceptWith(compareRecords);
+            result.AddRange(deleted.Select(x => CreateItemStatus(x, StatusCode.Deleted)));
+
+            // Check for modifications
+            var compareLookup = new Dictionary<string, Record>();
+            foreach (var record in compareRecords)
             {
-                // No simple way to pass the error message, create fake file
-                result.Add(createErrorGitItemStatus(output));
+                compareLookup[record.CanonicalName] = record;
             }
 
-            if (firstRevision == GitRevision.WorkTreeGuid || secondRevision == GitRevision.WorkTreeGuid)
+            var modified = new List<Record>();
+            foreach (var baseRecord in baseRecords)
             {
-                // For worktree the untracked must be added too
-                // Note that this may add a second GitError, this is a separate Git command
-                var files = GetAllChangedFilesWithSubmodulesStatus().Where(x =>
-                    ((x.Staged == StagedStatus.WorkTree && x.IsNew) || !string.IsNullOrWhiteSpace(x.ErrorMessage))).ToArray();
-                if (firstRevision == GitRevision.WorkTreeGuid)
+                Record compareRecord;
+                if (!compareLookup.TryGetValue(baseRecord.CanonicalName, out compareRecord))
                 {
-                    // The file is seen as "deleted" in 'to' revision
-                    foreach (var item in files)
-                    {
-                        item.IsNew = false;
-                        item.IsDeleted = true;
-                        result.Add(item);
-                    }
+                    continue;
                 }
-                else
+
+                if (compareRecord.Fingerprint != baseRecord.Fingerprint)
                 {
-                    result.AddRange(files);
+                    modified.Add(compareRecord);
                 }
+            }
+
+            result.AddRange(modified.Select(x => CreateItemStatus(x, StatusCode.Modified)));
+
+            GitItemStatus CreateItemStatus(Record x, StatusCode status)
+            {
+                return new GitItemStatus
+                {
+                    Name = x.Name,
+                    IsNew = status == StatusCode.Added,
+                    IsChanged = status == StatusCode.Modified,
+                    IsDeleted = status == StatusCode.Deleted,
+                    IsSkipWorktree = false, // TODO: VSR ??
+                    IsRenamed = status == StatusCode.Renamed,
+                    IsCopied = status == StatusCode.Copied,
+                    IsTracked = status == StatusCode.Excluded,
+                    IsIgnored = status == StatusCode.Ignored,
+                    IsConflict = status == StatusCode.Conflict,
+                    Staged = StagedStatus.Index // TODO: VSR ??
+                };
             }
 
             return result;
         }
 
-        public IReadOnlyList<GitItemStatus> GetStashDiffFiles(string stashName)
+        private class RecordPathComparer : IEqualityComparer<Record>, IComparer<Record>
         {
-            var resultCollection = GetDiffFiles(stashName + "^", stashName, StagedStatus.None, true).ToList();
+            public static RecordPathComparer Instance = new RecordPathComparer();
 
-            // shows untracked files
-            var args = new GitArgumentBuilder("log")
+            public int Compare(Record x, Record y)
             {
-                $"{stashName}^3",
-                "--pretty=format:\"%T\"",
-                "--max-count=1"
-            };
-            var untrackedTreeHash = _gitExecutable.GetOutput(args);
-
-            if (ObjectId.TryParse(untrackedTreeHash, out var treeId))
-            {
-                var files = GetTreeFiles(treeId, full: true);
-
-                resultCollection.AddRange(files);
+                return string.Compare(x.CanonicalName, y.CanonicalName);
             }
 
-            return resultCollection;
+            public bool Equals(Record x, Record y)
+            {
+                return x.CanonicalName.Equals(y.CanonicalName);
+            }
+
+            public int GetHashCode(Record obj)
+            {
+                return obj.CanonicalName.GetHashCode();
+            }
+        }
+
+        public IReadOnlyList<GitItemStatus> GetStashDiffFiles(string stashName)
+        {
+            throw new NotImplementedException("// TODO: VSR");
+
+            // var resultCollection = GetDiffFiles(stashName + "^", stashName, StagedStatus.None, true).ToList();
+            //
+            // // shows untracked files
+            // var args = new GitArgumentBuilder("log")
+            // {
+            //     $"{stashName}^3",
+            //     "--pretty=format:\"%T\"",
+            //     "--max-count=1"
+            // };
+            // var untrackedTreeHash = _gitExecutable.GetOutput(args);
+            //
+            // if (ObjectId.TryParse(untrackedTreeHash, out var treeId))
+            // {
+            //     var files = GetTreeFiles(treeId, full: true);
+            //
+            //     resultCollection.AddRange(files);
+            // }
+            //
+            // return resultCollection;
         }
 
         public IReadOnlyList<GitItemStatus> GetTreeFiles(ObjectId commitId, bool full)

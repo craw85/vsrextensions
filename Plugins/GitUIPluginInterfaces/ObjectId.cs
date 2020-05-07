@@ -247,6 +247,14 @@ namespace GitUIPluginInterfaces
         /// <summary>
         /// Returns the Guid.
         /// </summary>
+        public Guid ToGuid()
+        {
+            return _id;
+        }
+
+        /// <summary>
+        /// Returns the short string.
+        /// </summary>
         public override string ToString()
         {
             return ToShortString(GuidCharCount);

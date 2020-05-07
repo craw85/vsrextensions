@@ -44,7 +44,7 @@ namespace ResourceManager.CommitDataRenders
 
             if (showRevisionsAsLinks)
             {
-                body = GitRevision.Sha1HashShortRegex.Replace(body, match => ProcessHashCandidate(match.Value));
+                body = GitRevision.GuidShortRegex.Replace(body, match => ProcessHashCandidate(match.Value));
             }
 
             return body;
